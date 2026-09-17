@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuestro catálogo | Biblioteca Popular Edgar Morisoli</title>
+  <meta name="description" content="Libros disponibles en la Biblioteca Popular Edgar Morisoli.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dist/output.css">
+</head>
+<body class="flex min-h-screen flex-col">
+
+  <header class="sticky top-0 z-50 border-b border-salvia bg-crema/95 backdrop-blur-sm">
+    <div class="relative mx-auto max-w-7xl px-4">
+      <div class="flex items-center justify-between gap-4 py-3">
+        <a href="index.html" class="flex shrink-0 items-center gap-3">
+          <img src="assets/img/logo-biblioteca.png" alt="" class="h-12 w-auto">
+          <span class="font-display text-sm leading-tight font-semibold text-bosque sm:text-base">
+            Biblioteca Popular<br>
+            <span class="font-bold text-carbon">Edgar Morisoli</span>
+          </span>
+        </a>
+
+        <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"
+                class="inline-flex flex-col justify-center gap-1.5 rounded-md p-2 hover:bg-salvia xl:hidden">
+          <span class="sr-only">Abrir menú</span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+        </button>
+
+        <nav id="menu" class="absolute top-full right-0 left-0 hidden border-b border-salvia bg-crema px-4 py-3 shadow-lg xl:static xl:block xl:border-0 xl:bg-transparent xl:px-0 xl:py-0 xl:shadow-none">
+          <ul class="flex flex-col gap-1 xl:flex-row xl:items-center">
+            <li><a class="nav-link" href="index.html">Inicio</a></li>
+            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
+            <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
+            <li><a class="nav-link" href="catalogo.html" aria-current="page">Nuestro catálogo</a></li>
+            <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
+            <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
+            <li><a class="nav-link" href="flotilla-literaria.html">Flotilla Literaria</a></li>
+            <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <section class="border-b border-salvia bg-bosque text-crema">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Nuestro catálogo</h1>
+        <p class="mt-4 max-w-2xl text-salvia">Te invitamos a ver los libros disponibles de la biblioteca.</p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <p class="section-kicker">Sección</p>
+      <h2 class="section-title mt-2">Literatura contemporánea</h2>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Los sorrentinos</h3>
+          <p class="mt-1 text-sm text-oliva">Virginia Higa</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Soy toda oídos</h3>
+          <p class="mt-1 text-sm text-oliva">Kim Hye Jin</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Piedra sobre Piedra</h3>
+          <p class="mt-1 text-sm text-oliva">Nina Ferrari</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Galaxia</h3>
+          <p class="mt-1 text-sm text-oliva">Juan Solá</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Las amigas</h3>
+          <p class="mt-1 text-sm text-oliva">Aurora Venturini</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Cuentos Completos</h3>
+          <p class="mt-1 text-sm text-oliva">Evelio Rosero</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">La novia de Sandro</h3>
+          <p class="mt-1 text-sm text-oliva">Camila Sosa Villada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">El marido de mi madrastra</h3>
+          <p class="mt-1 text-sm text-oliva">Aurora Venturini</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Tracción a sangre</h3>
+          <p class="mt-1 text-sm text-oliva">José Luis Pascuet</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Sustancia</h3>
+          <p class="mt-1 text-sm text-oliva">Nina Ferrari</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Sobre mi hija</h3>
+          <p class="mt-1 text-sm text-oliva">Kim Hye Jin</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">La Vegetariana</h3>
+          <p class="mt-1 text-sm text-oliva">Han Kang</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Los jardines de Juana</h3>
+          <p class="mt-1 text-sm text-oliva">Natalia Bericat</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Alarido</h3>
+          <p class="mt-1 text-sm text-oliva">Nina Ferrari</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Ladrilleros</h3>
+          <p class="mt-1 text-sm text-oliva">Selva Almada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Los amores urgentes</h3>
+          <p class="mt-1 text-sm text-oliva">Juan Solá</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">El viaje inútil</h3>
+          <p class="mt-1 text-sm text-oliva">Camila Sosa Villada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Temporada de Huracanes</h3>
+          <p class="mt-1 text-sm text-oliva">Fernanda Melchor</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Mariposas Negras</h3>
+          <p class="mt-1 text-sm text-oliva">Nina Ferrari</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Épica Urbana</h3>
+          <p class="mt-1 text-sm text-oliva">Juan Solá</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Soy una tonta por quererte</h3>
+          <p class="mt-1 text-sm text-oliva">Camila Sosa Villada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">La traición de mi lengua</h3>
+          <p class="mt-1 text-sm text-oliva">Camila Sosa Villada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Las malas</h3>
+          <p class="mt-1 text-sm text-oliva">Camila Sosa Villada</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">Malparidas</h3>
+          <p class="mt-1 text-sm text-oliva">Natalia Bericat</p>
+        </li>
+        <li class="card">
+          <h3 class="font-semibold text-carbon">El buen mal</h3>
+          <p class="mt-1 text-sm text-oliva">Samanta Schweblin</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="bg-salvia/40 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Sección</p>
+        <h2 class="section-title mt-2">Terror</h2>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="card">
+            <h3 class="font-semibold text-carbon">El resplandor</h3>
+            <p class="mt-1 text-sm text-oliva">Stephen King</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">It (Eso)</h3>
+            <p class="mt-1 text-sm text-oliva">Stephen King</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">Misery (Miseria)</h3>
+            <p class="mt-1 text-sm text-oliva">Stephen King</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">Cementerio de animales</h3>
+            <p class="mt-1 text-sm text-oliva">Stephen King</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">La mujer de arriba</h3>
+            <p class="mt-1 text-sm text-oliva">Freida McFadden</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">La asistenta</h3>
+            <p class="mt-1 text-sm text-oliva">Freida McFadden</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">El secreto de la asistenta</h3>
+            <p class="mt-1 text-sm text-oliva">Freida McFadden</p>
+          </li>
+          <li class="card">
+            <h3 class="font-semibold text-carbon">La asistenta te vigila</h3>
+            <p class="mt-1 text-sm text-oliva">Freida McFadden</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <div class="card mt-8 border-dashed bg-crema">
+        <p class="section-kicker">Próximamente</p>
+        <h3 class="mt-2 text-2xl font-semibold text-bosque">Catálogo digital</h3>
+        <p class="mt-3 max-w-3xl text-oliva">Muy pronto vas a poder consultar el catálogo completo de la biblioteca a través del sistema Koha Digibepe. Estamos preparando la conexión y pronto vas a poder buscar libros online.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-salvia bg-salvia/60">
+    <div class="mx-auto max-w-7xl px-4 py-14">
+      <h2 class="text-center font-display text-3xl font-bold text-bosque">Contactanos</h2>
+
+      <div class="mt-12 grid gap-10 md:grid-cols-3">
+        <div>
+          <h3 class="text-lg font-semibold text-bosque">Ubicación</h3>
+          <p class="mt-2 text-sm">Victor Lordi 73<br>Santa Rosa, La Pampa</p>
+
+          <h3 class="mt-6 text-lg font-semibold text-bosque">Horario de atención</h3>
+          <p class="mt-2 text-sm">Martes a Viernes<br>9 a 12:30hs y 16:30 a 20hs</p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-bosque">Contacto</h3>
+          <p class="mt-2 text-sm">
+            <a href="tel:+542954610340" class="hover:text-bosque hover:underline">2954-610340</a>
+          </p>
+          <p class="mt-1 text-sm break-all">
+            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:text-bosque hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
+          </p>
+
+          <h3 class="mt-6 text-lg font-semibold text-bosque">Redes</h3>
+          <p class="mt-2 flex gap-4 text-sm">
+            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="hover:text-bosque hover:underline">Instagram</a>
+            <a href="#" class="hover:text-bosque hover:underline">Facebook</a>
+          </p>
+        </div>
+
+        <div class="flex flex-col items-start gap-4 md:items-end">
+          <img src="assets/img/logo-biblioteca.png" alt="Biblioteca Popular Edgar Morisoli" class="h-24 w-auto">
+          <p class="text-xs text-oliva md:text-right">
+            Biblioteca afiliada a CONABIP<br>Registro Nro. 4124
+          </p>
+        </div>
+      </div>
+
+      <p class="mt-12 border-t border-oliva/30 pt-6 text-center text-xs text-oliva">
+        &copy; <span id="year"></span> Biblioteca Popular Edgar Morisoli
+      </p>
+    </div>
+  </footer>
+
+  <script src="src/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+@import "tailwindcss" source(none);
+
+@source "../../*.html";
+@source "../js/*.js";
+
+@theme {
+  --color-crema: #f5f3e6;
+  --color-salvia: #c8d0b7;
+  --color-oliva: #6f7f64;
+  --color-bosque: #3d4b3e;
+  --color-carbon: #1e2320;
+
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-crema font-sans text-carbon antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply block rounded-md px-3 py-2 text-sm font-medium text-bosque transition hover:bg-salvia hover:text-carbon;
+  }
+  .nav-link[aria-current="page"] {
+    @apply bg-bosque text-crema hover:bg-bosque hover:text-crema;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition;
+  }
+  .btn-primary {
+    @apply bg-bosque text-crema hover:bg-carbon;
+  }
+  .btn-outline {
+    @apply border border-bosque text-bosque hover:bg-bosque hover:text-crema;
+  }
+
+  .card {
+    @apply rounded-xl border border-salvia bg-white/60 p-5 transition hover:border-oliva hover:shadow-md;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold text-bosque sm:text-4xl;
+  }
+  .section-kicker {
+    @apply text-sm font-semibold uppercase tracking-[0.2em] text-oliva;
+  }
+
+  /* Hueco para una imagen que todavía no tenemos: describe qué va acá. */
+  .img-placeholder {
+    @apply grid place-items-center rounded-xl border border-dashed border-oliva/50 bg-salvia/40 px-4 text-center text-xs font-medium text-oliva;
+  }
+}

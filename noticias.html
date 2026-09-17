@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticias | Biblioteca Popular Edgar Morisoli</title>
+  <meta name="description" content="Novedades, talleres y actividades de la Biblioteca Popular Edgar Morisoli.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dist/output.css">
+</head>
+<body class="flex min-h-screen flex-col">
+
+  <header class="sticky top-0 z-50 border-b border-salvia bg-crema/95 backdrop-blur-sm">
+    <div class="relative mx-auto max-w-7xl px-4">
+      <div class="flex items-center justify-between gap-4 py-3">
+        <a href="index.html" class="flex shrink-0 items-center gap-3">
+          <img src="assets/img/logo-biblioteca.png" alt="" class="h-12 w-auto">
+          <span class="font-display text-sm leading-tight font-semibold text-bosque sm:text-base">
+            Biblioteca Popular<br>
+            <span class="font-bold text-carbon">Edgar Morisoli</span>
+          </span>
+        </a>
+
+        <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"
+                class="inline-flex flex-col justify-center gap-1.5 rounded-md p-2 hover:bg-salvia xl:hidden">
+          <span class="sr-only">Abrir menú</span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+          <span class="block h-0.5 w-6 bg-carbon"></span>
+        </button>
+
+        <nav id="menu" class="absolute top-full right-0 left-0 hidden border-b border-salvia bg-crema px-4 py-3 shadow-lg xl:static xl:block xl:border-0 xl:bg-transparent xl:px-0 xl:py-0 xl:shadow-none">
+          <ul class="flex flex-col gap-1 xl:flex-row xl:items-center">
+            <li><a class="nav-link" href="index.html">Inicio</a></li>
+            <li><a class="nav-link" href="noticias.html" aria-current="page">Noticias</a></li>
+            <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
+            <li><a class="nav-link" href="catalogo.html">Nuestro catálogo</a></li>
+            <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
+            <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
+            <li><a class="nav-link" href="flotilla-literaria.html">Flotilla Literaria</a></li>
+            <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <section class="border-b border-salvia bg-bosque text-crema">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Noticias</h1>
+        <p class="mt-4 max-w-2xl text-salvia">Novedades, talleres y actividades de la biblioteca.</p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <p class="section-kicker">Al día</p>
+      <h2 class="section-title mt-2">Novedades y actividades</h2>
+      <p class="mt-4 max-w-2xl text-oliva">Acá vamos compartiendo las novedades, talleres y actividades de la biblioteca.</p>
+
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
+          </div>
+        </article>
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
+          </div>
+        </article>
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="mt-12 text-center text-sm text-oliva">
+        Seguinos en
+        <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-bosque hover:underline">@bibliotecaedgarmorisoli</a>
+        para no perderte nada.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-salvia bg-salvia/60">
+    <div class="mx-auto max-w-7xl px-4 py-14">
+      <h2 class="text-center font-display text-3xl font-bold text-bosque">Contactanos</h2>
+
+      <div class="mt-12 grid gap-10 md:grid-cols-3">
+        <div>
+          <h3 class="text-lg font-semibold text-bosque">Ubicación</h3>
+          <p class="mt-2 text-sm">Victor Lordi 73<br>Santa Rosa, La Pampa</p>
+
+          <h3 class="mt-6 text-lg font-semibold text-bosque">Horario de atención</h3>
+          <p class="mt-2 text-sm">Martes a Viernes<br>9 a 12:30hs y 16:30 a 20hs</p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-bosque">Contacto</h3>
+          <p class="mt-2 text-sm">
+            <a href="tel:+542954610340" class="hover:text-bosque hover:underline">2954-610340</a>
+          </p>
+          <p class="mt-1 text-sm break-all">
+            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:text-bosque hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
+          </p>
+
+          <h3 class="mt-6 text-lg font-semibold text-bosque">Redes</h3>
+          <p class="mt-2 flex gap-4 text-sm">
+            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="hover:text-bosque hover:underline">Instagram</a>
+            <a href="#" class="hover:text-bosque hover:underline">Facebook</a>
+          </p>
+        </div>
+
+        <div class="flex flex-col items-start gap-4 md:items-end">
+          <img src="assets/img/logo-biblioteca.png" alt="Biblioteca Popular Edgar Morisoli" class="h-24 w-auto">
+          <p class="text-xs text-oliva md:text-right">
+            Biblioteca afiliada a CONABIP<br>Registro Nro. 4124
+          </p>
+        </div>
+      </div>
+
+      <p class="mt-12 border-t border-oliva/30 pt-6 text-center text-xs text-oliva">
+        &copy; <span id="year"></span> Biblioteca Popular Edgar Morisoli
+      </p>
+    </div>
+  </footer>
+
+  <script src="src/js/main.js"></script>
+</body>
+</html>

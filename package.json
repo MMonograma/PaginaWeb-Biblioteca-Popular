@@ -1,0 +1,14 @@
+{
+  "name": "biblioteca-popular",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web de la Biblioteca Popular",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/css/input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./src/css/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}
