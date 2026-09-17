@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiénes Somos | Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde 2002. Afiliada a CONABIP.">
+  <title>Noticias | Biblioteca Popular Edgar Morisoli</title>
+  <meta name="description" content="Novedades, talleres y actividades de la Biblioteca Popular Edgar Morisoli.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dist/output.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="flex min-h-screen flex-col">
 
@@ -35,8 +35,8 @@
         <nav id="menu" class="absolute top-full right-0 left-0 hidden border-b border-salvia bg-crema px-4 py-3 shadow-lg xl:static xl:block xl:border-0 xl:bg-transparent xl:px-0 xl:py-0 xl:shadow-none">
           <ul class="flex flex-col gap-1 xl:flex-row xl:items-center">
             <li><a class="nav-link" href="index.html">Inicio</a></li>
-            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
-            <li><a class="nav-link" href="quienes-somos.html" aria-current="page">Quiénes Somos</a></li>
+            <li><a class="nav-link" href="noticias.html" aria-current="page">Noticias</a></li>
+            <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
             <li><a class="nav-link" href="catalogo.html">Nuestro catálogo</a></li>
             <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
             <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
@@ -52,49 +52,45 @@
 
     <section class="border-b border-salvia bg-bosque text-crema">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-        <h1 class="font-display text-4xl font-bold sm:text-5xl">Quiénes Somos</h1>
-        <p class="mt-4 max-w-2xl text-salvia">Desde 2002 en el corazón de Santa Rosa.</p>
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Noticias</h1>
+        <p class="mt-4 max-w-2xl text-salvia">Novedades, talleres y actividades de la biblioteca.</p>
       </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <p class="section-kicker">Nuestra historia</p>
-          <h2 class="section-title mt-2">Desde 2002 en el corazón de Santa Rosa</h2>
-          <p class="mt-6 text-oliva">
-            La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el 24 de agosto de 2002.
-            Es una biblioteca afiliada a CONABIP (Comisión Nacional de Bibliotecas Populares, Registro Nro. 4124)
-            y trabaja para acercar la lectura y la cultura a toda la comunidad.
-          </p>
-          <p class="mt-4 text-oliva">
-            Nos podés encontrar en Victor Lordi 73, Santa Rosa, y seguirnos en Instagram como
-            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-bosque hover:underline">@bibliotecaedgarmorisoli</a>.
-          </p>
-        </div>
-        <div class="img-placeholder aspect-[4/3]">Foto de la fachada o del salón de lectura (horizontal, 4:3)</div>
-      </div>
-    </section>
+      <p class="section-kicker">Al día</p>
+      <h2 class="section-title mt-2">Novedades y actividades</h2>
+      <p class="mt-4 max-w-2xl text-oliva">Acá vamos compartiendo las novedades, talleres y actividades de la biblioteca.</p>
 
-    <section class="bg-salvia/40 py-16 sm:py-20">
-      <div class="mx-auto max-w-7xl px-4">
-        <div class="grid items-center gap-10 lg:grid-cols-[1fr_2fr]">
-          <div class="img-placeholder aspect-[3/2]">Isologo oficial de CONABIP (fondo transparente, PNG o SVG)</div>
-          <div>
-            <h2 class="section-title">Biblioteca afiliada a CONABIP</h2>
-            <p class="mt-4 text-oliva">
-              Comisión Nacional de Bibliotecas Populares — Registro Nro. 4124.
-            </p>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
           </div>
-        </div>
+        </article>
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
+          </div>
+        </article>
+        <article class="card overflow-hidden p-0">
+          <div class="img-placeholder aspect-square rounded-none border-0 border-b border-salvia">Foto de la publicación (cuadrada, 1:1 — igual que en Instagram)</div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold text-bosque">Título de la publicación</h3>
+            <p class="mt-2 text-sm text-oliva">Escribí acá el texto de esta publicación.</p>
+          </div>
+        </article>
       </div>
-    </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <p class="section-kicker">Visitanos</p>
-      <h2 class="section-title mt-2">Cómo llegar</h2>
-      <p class="mt-4 text-oliva">Nos podés visitar en Victor Lordi 73, Santa Rosa, La Pampa.</p>
-      <div class="img-placeholder mt-8 aspect-[16/9]">Mapa de Google Maps embebido (iframe) con la ubicación de la biblioteca</div>
+      <p class="mt-12 text-center text-sm text-oliva">
+        Seguinos en
+        <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-bosque hover:underline">@bibliotecaedgarmorisoli</a>
+        para no perderte nada.
+      </p>
     </section>
 
   </main>
@@ -142,6 +138,6 @@
     </div>
   </footer>
 
-  <script src="src/js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

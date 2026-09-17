@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flotilla Literaria | Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="Flotilla Literaria de la Biblioteca Popular Edgar Morisoli.">
+  <title>Extensión Cultural | Biblioteca Popular Edgar Morisoli</title>
+  <meta name="description" content="Proyectos y visitas de escuelas de La Pampa a la Biblioteca Popular Edgar Morisoli.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dist/output.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="flex min-h-screen flex-col">
 
@@ -39,8 +39,8 @@
             <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
             <li><a class="nav-link" href="catalogo.html">Nuestro catálogo</a></li>
             <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
-            <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
-            <li><a class="nav-link" href="flotilla-literaria.html" aria-current="page">Flotilla Literaria</a></li>
+            <li><a class="nav-link" href="extension-cultural.html" aria-current="page">Extensión Cultural</a></li>
+            <li><a class="nav-link" href="flotilla-literaria.html">Flotilla Literaria</a></li>
             <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
           </ul>
         </nav>
@@ -52,17 +52,49 @@
 
     <section class="border-b border-salvia bg-bosque text-crema">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-        <h1 class="font-display text-4xl font-bold sm:text-5xl">Flotilla Literaria</h1>
-        <p class="mt-4 max-w-2xl text-salvia">Sección en preparación.</p>
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Extensión Cultural</h1>
+        <p class="mt-4 max-w-2xl text-salvia">Nuestros proyectos y las visitas de distintas escuelas de La Pampa a la biblioteca.</p>
       </div>
     </section>
-    <section class="mx-auto max-w-3xl px-4 py-20 text-center">
-      <div class="img-placeholder mx-auto aspect-[16/9] max-w-xl">Imagen que represente la Flotilla Literaria (horizontal, 16:9)</div>
-      <h2 class="section-title mt-10">Estamos preparando esta sección</h2>
-      <p class="mt-4 text-oliva">Muy pronto vas a encontrar acá toda la información sobre la Flotilla Literaria.</p>
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <a href="index.html" class="btn btn-primary">Volver al inicio</a>
-        <a href="noticias.html" class="btn btn-outline">Ver novedades</a>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <p class="section-kicker">Lo que hacemos</p>
+      <h2 class="section-title mt-2">Proyectos</h2>
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <li class="card">
+          <div class="img-placeholder mb-4 aspect-[4/3]">Foto del proyecto (horizontal, 4:3)</div>
+          <h3 class="text-xl font-semibold text-bosque">Proyecto 1</h3>
+          <p class="mt-2 text-sm text-oliva">Descripción del proyecto.</p>
+        </li>
+        <li class="card">
+          <div class="img-placeholder mb-4 aspect-[4/3]">Foto del proyecto (horizontal, 4:3)</div>
+          <h3 class="text-xl font-semibold text-bosque">Proyecto 2</h3>
+          <p class="mt-2 text-sm text-oliva">Descripción del proyecto.</p>
+        </li>
+        <li class="card">
+          <div class="img-placeholder mb-4 aspect-[4/3]">Foto del proyecto (horizontal, 4:3)</div>
+          <h3 class="text-xl font-semibold text-bosque">Proyecto 3</h3>
+          <p class="mt-2 text-sm text-oliva">Descripción del proyecto.</p>
+        </li>
+        <li class="card">
+          <div class="img-placeholder mb-4 aspect-[4/3]">Foto del proyecto (horizontal, 4:3)</div>
+          <h3 class="text-xl font-semibold text-bosque">Proyecto 4</h3>
+          <p class="mt-2 text-sm text-oliva">Descripción del proyecto.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="bg-salvia/40 py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Nos visitan</p>
+        <h2 class="section-title mt-2">Visitas de escuelas</h2>
+        <p class="mt-4 max-w-2xl text-oliva">Escuelas de toda La Pampa que pasaron por la biblioteca.</p>
+        <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="img-placeholder aspect-square">Foto de la visita (cuadrada, 1:1)</li>
+          <li class="img-placeholder aspect-square">Foto de la visita (cuadrada, 1:1)</li>
+          <li class="img-placeholder aspect-square">Foto de la visita (cuadrada, 1:1)</li>
+          <li class="img-placeholder aspect-square">Foto de la visita (cuadrada, 1:1)</li>
+        </ul>
       </div>
     </section>
 
@@ -111,6 +143,6 @@
     </div>
   </footer>
 
-  <script src="src/js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

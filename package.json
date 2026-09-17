@@ -4,8 +4,8 @@
   "private": true,
   "description": "Sitio web de la Biblioteca Popular",
   "scripts": {
-    "dev": "tailwindcss -i ./src/css/input.css -o ./dist/output.css --watch",
-    "build": "tailwindcss -i ./src/css/input.css -o ./dist/output.css --minify"
+    "dev": "tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
