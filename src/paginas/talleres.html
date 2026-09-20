@@ -1,0 +1,102 @@
+<!--
+  titulo: Talleres | Biblioteca Popular Edgar Morisoli
+  descripcion: Talleres y actividades de la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa. Propuestas para todas las edades.
+-->
+
+    <section class="border-b border-biblio-pistachio bg-biblio-moss text-biblio-paper dark:border-biblio-moss">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Talleres</h1>
+        <p class="mt-4 max-w-2xl text-biblio-pistachio">Propuestas para todas las edades a lo largo del año.</p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <p class="section-kicker">Programación</p>
+      <h2 class="section-title">Nuestros talleres</h2>
+      <p class="section-lead">
+        Los talleres son abiertos a la comunidad. Para conocer días, horarios y cupos, escribinos por WhatsApp
+        o acercate a la biblioteca en nuestro horario de atención.
+      </p>
+
+      <!-- Aviso que aparece sólo si falla la conexión con la hoja de cálculo. -->
+      <p id="talleres-aviso" class="card mt-8 hidden border-biblio-sage text-sm" role="status">
+        No pudimos conectarnos para traer la programación actualizada. Te mostramos los talleres que ya teníamos
+        cargados; para confirmar días y horarios, escribinos.
+      </p>
+
+      <!-- Bloques de carga: reservan el alto de las tarjetas reales para que
+           el diseño no salte cuando llegan los datos. -->
+      <div id="talleres-skeleton" class="mt-10 grid gap-6 md:grid-cols-2">
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+      </div>
+
+      <!-- Dos tarjetas por fila en escritorio, una sola en celular. -->
+      <div id="talleres-grid" class="mt-10 grid gap-6 md:grid-cols-2"></div>
+
+      <template id="tpl-taller">
+        <article class="card card-hover flex flex-col overflow-hidden p-0">
+          <div data-imagen-marco class="aspect-[16/9] overflow-hidden border-b border-biblio-pistachio dark:border-biblio-moss">
+            <img data-imagen src="" alt="" class="h-full w-full object-cover">
+          </div>
+
+          <div class="flex flex-1 flex-col p-6">
+            <p data-categoria class="badge mb-3 self-start"></p>
+            <h3 data-nombre class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper"></h3>
+
+            <dl class="mt-3 space-y-1 text-sm">
+              <div class="flex gap-2">
+                <dt class="sr-only">Días y horarios</dt>
+                <dd data-horario class="muted font-medium"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">Fecha</dt>
+                <dd data-fecha class="muted"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">Lugar</dt>
+                <dd data-lugar class="muted"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">A cargo de</dt>
+                <dd data-docente class="muted"></dd>
+              </div>
+            </dl>
+
+            <p data-descripcion class="muted mt-4 text-sm"></p>
+
+            <!-- Detalle desplegable en la misma tarjeta: no tapa la página ni
+                 obliga a navegar a otro lado. -->
+            <div data-detalle class="grid grid-rows-cerrado transition-all duration-300" aria-hidden="true">
+              <div class="overflow-hidden">
+                <p data-info class="muted mt-4 border-t border-biblio-pistachio pt-4 text-sm dark:border-biblio-moss"></p>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap items-center gap-3 pt-2">
+              <a data-wa href="#" target="_blank" rel="noopener" class="btn btn-primary">Consultar</a>
+              <a data-inscripcion href="#" target="_blank" rel="noopener" class="btn btn-secondary">Inscribirme</a>
+              <button data-detalle-btn type="button" class="min-h-11 text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
+                <span data-detalle-texto>Ver más</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      </template>
+    </section>
+
+    <section class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-3xl px-4 text-center">
+        <h2 class="section-title">¿Querés sumarte a un taller?</h2>
+        <p class="section-lead mx-auto">
+          Escribinos por WhatsApp, mandanos un mensaje por Instagram o acercate a {{DIRECCION_CALLE}} en nuestro
+          horario de atención.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" class="btn btn-primary">Escribinos por Instagram</a>
+          <a href="quienes-somos.html#horarios" class="btn btn-secondary">Ver horarios</a>
+        </div>
+      </div>
+    </section>

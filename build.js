@@ -15,6 +15,7 @@
 import { readFileSync, writeFileSync, readdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
 import { BIBLIOTECA, HORARIOS, DIAS, MENU } from "./src/datos/sitio.js";
+import { CATALOGO_DESTACADO } from "./src/datos/catalogo.js";
 
 const leer = (ruta) => readFileSync(ruta, "utf8");
 
@@ -107,6 +108,7 @@ const footer = leer("src/parciales/footer.html");
 
 const { direccion: dir, contacto, conabip } = BIBLIOTECA;
 const mapaURL = `https://www.google.com/maps/search/?api=1&query=${dir.lat},${dir.lon}`;
+const conabipCatalogoBusqueda = conabip.catalogoBusqueda;
 
 const reemplazosFooter = {
   DIRECCION_CALLE: dir.calle,
@@ -123,11 +125,41 @@ const reemplazosFooter = {
   ANIO: new Date().getFullYear(),
 };
 
+// --- Títulos destacados del catálogo ----------------------------------------
+// Cada libro se convierte en un enlace a la búsqueda por título en el OPAC.
+
+const busquedaEnOPAC = (indice, termino) =>
+  `${conabipCatalogoBusqueda}?idx=${indice}&q=${encodeURIComponent(termino)}`;
+
+const catalogoHTML = CATALOGO_DESTACADO.map((seccion) => {
+  const libros = seccion.libros
+    .map(
+      (libro) => `          <li>
+            <a href="${busquedaEnOPAC("ti", libro.titulo)}" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">${esc(libro.titulo)}</h3>
+              <p class="muted mt-1 text-sm">${esc(libro.autor)}</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>`
+    )
+    .join("\n");
+
+  return `      <div class="mt-12 first:mt-0">
+        <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">${esc(seccion.seccion)}</h3>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+${libros}
+        </ul>
+      </div>`;
+}).join("\n");
+
 // Marcadores disponibles dentro del contenido de cada página.
 const reemplazosContenido = {
   ...reemplazosFooter,
   HORARIOS_LISTA: horariosLista,
   DIRECCION_COMPLETA: `${dir.calle}, ${dir.ciudad}, ${dir.provincia}`,
+  DIRECCION_CP: dir.codigoPostal,
+  DIRECCION_PAIS: dir.pais,
   LAT: dir.lat,
   LON: dir.lon,
   INSTAGRAM_USUARIO: contacto.instagramUsuario,
@@ -135,7 +167,9 @@ const reemplazosContenido = {
   CATALOGO_BUSQUEDA: conabip.catalogoBusqueda,
   FUNDACION: BIBLIOTECA.fundacion,
   ANIO_FUNDACION: BIBLIOTECA.anioFundacion,
+  CATALOGO_DESTACADO: catalogoHTML,
 };
+
 
 const aplicar = (texto, mapa) =>
   texto.replace(/\{\{([A-Z_]+)\}\}/g, (coincidencia, clave) =>

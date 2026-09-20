@@ -1,12 +1,12 @@
 <!-- ARCHIVO GENERADO por build.js — no editar a mano.
-     El contenido de esta página se edita en src/paginas/quienes-somos.html -->
+     El contenido de esta página se edita en src/paginas/talleres.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiénes Somos | Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="Nuestra historia, horarios de atención y cómo llegar a la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa.">
+  <title>Talleres | Biblioteca Popular Edgar Morisoli</title>
+  <meta name="description" content="Talleres y actividades de la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa. Propuestas para todas las edades.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,9 +38,9 @@
              class="absolute top-full right-0 left-0 hidden border-b border-biblio-pistachio bg-biblio-paper px-4 py-3 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none dark:border-biblio-moss dark:bg-biblio-charcoal lg:dark:bg-transparent">
           <ul class="flex flex-col gap-1 lg:flex-row lg:items-center">
             <li><a class="nav-link" href="index.html">Inicio</a></li>
-            <li><a class="nav-link" href="quienes-somos.html" aria-current="page">Quiénes Somos</a></li>
+            <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
             <li><a class="nav-link" href="noticias.html">Noticias</a></li>
-            <li><a class="nav-link" href="talleres.html">Talleres</a></li>
+            <li><a class="nav-link" href="talleres.html" aria-current="page">Talleres</a></li>
             <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
             <li class="lg:relative">
               <button id="proyectos-btn" type="button" aria-expanded="false" aria-controls="proyectos-menu"
@@ -86,120 +86,98 @@
   <main id="contenido" class="flex-1">
 <section class="border-b border-biblio-pistachio bg-biblio-moss text-biblio-paper dark:border-biblio-moss">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-        <h1 class="font-display text-4xl font-bold sm:text-5xl">Quiénes Somos</h1>
-        <p class="mt-4 max-w-2xl text-biblio-pistachio">Desde 2002 en el corazón de Santa Rosa.</p>
+        <h1 class="font-display text-4xl font-bold sm:text-5xl">Talleres</h1>
+        <p class="mt-4 max-w-2xl text-biblio-pistachio">Propuestas para todas las edades a lo largo del año.</p>
       </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <p class="section-kicker">Nuestra historia</p>
-          <h2 class="section-title">Desde 2002 en el corazón de Santa Rosa</h2>
-          <p class="muted mt-6">
-            La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el 24 de agosto de 2002.
-            Es una biblioteca afiliada a CONABIP (Comisión Nacional de Bibliotecas Populares, Registro Nro. 4124)
-            y trabaja para acercar la lectura y la cultura a toda la comunidad.
-          </p>
-          <p class="muted mt-4">
-            Nos podés encontrar en Victor Lordi 73, Santa Rosa, y seguirnos en Instagram como
-            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">@bibliotecaedgarmorisoli</a>.
-          </p>
-        </div>
-        <div class="img-placeholder aspect-[4/3]">Foto de la fachada o del salón de lectura (horizontal, 4:3)</div>
-      </div>
-    </section>
+      <p class="section-kicker">Programación</p>
+      <h2 class="section-title">Nuestros talleres</h2>
+      <p class="section-lead">
+        Los talleres son abiertos a la comunidad. Para conocer días, horarios y cupos, escribinos por WhatsApp
+        o acercate a la biblioteca en nuestro horario de atención.
+      </p>
 
-    <!-- Los horarios salen de src/datos/sitio.js, la misma fuente que alimenta
-         el acordeón del inicio y el pie de página. -->
-    <section id="horarios" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
-      <div class="mx-auto max-w-7xl px-4">
-        <div class="grid gap-10 lg:grid-cols-[2fr_3fr]">
-          <div>
-            <p class="section-kicker">Visitanos</p>
-            <h2 class="section-title">Horarios de atención</h2>
-            <p class="section-lead">Te esperamos en nuestra sede para leer, retirar libros y participar de las actividades.</p>
+      <!-- Aviso que aparece sólo si falla la conexión con la hoja de cálculo. -->
+      <p id="talleres-aviso" class="card mt-8 hidden border-biblio-sage text-sm" role="status">
+        No pudimos conectarnos para traer la programación actualizada. Te mostramos los talleres que ya teníamos
+        cargados; para confirmar días y horarios, escribinos.
+      </p>
+
+      <!-- Bloques de carga: reservan el alto de las tarjetas reales para que
+           el diseño no salte cuando llegan los datos. -->
+      <div id="talleres-skeleton" class="mt-10 grid gap-6 md:grid-cols-2">
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+        <div class="skeleton h-64"></div>
+      </div>
+
+      <!-- Dos tarjetas por fila en escritorio, una sola en celular. -->
+      <div id="talleres-grid" class="mt-10 grid gap-6 md:grid-cols-2"></div>
+
+      <template id="tpl-taller">
+        <article class="card card-hover flex flex-col overflow-hidden p-0">
+          <div data-imagen-marco class="aspect-[16/9] overflow-hidden border-b border-biblio-pistachio dark:border-biblio-moss">
+            <img data-imagen src="" alt="" class="h-full w-full object-cover">
           </div>
-          <div class="card bg-biblio-paper dark:bg-biblio-charcoal">
-            <p class="mb-2 flex items-center gap-3">
-              <span class="relative flex h-3 w-3 shrink-0" aria-hidden="true">
-                <span id="estado-pulso" class="absolute inline-flex hidden h-full w-full animate-ping rounded-full bg-green-600 opacity-60"></span>
-                <span id="estado-punto" class="relative inline-flex h-3 w-3 rounded-full bg-biblio-sage"></span>
-              </span>
-              <span id="estado-texto" class="text-sm font-semibold text-biblio-charcoal dark:text-biblio-paper">Consultá nuestros horarios</span>
-            </p>
-            <dl>
-            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-biblio-pistachio py-3 last:border-0 dark:border-biblio-moss">
-              <dt class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Martes a viernes</dt>
-              <dd class="muted">9:00 a 12:30 hs y 16:30 a 20:00 hs</dd>
-            </div>
+
+          <div class="flex flex-1 flex-col p-6">
+            <p data-categoria class="badge mb-3 self-start"></p>
+            <h3 data-nombre class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper"></h3>
+
+            <dl class="mt-3 space-y-1 text-sm">
+              <div class="flex gap-2">
+                <dt class="sr-only">Días y horarios</dt>
+                <dd data-horario class="muted font-medium"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">Fecha</dt>
+                <dd data-fecha class="muted"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">Lugar</dt>
+                <dd data-lugar class="muted"></dd>
+              </div>
+              <div class="flex gap-2">
+                <dt class="sr-only">A cargo de</dt>
+                <dd data-docente class="muted"></dd>
+              </div>
             </dl>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <div class="grid items-center gap-10 lg:grid-cols-[1fr_2fr]">
-        <div class="img-placeholder aspect-[3/2]">Isologo oficial de CONABIP (fondo transparente, PNG o SVG)</div>
-        <div>
-          <h2 class="section-title">Biblioteca afiliada a CONABIP</h2>
-          <p class="muted mt-4">
-            Comisión Nacional de Bibliotecas Populares — Registro Nro. 4124.
-          </p>
-          <p class="muted mt-4">
-            Nuestro acervo está catalogado en DigiBepé, el sistema de gestión que CONABIP provee a las
-            bibliotecas populares de todo el país.
-          </p>
-          <a href="catalogo.html" class="btn btn-secondary mt-6">Consultar el catálogo</a>
-        </div>
-      </div>
-    </section>
+            <p data-descripcion class="muted mt-4 text-sm"></p>
 
-    <section id="como-llegar" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
-      <div class="mx-auto max-w-7xl px-4">
-        <p class="section-kicker">Dónde encontrarnos</p>
-        <h2 class="section-title">Cómo llegar</h2>
-        <p class="section-lead">Nos podés visitar en Victor Lordi 73, Santa Rosa, La Pampa.</p>
-
-        <div class="mt-10 grid gap-8 lg:grid-cols-[2fr_3fr]">
-          <div class="card bg-biblio-paper dark:bg-biblio-charcoal">
-            <h3 class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">Dirección</h3>
-            <address class="muted mt-2 not-italic">
-              Victor Lordi 73<br>
-              Santa Rosa, La Pampa (6300)<br>
-              Argentina
-            </address>
-
-            <h3 class="mt-6 font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">Contacto</h3>
-            <p class="muted mt-2 text-sm">
-              <a href="tel:+542954610340" class="underline underline-offset-4">2954-610340</a><br>
-              <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="break-all underline underline-offset-4">bibliotecapopularedgarmorisoli@gmail.com</a>
-            </p>
-
-            <a href="https://www.google.com/maps/search/?api=1&query=-36.6277361,-64.3046025" target="_blank" rel="noopener" class="btn btn-primary mt-6">
-              Abrir en Google Maps
-            </a>
-          </div>
-
-          <!-- El mapa se inserta recién cuando la persona lo pide: así la página
-               no carga nada de Google (ni su rastreo) en la visita normal. -->
-          <div class="relative aspect-[16/10] overflow-hidden rounded-2xl border border-biblio-pistachio bg-biblio-pistachio/50 sm:aspect-[16/9] dark:border-biblio-moss dark:bg-biblio-card-dark">
-            <div id="mapa" class="h-full w-full"
-                 data-mapa-lat="-36.6277361" data-mapa-lon="-64.3046025"
-                 data-mapa-titulo="Mapa con la ubicación de la Biblioteca Popular Edgar Morisoli en Victor Lordi 73, Santa Rosa, La Pampa">
-              <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
-                <svg class="h-10 w-10 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <path d="M12 21s7-5.686 7-11a7 7 0 1 0-14 0c0 5.314 7 11 7 11z"></path>
-                  <circle cx="12" cy="10" r="2.5"></circle>
-                </svg>
-                <p class="muted max-w-sm text-sm">
-                  El mapa lo carga Google. Se muestra sólo si lo pedís, para no cargar sus archivos sin tu consentimiento.
-                </p>
-                <button type="button" data-cargar-mapa class="btn btn-primary">Ver el mapa</button>
+            <!-- Detalle desplegable en la misma tarjeta: no tapa la página ni
+                 obliga a navegar a otro lado. -->
+            <div data-detalle class="grid grid-rows-cerrado transition-all duration-300" aria-hidden="true">
+              <div class="overflow-hidden">
+                <p data-info class="muted mt-4 border-t border-biblio-pistachio pt-4 text-sm dark:border-biblio-moss"></p>
               </div>
             </div>
+
+            <div class="mt-6 flex flex-wrap items-center gap-3 pt-2">
+              <a data-wa href="#" target="_blank" rel="noopener" class="btn btn-primary">Consultar</a>
+              <a data-inscripcion href="#" target="_blank" rel="noopener" class="btn btn-secondary">Inscribirme</a>
+              <button data-detalle-btn type="button" class="min-h-11 text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
+                <span data-detalle-texto>Ver más</span>
+              </button>
+            </div>
           </div>
+        </article>
+      </template>
+    </section>
+
+    <section class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-3xl px-4 text-center">
+        <h2 class="section-title">¿Querés sumarte a un taller?</h2>
+        <p class="section-lead mx-auto">
+          Escribinos por WhatsApp, mandanos un mensaje por Instagram o acercate a Victor Lordi 73 en nuestro
+          horario de atención.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="btn btn-primary">Escribinos por Instagram</a>
+          <a href="quienes-somos.html#horarios" class="btn btn-secondary">Ver horarios</a>
         </div>
       </div>
     </section>

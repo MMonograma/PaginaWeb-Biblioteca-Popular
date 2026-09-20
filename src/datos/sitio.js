@@ -82,3 +82,17 @@ export const MENU = [
     ],
   },
 ];
+
+// Talleres que ya estaban cargados en el sitio. Se muestran mientras la hoja
+// de cálculo no esté configurada, o si falla la conexión con Google.
+// Los campos son los mismos que las columnas de la hoja.
+export const TALLERES_RESPALDO = [
+  { nombre: "Arte y Literatura", categoria: "Infancias", horario: "Consultar días y horarios", descripcion: "Taller de arte y literatura para las infancias del barrio." },
+  { nombre: "Club del Crochet", categoria: "Anual", horario: "Taller anual", descripcion: "Encuentros para aprender y compartir crochet." },
+  { nombre: "Poesía, Memoria y Expresión", categoria: "Adultxs mayores", horario: "Consultar días y horarios", descripcion: "Un espacio de escritura y memoria para adultxs mayores." },
+  { nombre: "La Juglaría", categoria: "Arte gráfico", horario: "Consultar días y horarios", descripcion: "Taller de arte gráfico." },
+  { nombre: "Viñetas en la biblio", categoria: "Historietas", horario: "Consultar días y horarios", descripcion: "Taller de historietas." },
+  { nombre: "Ciclo de cine", categoria: "Cine", horario: "Último viernes de cada mes", descripcion: "Proyección y charla abierta a la comunidad." },
+  { nombre: "Música y Literatura", categoria: "Infancias", horario: "Consultar días y horarios", descripcion: "Taller de música y literatura para las infancias." },
+  { nombre: "Yoga", categoria: "Cuerpo", horario: "Consultar días y horarios", descripcion: "Clases de yoga abiertas a la comunidad." },
+];

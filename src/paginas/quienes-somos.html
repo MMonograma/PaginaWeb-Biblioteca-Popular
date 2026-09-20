@@ -2,10 +2,11 @@
   titulo: Quiénes Somos | Biblioteca Popular Edgar Morisoli
   descripcion: Nuestra historia, horarios de atención y cómo llegar a la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa.
 -->
-    <section class="border-b border-biblio-pistachio dark:border-biblio-moss bg-biblio-moss text-biblio-paper">
+
+    <section class="border-b border-biblio-pistachio bg-biblio-moss text-biblio-paper dark:border-biblio-moss">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <h1 class="font-display text-4xl font-bold sm:text-5xl">Quiénes Somos</h1>
-        <p class="mt-4 max-w-2xl text-biblio-pistachio">Desde 2002 en el corazón de Santa Rosa.</p>
+        <p class="mt-4 max-w-2xl text-biblio-pistachio">Desde {{ANIO_FUNDACION}} en el corazón de Santa Rosa.</p>
       </div>
     </section>
 
@@ -13,38 +14,108 @@
       <div class="grid items-center gap-10 lg:grid-cols-2">
         <div>
           <p class="section-kicker">Nuestra historia</p>
-          <h2 class="section-title mt-2">Desde 2002 en el corazón de Santa Rosa</h2>
-          <p class="mt-6 muted">
-            La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el 24 de agosto de 2002.
-            Es una biblioteca afiliada a CONABIP (Comisión Nacional de Bibliotecas Populares, Registro Nro. 4124)
+          <h2 class="section-title">Desde {{ANIO_FUNDACION}} en el corazón de Santa Rosa</h2>
+          <p class="muted mt-6">
+            La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el {{FUNDACION}}.
+            Es una biblioteca afiliada a CONABIP (Comisión Nacional de Bibliotecas Populares, Registro Nro. {{REGISTRO}})
             y trabaja para acercar la lectura y la cultura a toda la comunidad.
           </p>
-          <p class="mt-4 muted">
-            Nos podés encontrar en Victor Lordi 73, Santa Rosa, y seguirnos en Instagram como
-            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-biblio-moss dark:text-biblio-paper hover:underline">@bibliotecaedgarmorisoli</a>.
+          <p class="muted mt-4">
+            Nos podés encontrar en {{DIRECCION_CALLE}}, {{DIRECCION_CIUDAD}}, y seguirnos en Instagram como
+            <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">{{INSTAGRAM_USUARIO}}</a>.
           </p>
         </div>
         <div class="img-placeholder aspect-[4/3]">Foto de la fachada o del salón de lectura (horizontal, 4:3)</div>
       </div>
     </section>
 
-    <section class="bg-biblio-pistachio/40 dark:bg-biblio-card-dark py-16 sm:py-20">
+    <!-- Los horarios salen de src/datos/sitio.js, la misma fuente que alimenta
+         el acordeón del inicio y el pie de página. -->
+    <section id="horarios" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
       <div class="mx-auto max-w-7xl px-4">
-        <div class="grid items-center gap-10 lg:grid-cols-[1fr_2fr]">
-          <div class="img-placeholder aspect-[3/2]">Isologo oficial de CONABIP (fondo transparente, PNG o SVG)</div>
+        <div class="grid gap-10 lg:grid-cols-[2fr_3fr]">
           <div>
-            <h2 class="section-title">Biblioteca afiliada a CONABIP</h2>
-            <p class="mt-4 muted">
-              Comisión Nacional de Bibliotecas Populares — Registro Nro. 4124.
+            <p class="section-kicker">Visitanos</p>
+            <h2 class="section-title">Horarios de atención</h2>
+            <p class="section-lead">Te esperamos en nuestra sede para leer, retirar libros y participar de las actividades.</p>
+          </div>
+          <div class="card bg-biblio-paper dark:bg-biblio-charcoal">
+            <p class="mb-2 flex items-center gap-3">
+              <span class="relative flex h-3 w-3 shrink-0" aria-hidden="true">
+                <span id="estado-pulso" class="absolute inline-flex hidden h-full w-full animate-ping rounded-full bg-green-600 opacity-60"></span>
+                <span id="estado-punto" class="relative inline-flex h-3 w-3 rounded-full bg-biblio-sage"></span>
+              </span>
+              <span id="estado-texto" class="text-sm font-semibold text-biblio-charcoal dark:text-biblio-paper">Consultá nuestros horarios</span>
             </p>
+            <dl>
+            {{HORARIOS_LISTA}}
+            </dl>
           </div>
         </div>
       </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <p class="section-kicker">Visitanos</p>
-      <h2 class="section-title mt-2">Cómo llegar</h2>
-      <p class="mt-4 muted">Nos podés visitar en Victor Lordi 73, Santa Rosa, La Pampa.</p>
-      <div class="img-placeholder mt-8 aspect-[16/9]">Mapa de Google Maps embebido (iframe) con la ubicación de la biblioteca</div>
+      <div class="grid items-center gap-10 lg:grid-cols-[1fr_2fr]">
+        <div class="img-placeholder aspect-[3/2]">Isologo oficial de CONABIP (fondo transparente, PNG o SVG)</div>
+        <div>
+          <h2 class="section-title">Biblioteca afiliada a CONABIP</h2>
+          <p class="muted mt-4">
+            Comisión Nacional de Bibliotecas Populares — Registro Nro. {{REGISTRO}}.
+          </p>
+          <p class="muted mt-4">
+            Nuestro acervo está catalogado en DigiBepé, el sistema de gestión que CONABIP provee a las
+            bibliotecas populares de todo el país.
+          </p>
+          <a href="catalogo.html" class="btn btn-secondary mt-6">Consultar el catálogo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-llegar" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Dónde encontrarnos</p>
+        <h2 class="section-title">Cómo llegar</h2>
+        <p class="section-lead">Nos podés visitar en {{DIRECCION_COMPLETA}}.</p>
+
+        <div class="mt-10 grid gap-8 lg:grid-cols-[2fr_3fr]">
+          <div class="card bg-biblio-paper dark:bg-biblio-charcoal">
+            <h3 class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">Dirección</h3>
+            <address class="muted mt-2 not-italic">
+              {{DIRECCION_CALLE}}<br>
+              {{DIRECCION_CIUDAD}}, {{DIRECCION_PROVINCIA}} ({{DIRECCION_CP}})<br>
+              {{DIRECCION_PAIS}}
+            </address>
+
+            <h3 class="mt-6 font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">Contacto</h3>
+            <p class="muted mt-2 text-sm">
+              <a href="tel:{{TELEFONO_LINK}}" class="underline underline-offset-4">{{TELEFONO}}</a><br>
+              <a href="mailto:{{EMAIL}}" class="break-all underline underline-offset-4">{{EMAIL}}</a>
+            </p>
+
+            <a href="{{MAPA_URL}}" target="_blank" rel="noopener" class="btn btn-primary mt-6">
+              Abrir en Google Maps
+            </a>
+          </div>
+
+          <!-- El mapa se inserta recién cuando la persona lo pide: así la página
+               no carga nada de Google (ni su rastreo) en la visita normal. -->
+          <div class="relative aspect-[16/10] overflow-hidden rounded-2xl border border-biblio-pistachio bg-biblio-pistachio/50 sm:aspect-[16/9] dark:border-biblio-moss dark:bg-biblio-card-dark">
+            <div id="mapa" class="h-full w-full"
+                 data-mapa-lat="{{LAT}}" data-mapa-lon="{{LON}}"
+                 data-mapa-titulo="Mapa con la ubicación de la Biblioteca Popular Edgar Morisoli en {{DIRECCION_COMPLETA}}">
+              <div class="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+                <svg class="h-10 w-10 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path d="M12 21s7-5.686 7-11a7 7 0 1 0-14 0c0 5.314 7 11 7 11z"></path>
+                  <circle cx="12" cy="10" r="2.5"></circle>
+                </svg>
+                <p class="muted max-w-sm text-sm">
+                  El mapa lo carga Google. Se muestra sólo si lo pedís, para no cargar sus archivos sin tu consentimiento.
+                </p>
+                <button type="button" data-cargar-mapa class="btn btn-primary">Ver el mapa</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>

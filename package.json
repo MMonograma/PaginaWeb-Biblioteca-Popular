@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
     "watch": "npm run dev",
-    "serve": "npx -y serve -l 3000 public",
+    "serve": "node servidor-dev.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify",
     "build:html": "node build.js",
-    "build": "npm run build:css && npm run build:html"
+    "build": "npm run build:css && npm run build:html",
+    "demo": "node servidor-dev.js --demo"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo | Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="Consultá el catálogo en línea de la Biblioteca Popular Edgar Morisoli.">
+  <meta name="description" content="Consultá el catálogo en línea de la Biblioteca Popular Edgar Morisoli, en el sistema DigiBepé de CONABIP.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,166 +84,346 @@
 
 
   <main id="contenido" class="flex-1">
-<section class="border-b border-biblio-pistachio dark:border-biblio-moss bg-biblio-moss text-biblio-paper">
+<section class="border-b border-biblio-pistachio bg-biblio-moss text-biblio-paper dark:border-biblio-moss">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <h1 class="font-display text-4xl font-bold sm:text-5xl">Nuestro catálogo</h1>
-        <p class="mt-4 max-w-2xl text-biblio-pistachio">Te invitamos a ver los libros disponibles de la biblioteca.</p>
+        <p class="mt-4 max-w-2xl text-biblio-pistachio">Buscá entre los libros disponibles en la biblioteca.</p>
+      </div>
+    </section>
+
+    <!-- Buscador del catálogo. Es lo primero de la página porque, en casi todas
+         las bibliotecas que miramos, buscar un libro es a lo que viene la gente. -->
+    <section class="border-b border-biblio-pistachio bg-biblio-pistachio/40 py-12 dark:border-biblio-moss dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-3xl px-4">
+        <h2 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Buscar en el catálogo</h2>
+        <p class="muted mt-2 text-sm">
+          La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
+          Los resultados se abren en una pestaña nueva.
+        </p>
+
+        <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
+              data-catalogo-url="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl">
+          <div class="flex-1">
+            <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
+            <input id="catalogo-q" name="q" type="search" required autocomplete="off"
+                   placeholder="Título, autor o tema" class="field">
+          </div>
+          <div class="sm:w-52">
+            <label for="catalogo-idx" class="sr-only">Buscar por</label>
+            <select id="catalogo-idx" name="idx" class="field">
+              <option value="">En todo el catálogo</option>
+              <option value="ti">Título</option>
+              <option value="au">Autor</option>
+              <option value="su">Materia</option>
+              <option value="nb">ISBN</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        <p class="muted mt-4 text-sm">
+          También podés
+          <a href="http://4124.bepe.ar" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
+            entrar directamente al catálogo</a>.
+          Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
+          <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
+        </p>
       </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <p class="section-kicker">Sección</p>
-      <h2 class="section-title mt-2">Literatura contemporánea</h2>
-      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los sorrentinos</h3>
-          <p class="mt-1 text-sm muted">Virginia Higa</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Soy toda oídos</h3>
-          <p class="mt-1 text-sm muted">Kim Hye Jin</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Piedra sobre Piedra</h3>
-          <p class="mt-1 text-sm muted">Nina Ferrari</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Galaxia</h3>
-          <p class="mt-1 text-sm muted">Juan Solá</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Las amigas</h3>
-          <p class="mt-1 text-sm muted">Aurora Venturini</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Cuentos Completos</h3>
-          <p class="mt-1 text-sm muted">Evelio Rosero</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La novia de Sandro</h3>
-          <p class="mt-1 text-sm muted">Camila Sosa Villada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El marido de mi madrastra</h3>
-          <p class="mt-1 text-sm muted">Aurora Venturini</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Tracción a sangre</h3>
-          <p class="mt-1 text-sm muted">José Luis Pascuet</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Sustancia</h3>
-          <p class="mt-1 text-sm muted">Nina Ferrari</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Sobre mi hija</h3>
-          <p class="mt-1 text-sm muted">Kim Hye Jin</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La Vegetariana</h3>
-          <p class="mt-1 text-sm muted">Han Kang</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los jardines de Juana</h3>
-          <p class="mt-1 text-sm muted">Natalia Bericat</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Alarido</h3>
-          <p class="mt-1 text-sm muted">Nina Ferrari</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Ladrilleros</h3>
-          <p class="mt-1 text-sm muted">Selva Almada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los amores urgentes</h3>
-          <p class="mt-1 text-sm muted">Juan Solá</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El viaje inútil</h3>
-          <p class="mt-1 text-sm muted">Camila Sosa Villada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Temporada de Huracanes</h3>
-          <p class="mt-1 text-sm muted">Fernanda Melchor</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Mariposas Negras</h3>
-          <p class="mt-1 text-sm muted">Nina Ferrari</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Épica Urbana</h3>
-          <p class="mt-1 text-sm muted">Juan Solá</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Soy una tonta por quererte</h3>
-          <p class="mt-1 text-sm muted">Camila Sosa Villada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La traición de mi lengua</h3>
-          <p class="mt-1 text-sm muted">Camila Sosa Villada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Las malas</h3>
-          <p class="mt-1 text-sm muted">Camila Sosa Villada</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Malparidas</h3>
-          <p class="mt-1 text-sm muted">Natalia Bericat</p>
-        </li>
-        <li class="card">
-          <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El buen mal</h3>
-          <p class="mt-1 text-sm muted">Samanta Schweblin</p>
-        </li>
-      </ul>
-    </section>
+      <p class="section-kicker">En nuestros estantes</p>
+      <h2 class="section-title">Algunos títulos</h2>
+      <p class="section-lead">
+        Una selección de lo que vas a encontrar. Tocá cualquier libro para ver su ficha en el catálogo.
+      </p>
 
-    <section class="bg-biblio-pistachio/40 dark:bg-biblio-card-dark py-16 sm:py-20">
-      <div class="mx-auto max-w-7xl px-4">
-        <p class="section-kicker">Sección</p>
-        <h2 class="section-title mt-2">Terror</h2>
-        <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El resplandor</h3>
-            <p class="mt-1 text-sm muted">Stephen King</p>
+      <div class="mt-12 first:mt-0">
+        <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Literatura contemporánea</h3>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20sorrentinos" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los sorrentinos</h3>
+              <p class="muted mt-1 text-sm">Virginia Higa</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">It (Eso)</h3>
-            <p class="mt-1 text-sm muted">Stephen King</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Soy%20toda%20o%C3%ADdos" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Soy toda oídos</h3>
+              <p class="muted mt-1 text-sm">Kim Hye Jin</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Misery (Miseria)</h3>
-            <p class="mt-1 text-sm muted">Stephen King</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Piedra%20sobre%20Piedra" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Piedra sobre Piedra</h3>
+              <p class="muted mt-1 text-sm">Nina Ferrari</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Cementerio de animales</h3>
-            <p class="mt-1 text-sm muted">Stephen King</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Galaxia" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Galaxia</h3>
+              <p class="muted mt-1 text-sm">Juan Solá</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La mujer de arriba</h3>
-            <p class="mt-1 text-sm muted">Freida McFadden</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Las%20amigas" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Las amigas</h3>
+              <p class="muted mt-1 text-sm">Aurora Venturini</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La asistenta</h3>
-            <p class="mt-1 text-sm muted">Freida McFadden</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Cuentos%20Completos" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Cuentos Completos</h3>
+              <p class="muted mt-1 text-sm">Evelio Rosero</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El secreto de la asistenta</h3>
-            <p class="mt-1 text-sm muted">Freida McFadden</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20novia%20de%20Sandro" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La novia de Sandro</h3>
+              <p class="muted mt-1 text-sm">Camila Sosa Villada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
-          <li class="card">
-            <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La asistenta te vigila</h3>
-            <p class="mt-1 text-sm muted">Freida McFadden</p>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20marido%20de%20mi%20madrastra" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El marido de mi madrastra</h3>
+              <p class="muted mt-1 text-sm">Aurora Venturini</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Tracci%C3%B3n%20a%20sangre" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Tracción a sangre</h3>
+              <p class="muted mt-1 text-sm">José Luis Pascuet</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Sustancia" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Sustancia</h3>
+              <p class="muted mt-1 text-sm">Nina Ferrari</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Sobre%20mi%20hija" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Sobre mi hija</h3>
+              <p class="muted mt-1 text-sm">Kim Hye Jin</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20Vegetariana" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La Vegetariana</h3>
+              <p class="muted mt-1 text-sm">Han Kang</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20jardines%20de%20Juana" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los jardines de Juana</h3>
+              <p class="muted mt-1 text-sm">Natalia Bericat</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Alarido" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Alarido</h3>
+              <p class="muted mt-1 text-sm">Nina Ferrari</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Ladrilleros" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Ladrilleros</h3>
+              <p class="muted mt-1 text-sm">Selva Almada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20amores%20urgentes" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Los amores urgentes</h3>
+              <p class="muted mt-1 text-sm">Juan Solá</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20viaje%20in%C3%BAtil" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El viaje inútil</h3>
+              <p class="muted mt-1 text-sm">Camila Sosa Villada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Temporada%20de%20Huracanes" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Temporada de Huracanes</h3>
+              <p class="muted mt-1 text-sm">Fernanda Melchor</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Mariposas%20Negras" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Mariposas Negras</h3>
+              <p class="muted mt-1 text-sm">Nina Ferrari</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=%C3%89pica%20Urbana" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Épica Urbana</h3>
+              <p class="muted mt-1 text-sm">Juan Solá</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Soy%20una%20tonta%20por%20quererte" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Soy una tonta por quererte</h3>
+              <p class="muted mt-1 text-sm">Camila Sosa Villada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20traici%C3%B3n%20de%20mi%20lengua" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La traición de mi lengua</h3>
+              <p class="muted mt-1 text-sm">Camila Sosa Villada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Las%20malas" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Las malas</h3>
+              <p class="muted mt-1 text-sm">Camila Sosa Villada</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Malparidas" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Malparidas</h3>
+              <p class="muted mt-1 text-sm">Natalia Bericat</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20buen%20mal" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El buen mal</h3>
+              <p class="muted mt-1 text-sm">Samanta Schweblin</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="mt-12 first:mt-0">
+        <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Terror</h3>
+        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20resplandor" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El resplandor</h3>
+              <p class="muted mt-1 text-sm">Stephen King</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=It%20(Eso)" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">It (Eso)</h3>
+              <p class="muted mt-1 text-sm">Stephen King</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Misery%20(Miseria)" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Misery (Miseria)</h3>
+              <p class="muted mt-1 text-sm">Stephen King</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Cementerio%20de%20animales" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Cementerio de animales</h3>
+              <p class="muted mt-1 text-sm">Stephen King</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20mujer%20de%20arriba" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La mujer de arriba</h3>
+              <p class="muted mt-1 text-sm">Freida McFadden</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20asistenta" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La asistenta</h3>
+              <p class="muted mt-1 text-sm">Freida McFadden</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20secreto%20de%20la%20asistenta" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">El secreto de la asistenta</h3>
+              <p class="muted mt-1 text-sm">Freida McFadden</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
+          </li>
+          <li>
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20asistenta%20te%20vigila" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col justify-between">
+              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">La asistenta te vigila</h3>
+              <p class="muted mt-1 text-sm">Freida McFadden</p>
+              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
+            </a>
           </li>
         </ul>
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
-      <div class="card mt-8 border-dashed bg-biblio-paper dark:bg-biblio-card-dark">
-        <p class="section-kicker">Próximamente</p>
-        <h3 class="mt-2 text-2xl font-semibold text-biblio-moss dark:text-biblio-paper">Catálogo digital</h3>
-        <p class="mt-3 max-w-3xl muted">Muy pronto vas a poder consultar el catálogo completo de la biblioteca a través del sistema Koha Digibepe. Estamos preparando la conexión y pronto vas a poder buscar libros online.</p>
+    <section class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-3xl px-4 text-center">
+        <h2 class="section-title">¿No encontrás lo que buscás?</h2>
+        <p class="section-lead mx-auto">
+          Escribinos y te ayudamos a encontrarlo, o acercate a Victor Lordi 73 en nuestro horario de atención.
+        </p>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="btn btn-primary">Escribinos por correo</a>
+          <a href="quienes-somos.html#horarios" class="btn btn-secondary">Ver horarios</a>
+        </div>
       </div>
     </section>
   </main>

@@ -3,8 +3,11 @@
   "configurations": [
     {
       "name": "sitio",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "-l", "3000", "public"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "servidor-dev.js",
+        "--demo"
+      ],
       "port": 3000
     }
   ]
