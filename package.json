@@ -5,6 +5,8 @@
   "description": "Sitio web de la Biblioteca Popular",
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
+    "watch": "npm run dev",
+    "serve": "npx -y serve -l 3000 public",
     "build": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify"
   },
   "devDependencies": {

@@ -3,57 +3,106 @@
 @source "../public/*.html";
 @source "../public/js/*.js";
 
+/* Modo oscuro por clase en <html>, equivalente a darkMode: "class" de Tailwind v3. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-crema: #f5f3e6;
-  --color-salvia: #c8d0b7;
-  --color-oliva: #6f7f64;
-  --color-bosque: #3d4b3e;
-  --color-carbon: #1e2320;
+  --color-biblio-paper: #f5f3e6;
+  --color-biblio-pistachio: #c8d0b7;
+  --color-biblio-sage: #6f7f64;
+  --color-biblio-moss: #3d4b3e;
+  --color-biblio-charcoal: #1e2320;
+  --color-biblio-card-dark: #242b27;
 
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
-  body {
-    @apply bg-crema font-sans text-carbon antialiased;
+  html {
+    @apply scroll-smooth;
+    scroll-padding-top: 5.5rem;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-biblio-paper font-sans text-biblio-charcoal antialiased;
+    @apply dark:bg-biblio-charcoal dark:text-biblio-paper;
+  }
+
   h1, h2, h3 {
     @apply font-display;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-biblio-moss dark:outline-biblio-pistachio;
   }
 }
 
 @layer components {
   .nav-link {
-    @apply block rounded-md px-3 py-2 text-sm font-medium text-bosque transition hover:bg-salvia hover:text-carbon;
-  }
-  .nav-link[aria-current="page"] {
-    @apply bg-bosque text-crema hover:bg-bosque hover:text-crema;
+    @apply flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-biblio-moss transition;
+    @apply hover:bg-biblio-pistachio/60 hover:text-biblio-charcoal;
+    @apply dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
   }
 
+  /* min-h-11 / min-w-11 = 44px, el mínimo táctil recomendado por WCAG 2.1. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition;
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition;
   }
   .btn-primary {
-    @apply bg-bosque text-crema hover:bg-carbon;
+    @apply bg-biblio-moss text-biblio-paper hover:bg-biblio-charcoal;
+    @apply dark:bg-biblio-pistachio dark:text-biblio-charcoal dark:hover:bg-biblio-paper;
   }
-  .btn-outline {
-    @apply border border-bosque text-bosque hover:bg-bosque hover:text-crema;
+  .btn-secondary {
+    @apply border border-biblio-moss text-biblio-moss hover:bg-biblio-moss hover:text-biblio-paper;
+    @apply dark:border-biblio-pistachio dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
+  }
+  .btn-on-moss {
+    @apply bg-biblio-paper text-biblio-charcoal hover:bg-biblio-pistachio;
+  }
+
+  .icon-btn {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-biblio-moss transition;
+    @apply hover:bg-biblio-pistachio/60 dark:text-biblio-pistachio dark:hover:bg-biblio-moss;
   }
 
   .card {
-    @apply rounded-xl border border-salvia bg-white/60 p-5 transition hover:border-oliva hover:shadow-md;
+    @apply rounded-2xl border border-biblio-pistachio bg-white/60 p-6 transition;
+    @apply dark:border-biblio-moss dark:bg-biblio-card-dark;
+  }
+  .card-hover {
+    @apply hover:-translate-y-0.5 hover:border-biblio-sage hover:shadow-lg;
   }
 
-  .section-title {
-    @apply text-3xl font-bold text-bosque sm:text-4xl;
+  .badge {
+    @apply inline-flex items-center rounded-full bg-biblio-pistachio/40 px-3 py-1 text-xs font-semibold tracking-wide text-biblio-charcoal uppercase;
+    @apply dark:bg-biblio-moss dark:text-biblio-pistachio;
   }
+
+  /* Sobre paper, sage sólo llega a 3.85:1. Para texto chico usamos moss (8.3:1)
+     y dejamos sage para íconos y bordes, donde 3:1 alcanza. */
   .section-kicker {
-    @apply text-sm font-semibold uppercase tracking-[0.2em] text-oliva;
+    @apply text-sm font-semibold tracking-[0.2em] text-biblio-moss uppercase dark:text-biblio-pistachio;
+  }
+  .section-title {
+    @apply mt-2 text-3xl font-bold text-biblio-moss sm:text-4xl dark:text-biblio-paper;
+  }
+  .section-lead {
+    @apply mt-4 max-w-2xl text-biblio-moss dark:text-biblio-pistachio;
   }
 
-  /* Hueco para una imagen que todavía no tenemos: describe qué va acá. */
+  .muted {
+    @apply text-biblio-moss dark:text-biblio-pistachio;
+  }
+
   .img-placeholder {
-    @apply grid place-items-center rounded-xl border border-dashed border-oliva/50 bg-salvia/40 px-4 text-center text-xs font-medium text-oliva;
+    @apply grid place-items-center rounded-2xl border border-dashed border-biblio-sage bg-biblio-pistachio/40 px-4 text-center text-xs font-medium text-biblio-moss;
+    @apply dark:border-biblio-moss dark:bg-biblio-card-dark dark:text-biblio-pistachio;
   }
 }
