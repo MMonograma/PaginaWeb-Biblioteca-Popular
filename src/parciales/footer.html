@@ -1,0 +1,47 @@
+  <footer id="contacto" class="border-t border-biblio-pistachio bg-biblio-pistachio/40 dark:border-biblio-moss dark:bg-biblio-card-dark">
+    <div class="mx-auto max-w-7xl px-4 py-14">
+      <h2 class="text-center font-display text-3xl font-bold text-biblio-moss dark:text-biblio-paper">Contactanos</h2>
+
+      <div class="mt-12 grid gap-10 md:grid-cols-3">
+        <div>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Ubicación</h3>
+          <address class="mt-2 text-sm not-italic">
+            {{DIRECCION_CALLE}}<br>{{DIRECCION_CIUDAD}}, {{DIRECCION_PROVINCIA}}
+          </address>
+          <a href="{{MAPA_URL}}" target="_blank" rel="noopener"
+             class="mt-2 inline-flex text-sm font-semibold text-biblio-moss underline-offset-4 hover:underline dark:text-biblio-pistachio">
+            Cómo llegar
+          </a>
+
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Horario de atención</h3>
+          <div class="mt-2 text-sm">{{HORARIOS_TEXTO}}</div>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Contacto</h3>
+          <p class="mt-2 text-sm">
+            <a href="tel:{{TELEFONO_LINK}}" class="hover:underline">{{TELEFONO}}</a>
+          </p>
+          <p class="mt-1 text-sm break-all">
+            <a href="mailto:{{EMAIL}}" class="hover:underline">{{EMAIL}}</a>
+          </p>
+
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Redes</h3>
+          <p class="mt-2 flex gap-4 text-sm">
+            <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" class="font-semibold text-biblio-moss hover:underline dark:text-biblio-pistachio">Instagram</a>
+          </p>
+        </div>
+
+        <div class="flex flex-col items-start gap-4 md:items-end">
+          <img src="assets/img/logo-192.png" alt="{{NOMBRE}}" width="195" height="192" loading="lazy" class="h-24 w-auto">
+          <p class="muted text-xs md:text-right">
+            Biblioteca afiliada a CONABIP<br>Registro Nro. {{REGISTRO}}
+          </p>
+        </div>
+      </div>
+
+      <p class="muted mt-12 border-t border-biblio-sage/30 pt-6 text-center text-xs dark:border-biblio-moss">
+        &copy; <span id="year">{{ANIO}}</span> {{NOMBRE}}
+      </p>
+    </div>
+  </footer>

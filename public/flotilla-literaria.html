@@ -1,116 +1,155 @@
+<!-- ARCHIVO GENERADO por build.js — no editar a mano.
+     El contenido de esta página se edita en src/paginas/flotilla-literaria.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flotilla Literaria | Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="Flotilla Literaria de la Biblioteca Popular Edgar Morisoli.">
+  <meta name="description" content="Sección en preparación.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Bloqueante a propósito: aplica el tema antes del primer pintado. -->
+  <script src="js/theme.js"></script>
 </head>
 <body class="flex min-h-screen flex-col">
 
-  <header class="sticky top-0 z-50 border-b border-salvia bg-crema/95 backdrop-blur-sm">
+  <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-lg focus:bg-biblio-moss focus:px-4 focus:py-2 focus:text-biblio-paper">
+    Saltar al contenido
+  </a>
+
+  <header class="sticky top-0 z-50 border-b border-biblio-pistachio bg-biblio-paper/95 backdrop-blur-sm dark:border-biblio-moss dark:bg-biblio-charcoal/95">
     <div class="relative mx-auto max-w-7xl px-4">
       <div class="flex items-center justify-between gap-4 py-3">
         <a href="index.html" class="flex shrink-0 items-center gap-3">
-          <img src="assets/img/logo-biblioteca.png" alt="" class="h-12 w-auto">
-          <span class="font-display text-sm leading-tight font-semibold text-bosque sm:text-base">
+          <img src="assets/img/logo-96.png" alt="" width="98" height="96" class="h-12 w-auto">
+          <span class="font-display text-sm leading-tight font-semibold text-biblio-moss sm:text-base dark:text-biblio-pistachio">
             Biblioteca Popular<br>
-            <span class="font-bold text-carbon">Edgar Morisoli</span>
+            <span class="font-bold text-biblio-charcoal dark:text-biblio-paper">Edgar Morisoli</span>
           </span>
         </a>
 
-        <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"
-                class="inline-flex flex-col justify-center gap-1.5 rounded-md p-2 hover:bg-salvia xl:hidden">
-          <span class="sr-only">Abrir menú</span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-        </button>
-
-        <nav id="menu" class="absolute top-full right-0 left-0 hidden border-b border-salvia bg-crema px-4 py-3 shadow-lg xl:static xl:block xl:border-0 xl:bg-transparent xl:px-0 xl:py-0 xl:shadow-none">
-          <ul class="flex flex-col gap-1 xl:flex-row xl:items-center">
+        <!-- En móvil el nav es absolute: sale del flujo y el logo queda junto a
+             los botones. En escritorio vuelve al flujo, entre logo y botones. -->
+        <nav id="menu" aria-label="Navegación principal"
+             class="absolute top-full right-0 left-0 hidden border-b border-biblio-pistachio bg-biblio-paper px-4 py-3 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none dark:border-biblio-moss dark:bg-biblio-charcoal lg:dark:bg-transparent">
+          <ul class="flex flex-col gap-1 lg:flex-row lg:items-center">
             <li><a class="nav-link" href="index.html">Inicio</a></li>
-            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
             <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
-            <li><a class="nav-link" href="catalogo.html">Nuestro catálogo</a></li>
-            <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
-            <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
-            <li><a class="nav-link" href="flotilla-literaria.html" aria-current="page">Flotilla Literaria</a></li>
-            <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
+            <li><a class="nav-link" href="talleres.html">Talleres</a></li>
+            <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+            <li class="lg:relative">
+              <button id="proyectos-btn" type="button" aria-expanded="false" aria-controls="proyectos-menu"
+                      class="nav-link w-full justify-between gap-1 lg:w-auto font-semibold">
+                Proyectos
+                <svg class="h-4 w-4 transition-transform" data-chevron viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </button>
+              <ul id="proyectos-menu" class="hidden pl-4 lg:absolute lg:top-full lg:left-0 lg:z-50 lg:mt-1 lg:min-w-60 lg:rounded-xl lg:border lg:border-biblio-pistachio lg:bg-biblio-paper lg:p-2 lg:pl-2 lg:shadow-lg lg:dark:border-biblio-moss lg:dark:bg-biblio-card-dark">
+                <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
+                <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
+                <li><a class="nav-link" href="flotilla-literaria.html" aria-current="page">Flotilla Literaria</a></li>
+                <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
+
+        <div class="flex shrink-0 items-center gap-1">
+          <button id="tema-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro" class="icon-btn">
+            <svg id="icono-luna" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icono-sol" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+          </button>
+
+          <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false" class="icon-btn lg:hidden">
+            <span class="sr-only">Abrir menú</span>
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="flex-1">
 
-    <section class="border-b border-salvia bg-bosque text-crema">
+  <main id="contenido" class="flex-1">
+<section class="border-b border-biblio-pistachio dark:border-biblio-moss bg-biblio-moss text-biblio-paper">
       <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
         <h1 class="font-display text-4xl font-bold sm:text-5xl">Flotilla Literaria</h1>
-        <p class="mt-4 max-w-2xl text-salvia">Sección en preparación.</p>
+        <p class="mt-4 max-w-2xl text-biblio-pistachio">Sección en preparación.</p>
       </div>
     </section>
     <section class="mx-auto max-w-3xl px-4 py-20 text-center">
       <div class="img-placeholder mx-auto aspect-[16/9] max-w-xl">Imagen que represente la Flotilla Literaria (horizontal, 16:9)</div>
       <h2 class="section-title mt-10">Estamos preparando esta sección</h2>
-      <p class="mt-4 text-oliva">Muy pronto vas a encontrar acá toda la información sobre la Flotilla Literaria.</p>
+      <p class="mt-4 muted">Muy pronto vas a encontrar acá toda la información sobre la Flotilla Literaria.</p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
         <a href="index.html" class="btn btn-primary">Volver al inicio</a>
-        <a href="noticias.html" class="btn btn-outline">Ver novedades</a>
+        <a href="noticias.html" class="btn btn-secondary">Ver novedades</a>
       </div>
     </section>
-
   </main>
 
-  <footer class="border-t border-salvia bg-salvia/60">
+  <footer id="contacto" class="border-t border-biblio-pistachio bg-biblio-pistachio/40 dark:border-biblio-moss dark:bg-biblio-card-dark">
     <div class="mx-auto max-w-7xl px-4 py-14">
-      <h2 class="text-center font-display text-3xl font-bold text-bosque">Contactanos</h2>
+      <h2 class="text-center font-display text-3xl font-bold text-biblio-moss dark:text-biblio-paper">Contactanos</h2>
 
       <div class="mt-12 grid gap-10 md:grid-cols-3">
         <div>
-          <h3 class="text-lg font-semibold text-bosque">Ubicación</h3>
-          <p class="mt-2 text-sm">Victor Lordi 73<br>Santa Rosa, La Pampa</p>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Ubicación</h3>
+          <address class="mt-2 text-sm not-italic">
+            Victor Lordi 73<br>Santa Rosa, La Pampa
+          </address>
+          <a href="https://www.google.com/maps/search/?api=1&query=-36.6277361,-64.3046025" target="_blank" rel="noopener"
+             class="mt-2 inline-flex text-sm font-semibold text-biblio-moss underline-offset-4 hover:underline dark:text-biblio-pistachio">
+            Cómo llegar
+          </a>
 
-          <h3 class="mt-6 text-lg font-semibold text-bosque">Horario de atención</h3>
-          <p class="mt-2 text-sm">Martes a Viernes<br>9 a 12:30hs y 16:30 a 20hs</p>
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Horario de atención</h3>
+          <div class="mt-2 text-sm"><p><span class="font-semibold">Martes a viernes</span><br>9:00 a 12:30 hs y 16:30 a 20:00 hs</p></div>
         </div>
 
         <div>
-          <h3 class="text-lg font-semibold text-bosque">Contacto</h3>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Contacto</h3>
           <p class="mt-2 text-sm">
-            <a href="tel:+542954610340" class="hover:text-bosque hover:underline">2954-610340</a>
+            <a href="tel:+542954610340" class="hover:underline">2954-610340</a>
           </p>
           <p class="mt-1 text-sm break-all">
-            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:text-bosque hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
+            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
           </p>
 
-          <h3 class="mt-6 text-lg font-semibold text-bosque">Redes</h3>
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Redes</h3>
           <p class="mt-2 flex gap-4 text-sm">
-            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="hover:text-bosque hover:underline">Instagram</a>
-            <a href="#" class="hover:text-bosque hover:underline">Facebook</a>
+            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-biblio-moss hover:underline dark:text-biblio-pistachio">Instagram</a>
           </p>
         </div>
 
         <div class="flex flex-col items-start gap-4 md:items-end">
-          <img src="assets/img/logo-biblioteca.png" alt="Biblioteca Popular Edgar Morisoli" class="h-24 w-auto">
-          <p class="text-xs text-oliva md:text-right">
+          <img src="assets/img/logo-192.png" alt="Biblioteca Popular Edgar Morisoli" width="195" height="192" loading="lazy" class="h-24 w-auto">
+          <p class="muted text-xs md:text-right">
             Biblioteca afiliada a CONABIP<br>Registro Nro. 4124
           </p>
         </div>
       </div>
 
-      <p class="mt-12 border-t border-oliva/30 pt-6 text-center text-xs text-oliva">
-        &copy; <span id="year"></span> Biblioteca Popular Edgar Morisoli
+      <p class="muted mt-12 border-t border-biblio-sage/30 pt-6 text-center text-xs dark:border-biblio-moss">
+        &copy; <span id="year">2026</span> Biblioteca Popular Edgar Morisoli
       </p>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>

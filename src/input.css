@@ -1,18 +1,33 @@
 @import "tailwindcss" source(none);
 
-@source "../public/*.html";
+/* Qué archivos escanea Tailwind para saber qué clases generar.
+   Las páginas de public/ son generadas, así que se mira el origen: src/ y
+   build.js (que arma el menú y los horarios), más el JS del navegador. */
+@source "./paginas/*.html";
+@source "./parciales/*.html";
+@source "../build.js";
 @source "../public/js/*.js";
 
 /* Modo oscuro por clase en <html>, equivalente a darkMode: "class" de Tailwind v3. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  /* Paleta oficial */
   --color-biblio-paper: #f5f3e6;
   --color-biblio-pistachio: #c8d0b7;
   --color-biblio-sage: #6f7f64;
   --color-biblio-moss: #3d4b3e;
   --color-biblio-charcoal: #1e2320;
+
+  /* Variantes derivadas. Los contrastes están medidos con WCAG 2.2:
+     - card-dark   superficie de tarjeta en oscuro, separada del fondo general.
+     - moss-claro  el verde de marca legible en oscuro: 5.30:1 sobre charcoal
+                   (moss puro da 1.73:1, inusable).
+     - sage-oscuro sage legible como texto en claro: 4.95:1 sobre paper
+                   (sage puro da 3.85:1, solo alcanza para íconos y bordes). */
   --color-biblio-card-dark: #242b27;
+  --color-biblio-moss-claro: #90978a;
+  --color-biblio-sage-oscuro: #5f6d56;
 
   --font-display: "Fraunces", ui-serif, Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -50,6 +65,10 @@
     @apply hover:bg-biblio-pistachio/60 hover:text-biblio-charcoal;
     @apply dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
   }
+  /* El ítem de la página actual se marca con peso y una línea, no solo con color. */
+  .nav-link[aria-current="page"] {
+    @apply font-semibold text-biblio-charcoal underline decoration-2 underline-offset-8 dark:text-biblio-paper;
+  }
 
   /* min-h-11 / min-w-11 = 44px, el mínimo táctil recomendado por WCAG 2.1. */
   .btn {
@@ -63,8 +82,13 @@
     @apply border border-biblio-moss text-biblio-moss hover:bg-biblio-moss hover:text-biblio-paper;
     @apply dark:border-biblio-pistachio dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
   }
+  /* Para botones apoyados sobre el verde de marca, donde el fondo ya es oscuro
+     en los dos modos y no corresponde invertir nada. */
   .btn-on-moss {
     @apply bg-biblio-paper text-biblio-charcoal hover:bg-biblio-pistachio;
+  }
+  .btn:disabled {
+    @apply cursor-not-allowed opacity-50;
   }
 
   .icon-btn {
@@ -101,8 +125,31 @@
     @apply text-biblio-moss dark:text-biblio-pistachio;
   }
 
+  /* Campos de formulario: el buscador del catálogo y los filtros. */
+  .field {
+    @apply min-h-11 w-full rounded-xl border border-biblio-sage bg-white px-4 text-biblio-charcoal transition;
+    @apply placeholder:text-biblio-sage-oscuro;
+    @apply dark:border-biblio-moss dark:bg-biblio-card-dark dark:text-biblio-paper dark:placeholder:text-biblio-pistachio;
+  }
+
   .img-placeholder {
     @apply grid place-items-center rounded-2xl border border-dashed border-biblio-sage bg-biblio-pistachio/40 px-4 text-center text-xs font-medium text-biblio-moss;
     @apply dark:border-biblio-moss dark:bg-biblio-card-dark dark:text-biblio-pistachio;
+  }
+
+  /* Bloque de carga: se muestra mientras llegan los datos de la hoja.
+     Reserva el mismo alto que la tarjeta real para que no salte el diseño. */
+  .skeleton {
+    @apply animate-pulse rounded-2xl bg-biblio-pistachio/50 dark:bg-biblio-card-dark;
+  }
+}
+
+@layer utilities {
+  /* El panel del acordeón anima su altura sin recalcular el diseño entero. */
+  .grid-rows-abierto {
+    grid-template-rows: 1fr;
+  }
+  .grid-rows-cerrado {
+    grid-template-rows: 0fr;
   }
 }

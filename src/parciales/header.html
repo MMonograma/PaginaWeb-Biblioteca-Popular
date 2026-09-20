@@ -1,0 +1,43 @@
+  <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-lg focus:bg-biblio-moss focus:px-4 focus:py-2 focus:text-biblio-paper">
+    Saltar al contenido
+  </a>
+
+  <header class="sticky top-0 z-50 border-b border-biblio-pistachio bg-biblio-paper/95 backdrop-blur-sm dark:border-biblio-moss dark:bg-biblio-charcoal/95">
+    <div class="relative mx-auto max-w-7xl px-4">
+      <div class="flex items-center justify-between gap-4 py-3">
+        <a href="index.html" class="flex shrink-0 items-center gap-3">
+          <img src="assets/img/logo-96.png" alt="" width="98" height="96" class="h-12 w-auto">
+          <span class="font-display text-sm leading-tight font-semibold text-biblio-moss sm:text-base dark:text-biblio-pistachio">
+            Biblioteca Popular<br>
+            <span class="font-bold text-biblio-charcoal dark:text-biblio-paper">Edgar Morisoli</span>
+          </span>
+        </a>
+
+        <!-- En móvil el nav es absolute: sale del flujo y el logo queda junto a
+             los botones. En escritorio vuelve al flujo, entre logo y botones. -->
+        <nav id="menu" aria-label="Navegación principal"
+             class="absolute top-full right-0 left-0 hidden border-b border-biblio-pistachio bg-biblio-paper px-4 py-3 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none dark:border-biblio-moss dark:bg-biblio-charcoal lg:dark:bg-transparent">
+{{NAV}}
+        </nav>
+
+        <div class="flex shrink-0 items-center gap-1">
+          <button id="tema-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro" class="icon-btn">
+            <svg id="icono-luna" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icono-sol" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+          </button>
+
+          <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false" class="icon-btn lg:hidden">
+            <span class="sr-only">Abrir menú</span>
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>

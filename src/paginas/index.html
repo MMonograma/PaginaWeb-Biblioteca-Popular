@@ -1,0 +1,133 @@
+<!--
+  titulo: Biblioteca Popular Edgar Morisoli
+  descripcion: Biblioteca Popular Edgar Morisoli — Santa Rosa, La Pampa. Lectura, talleres y cultura para toda la comunidad.
+-->
+
+    <section class="relative isolate overflow-hidden bg-biblio-moss text-biblio-paper">
+      <img src="assets/img/hero-estanterias.jpg" alt="" data-optional
+           class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/60 to-biblio-moss/80"></div>
+
+      <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
+        <p class="text-sm font-semibold tracking-[0.2em] text-biblio-pistachio uppercase">
+          Santa Rosa, La Pampa · Desde {{ANIO_FUNDACION}}
+        </p>
+        <h1 class="mt-4 font-display text-4xl font-bold sm:text-6xl">Biblioteca Popular<br>Edgar Morisoli</h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-biblio-pistachio sm:text-xl">
+          Trabajamos para acercar la lectura y la cultura a toda la comunidad.
+        </p>
+        <div class="mt-10 flex flex-wrap justify-center gap-3">
+          <a href="catalogo.html" class="btn btn-on-moss">Buscar en el catálogo</a>
+          <a href="talleres.html" class="btn border border-biblio-paper text-biblio-paper hover:bg-biblio-paper hover:text-biblio-moss">Nuestros talleres</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Horarios: acordeón cerrado, pero con el estado de hoy siempre a la vista.
+         Quien entra quiere saber "¿está abierta ahora?" antes que la grilla completa. -->
+    <section aria-labelledby="horarios-titulo" class="border-b border-biblio-pistachio bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-7xl px-4">
+        <h2 id="horarios-titulo" class="sr-only">Horarios de atención</h2>
+        <button type="button" data-acordeon aria-expanded="false" aria-controls="horarios-panel"
+                class="flex w-full min-h-14 items-center justify-between gap-4 py-4 text-left">
+          <span class="flex items-center gap-3">
+            <span class="relative flex h-3 w-3 shrink-0" aria-hidden="true">
+              <span id="estado-pulso" class="absolute inline-flex hidden h-full w-full animate-ping rounded-full bg-green-600 opacity-60"></span>
+              <span id="estado-punto" class="relative inline-flex h-3 w-3 rounded-full bg-biblio-sage"></span>
+            </span>
+            <span>
+              <span class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Horarios de atención</span>
+              <span id="estado-texto" class="muted block text-sm">Martes a viernes, de 9:00 a 12:30 hs y de 16:30 a 20:00 hs</span>
+            </span>
+          </span>
+          <svg data-chevron class="h-5 w-5 shrink-0 text-biblio-moss transition-transform dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+
+        <div id="horarios-panel" class="grid grid-rows-cerrado transition-all duration-300" aria-hidden="true">
+          <div class="overflow-hidden">
+            <dl class="max-w-xl pb-6">
+            {{HORARIOS_LISTA}}
+            </dl>
+            <p class="muted max-w-xl pb-6 text-sm">
+              Fuera de ese horario podés escribirnos por
+              <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Instagram</a>
+              o por correo a
+              <a href="mailto:{{EMAIL}}" class="font-semibold underline underline-offset-4 break-all">{{EMAIL}}</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <p class="section-kicker">Novedades</p>
+      <h2 class="section-title">Novedades literarias</h2>
+      <p class="section-lead">Los últimos títulos que sumamos a nuestros estantes.</p>
+
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <li class="card card-hover">
+          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">El buen mal</h3>
+          <p class="muted text-sm">Samanta Schweblin</p>
+        </li>
+        <li class="card card-hover">
+          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La traición de mi lengua</h3>
+          <p class="muted text-sm">Camila Sosa Villada</p>
+        </li>
+        <li class="card card-hover">
+          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">Los jardines de Juana</h3>
+          <p class="muted text-sm">Natalia Bericat</p>
+        </li>
+        <li class="card card-hover">
+          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La Vegetariana</h3>
+          <p class="muted text-sm">Han Kang</p>
+        </li>
+      </ul>
+
+      <div class="mt-10">
+        <a href="catalogo.html" class="btn btn-secondary">Ver todo el catálogo</a>
+      </div>
+    </section>
+
+    <section id="talleres" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Programación</p>
+        <h2 class="section-title">Nuestros talleres</h2>
+        <p class="section-lead">Propuestas para todas las edades a lo largo del año.</p>
+
+        <!-- Vista breve: el detalle completo vive en talleres.html, que se
+             alimenta de la misma hoja de cálculo. -->
+        <div id="talleres-destacados" class="mt-10 grid gap-6 sm:grid-cols-2"></div>
+        <div id="talleres-destacados-skeleton" class="mt-10 grid gap-6 sm:grid-cols-2">
+          <div class="skeleton h-40"></div>
+          <div class="skeleton h-40"></div>
+        </div>
+
+        <div class="mt-10">
+          <a href="talleres.html" class="btn btn-primary">Ver todos los talleres</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <div class="grid items-center gap-10 lg:grid-cols-2">
+        <div class="img-placeholder aspect-[4/3]">Foto de la biblioteca por dentro o de una actividad (horizontal, 4:3)</div>
+        <div>
+          <p class="section-kicker">Desde {{ANIO_FUNDACION}}</p>
+          <h2 class="section-title">Una biblioteca popular en el corazón de Santa Rosa</h2>
+          <p class="muted mt-4">
+            La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el {{FUNDACION}}.
+            Trabajamos para acercar la lectura y la cultura a toda la comunidad.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="quienes-somos.html" class="btn btn-primary">Conocenos</a>
+            <a href="noticias.html" class="btn btn-secondary">Ver novedades</a>
+          </div>
+        </div>
+      </div>
+    </section>

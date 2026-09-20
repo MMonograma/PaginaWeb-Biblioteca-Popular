@@ -1,3 +1,5 @@
+<!-- ARCHIVO GENERADO por build.js — no editar a mano.
+     El contenido de esta página se edita en src/paginas/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,136 +12,189 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Bloqueante a propósito: aplica el tema antes del primer pintado. -->
+  <script src="js/theme.js"></script>
 </head>
 <body class="flex min-h-screen flex-col">
 
-  <header class="sticky top-0 z-50 border-b border-salvia bg-crema/95 backdrop-blur-sm">
+  <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-lg focus:bg-biblio-moss focus:px-4 focus:py-2 focus:text-biblio-paper">
+    Saltar al contenido
+  </a>
+
+  <header class="sticky top-0 z-50 border-b border-biblio-pistachio bg-biblio-paper/95 backdrop-blur-sm dark:border-biblio-moss dark:bg-biblio-charcoal/95">
     <div class="relative mx-auto max-w-7xl px-4">
       <div class="flex items-center justify-between gap-4 py-3">
         <a href="index.html" class="flex shrink-0 items-center gap-3">
-          <img src="assets/img/logo-biblioteca.png" alt="" class="h-12 w-auto">
-          <span class="font-display text-sm leading-tight font-semibold text-bosque sm:text-base">
+          <img src="assets/img/logo-96.png" alt="" width="98" height="96" class="h-12 w-auto">
+          <span class="font-display text-sm leading-tight font-semibold text-biblio-moss sm:text-base dark:text-biblio-pistachio">
             Biblioteca Popular<br>
-            <span class="font-bold text-carbon">Edgar Morisoli</span>
+            <span class="font-bold text-biblio-charcoal dark:text-biblio-paper">Edgar Morisoli</span>
           </span>
         </a>
 
-        <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"
-                class="inline-flex flex-col justify-center gap-1.5 rounded-md p-2 hover:bg-salvia xl:hidden">
-          <span class="sr-only">Abrir menú</span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-          <span class="block h-0.5 w-6 bg-carbon"></span>
-        </button>
-
-        <nav id="menu" class="absolute top-full right-0 left-0 hidden border-b border-salvia bg-crema px-4 py-3 shadow-lg xl:static xl:block xl:border-0 xl:bg-transparent xl:px-0 xl:py-0 xl:shadow-none">
-          <ul class="flex flex-col gap-1 xl:flex-row xl:items-center">
+        <!-- En móvil el nav es absolute: sale del flujo y el logo queda junto a
+             los botones. En escritorio vuelve al flujo, entre logo y botones. -->
+        <nav id="menu" aria-label="Navegación principal"
+             class="absolute top-full right-0 left-0 hidden border-b border-biblio-pistachio bg-biblio-paper px-4 py-3 shadow-lg lg:static lg:block lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:shadow-none dark:border-biblio-moss dark:bg-biblio-charcoal lg:dark:bg-transparent">
+          <ul class="flex flex-col gap-1 lg:flex-row lg:items-center">
             <li><a class="nav-link" href="index.html" aria-current="page">Inicio</a></li>
-            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
             <li><a class="nav-link" href="quienes-somos.html">Quiénes Somos</a></li>
-            <li><a class="nav-link" href="catalogo.html">Nuestro catálogo</a></li>
-            <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
-            <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
-            <li><a class="nav-link" href="flotilla-literaria.html">Flotilla Literaria</a></li>
-            <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+            <li><a class="nav-link" href="noticias.html">Noticias</a></li>
+            <li><a class="nav-link" href="talleres.html">Talleres</a></li>
+            <li><a class="nav-link" href="catalogo.html">Catálogo</a></li>
+            <li class="lg:relative">
+              <button id="proyectos-btn" type="button" aria-expanded="false" aria-controls="proyectos-menu"
+                      class="nav-link w-full justify-between gap-1 lg:w-auto">
+                Proyectos
+                <svg class="h-4 w-4 transition-transform" data-chevron viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </button>
+              <ul id="proyectos-menu" class="hidden pl-4 lg:absolute lg:top-full lg:left-0 lg:z-50 lg:mt-1 lg:min-w-60 lg:rounded-xl lg:border lg:border-biblio-pistachio lg:bg-biblio-paper lg:p-2 lg:pl-2 lg:shadow-lg lg:dark:border-biblio-moss lg:dark:bg-biblio-card-dark">
+                <li><a class="nav-link" href="biblio-interactiva.html">Biblio-Interactiva</a></li>
+                <li><a class="nav-link" href="extension-cultural.html">Extensión Cultural</a></li>
+                <li><a class="nav-link" href="flotilla-literaria.html">Flotilla Literaria</a></li>
+                <li><a class="nav-link" href="sala-pensamiento.html">Sala de Pensamiento</a></li>
+              </ul>
+            </li>
           </ul>
         </nav>
+
+        <div class="flex shrink-0 items-center gap-1">
+          <button id="tema-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro" class="icon-btn">
+            <svg id="icono-luna" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icono-sol" class="hidden h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+          </button>
+
+          <button id="menu-toggle" type="button" aria-controls="menu" aria-expanded="false" class="icon-btn lg:hidden">
+            <span class="sr-only">Abrir menú</span>
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16"></path>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="flex-1">
 
-    <section class="relative isolate overflow-hidden bg-bosque text-crema">
+  <main id="contenido" class="flex-1">
+<section class="relative isolate overflow-hidden bg-biblio-moss text-biblio-paper">
       <img src="assets/img/hero-estanterias.jpg" alt="" data-optional
            class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-carbon/60 to-bosque/80"></div>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/60 to-biblio-moss/80"></div>
 
-      <div class="mx-auto max-w-4xl px-4 py-24 text-center sm:py-32">
-        <h1 class="font-display text-4xl font-bold sm:text-6xl">Nuestros horarios de atención</h1>
-        <p class="mt-8 text-2xl font-semibold sm:text-3xl">Martes a Viernes</p>
-        <p class="mt-3 text-xl sm:text-2xl">9 a 12:30hs</p>
-        <p class="text-xl sm:text-2xl">16:30 a 20hs</p>
+      <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
+        <p class="text-sm font-semibold tracking-[0.2em] text-biblio-pistachio uppercase">
+          Santa Rosa, La Pampa · Desde 2002
+        </p>
+        <h1 class="mt-4 font-display text-4xl font-bold sm:text-6xl">Biblioteca Popular<br>Edgar Morisoli</h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-biblio-pistachio sm:text-xl">
+          Trabajamos para acercar la lectura y la cultura a toda la comunidad.
+        </p>
         <div class="mt-10 flex flex-wrap justify-center gap-3">
-          <a href="catalogo.html" class="btn bg-crema text-bosque hover:bg-salvia">Ver el catálogo</a>
-          <a href="#talleres" class="btn border border-crema text-crema hover:bg-crema hover:text-bosque">Nuestros talleres</a>
+          <a href="catalogo.html" class="btn btn-on-moss">Buscar en el catálogo</a>
+          <a href="talleres.html" class="btn border border-biblio-paper text-biblio-paper hover:bg-biblio-paper hover:text-biblio-moss">Nuestros talleres</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Horarios: acordeón cerrado, pero con el estado de hoy siempre a la vista.
+         Quien entra quiere saber "¿está abierta ahora?" antes que la grilla completa. -->
+    <section aria-labelledby="horarios-titulo" class="border-b border-biblio-pistachio bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
+      <div class="mx-auto max-w-7xl px-4">
+        <h2 id="horarios-titulo" class="sr-only">Horarios de atención</h2>
+        <button type="button" data-acordeon aria-expanded="false" aria-controls="horarios-panel"
+                class="flex w-full min-h-14 items-center justify-between gap-4 py-4 text-left">
+          <span class="flex items-center gap-3">
+            <span class="relative flex h-3 w-3 shrink-0" aria-hidden="true">
+              <span id="estado-pulso" class="absolute inline-flex hidden h-full w-full animate-ping rounded-full bg-green-600 opacity-60"></span>
+              <span id="estado-punto" class="relative inline-flex h-3 w-3 rounded-full bg-biblio-sage"></span>
+            </span>
+            <span>
+              <span class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Horarios de atención</span>
+              <span id="estado-texto" class="muted block text-sm">Martes a viernes, de 9:00 a 12:30 hs y de 16:30 a 20:00 hs</span>
+            </span>
+          </span>
+          <svg data-chevron class="h-5 w-5 shrink-0 text-biblio-moss transition-transform dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+
+        <div id="horarios-panel" class="grid grid-rows-cerrado transition-all duration-300" aria-hidden="true">
+          <div class="overflow-hidden">
+            <dl class="max-w-xl pb-6">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-biblio-pistachio py-3 last:border-0 dark:border-biblio-moss">
+              <dt class="font-semibold text-biblio-charcoal dark:text-biblio-paper">Martes a viernes</dt>
+              <dd class="muted">9:00 a 12:30 hs y 16:30 a 20:00 hs</dd>
+            </div>
+            </dl>
+            <p class="muted max-w-xl pb-6 text-sm">
+              Fuera de ese horario podés escribirnos por
+              <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">Instagram</a>
+              o por correo a
+              <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="font-semibold underline underline-offset-4 break-all">bibliotecapopularedgarmorisoli@gmail.com</a>.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <p class="section-kicker">Novedades</p>
-      <h2 class="section-title mt-2">Novedades literarias</h2>
-      <p class="mt-4 max-w-2xl text-oliva">Los últimos títulos que sumamos a nuestros estantes.</p>
+      <h2 class="section-title">Novedades literarias</h2>
+      <p class="section-lead">Los últimos títulos que sumamos a nuestros estantes.</p>
 
       <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <li class="card">
+        <li class="card card-hover">
           <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-carbon">El buen mal</h3>
-          <p class="text-sm text-oliva">Samanta Schweblin</p>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">El buen mal</h3>
+          <p class="muted text-sm">Samanta Schweblin</p>
         </li>
-        <li class="card">
+        <li class="card card-hover">
           <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-carbon">La traición de mi lengua</h3>
-          <p class="text-sm text-oliva">Camila Sosa Villada</p>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La traición de mi lengua</h3>
+          <p class="muted text-sm">Camila Sosa Villada</p>
         </li>
-        <li class="card">
+        <li class="card card-hover">
           <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-carbon">Los jardines de Juana</h3>
-          <p class="text-sm text-oliva">Natalia Bericat</p>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">Los jardines de Juana</h3>
+          <p class="muted text-sm">Natalia Bericat</p>
         </li>
-        <li class="card">
+        <li class="card card-hover">
           <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-carbon">La Vegetariana</h3>
-          <p class="text-sm text-oliva">Han Kang</p>
+          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La Vegetariana</h3>
+          <p class="muted text-sm">Han Kang</p>
         </li>
       </ul>
 
       <div class="mt-10">
-        <a href="catalogo.html" class="btn btn-outline">Ver todo el catálogo</a>
+        <a href="catalogo.html" class="btn btn-secondary">Ver todo el catálogo</a>
       </div>
     </section>
 
-    <section id="talleres" class="bg-salvia/40 py-16 sm:py-20">
+    <section id="talleres" class="bg-biblio-pistachio/40 py-16 sm:py-20 dark:bg-biblio-card-dark">
       <div class="mx-auto max-w-7xl px-4">
         <p class="section-kicker">Programación</p>
-        <h2 class="section-title mt-2">Nuestros talleres</h2>
-        <p class="mt-4 max-w-2xl text-oliva">Propuestas para todas las edades a lo largo del año.</p>
+        <h2 class="section-title">Nuestros talleres</h2>
+        <p class="section-lead">Propuestas para todas las edades a lo largo del año.</p>
 
-        <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Arte y Literatura</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">para Infancias</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Club del Crochet</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Taller anual</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Poesía, Memoria y Expresión</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Taller para adultxs mayores</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">La Juglaría</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Arte gráfico</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Viñetas en la biblio</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Taller de historietas</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Ciclo de cine</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Último viernes de cada mes</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Música y Literatura</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">para Infancias</p>
-          </li>
-          <li class="card bg-crema">
-            <h3 class="text-xl font-semibold text-bosque">Yoga</h3>
-            <p class="mt-1 text-sm font-medium text-oliva">Consultá días y horarios</p>
-          </li>
-        </ul>
+        <!-- Vista breve: el detalle completo vive en talleres.html, que se
+             alimenta de la misma hoja de cálculo. -->
+        <div id="talleres-destacados" class="mt-10 grid gap-6 sm:grid-cols-2"></div>
+        <div id="talleres-destacados-skeleton" class="mt-10 grid gap-6 sm:grid-cols-2">
+          <div class="skeleton h-40"></div>
+          <div class="skeleton h-40"></div>
+        </div>
+
+        <div class="mt-10">
+          <a href="talleres.html" class="btn btn-primary">Ver todos los talleres</a>
+        </div>
       </div>
     </section>
 
@@ -148,64 +203,69 @@
         <div class="img-placeholder aspect-[4/3]">Foto de la biblioteca por dentro o de una actividad (horizontal, 4:3)</div>
         <div>
           <p class="section-kicker">Desde 2002</p>
-          <h2 class="section-title mt-2">Una biblioteca popular en el corazón de Santa Rosa</h2>
-          <p class="mt-4 text-oliva">
+          <h2 class="section-title">Una biblioteca popular en el corazón de Santa Rosa</h2>
+          <p class="muted mt-4">
             La Biblioteca Popular Edgar Morisoli funciona en Santa Rosa, La Pampa, desde el 24 de agosto de 2002.
             Trabajamos para acercar la lectura y la cultura a toda la comunidad.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="quienes-somos.html" class="btn btn-primary">Conocenos</a>
-            <a href="noticias.html" class="btn btn-outline">Ver novedades</a>
+            <a href="noticias.html" class="btn btn-secondary">Ver novedades</a>
           </div>
         </div>
       </div>
     </section>
-
   </main>
 
-  <footer class="border-t border-salvia bg-salvia/60">
+  <footer id="contacto" class="border-t border-biblio-pistachio bg-biblio-pistachio/40 dark:border-biblio-moss dark:bg-biblio-card-dark">
     <div class="mx-auto max-w-7xl px-4 py-14">
-      <h2 class="text-center font-display text-3xl font-bold text-bosque">Contactanos</h2>
+      <h2 class="text-center font-display text-3xl font-bold text-biblio-moss dark:text-biblio-paper">Contactanos</h2>
 
       <div class="mt-12 grid gap-10 md:grid-cols-3">
         <div>
-          <h3 class="text-lg font-semibold text-bosque">Ubicación</h3>
-          <p class="mt-2 text-sm">Victor Lordi 73<br>Santa Rosa, La Pampa</p>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Ubicación</h3>
+          <address class="mt-2 text-sm not-italic">
+            Victor Lordi 73<br>Santa Rosa, La Pampa
+          </address>
+          <a href="https://www.google.com/maps/search/?api=1&query=-36.6277361,-64.3046025" target="_blank" rel="noopener"
+             class="mt-2 inline-flex text-sm font-semibold text-biblio-moss underline-offset-4 hover:underline dark:text-biblio-pistachio">
+            Cómo llegar
+          </a>
 
-          <h3 class="mt-6 text-lg font-semibold text-bosque">Horario de atención</h3>
-          <p class="mt-2 text-sm">Martes a Viernes<br>9 a 12:30hs y 16:30 a 20hs</p>
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Horario de atención</h3>
+          <div class="mt-2 text-sm"><p><span class="font-semibold">Martes a viernes</span><br>9:00 a 12:30 hs y 16:30 a 20:00 hs</p></div>
         </div>
 
         <div>
-          <h3 class="text-lg font-semibold text-bosque">Contacto</h3>
+          <h3 class="text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Contacto</h3>
           <p class="mt-2 text-sm">
-            <a href="tel:+542954610340" class="hover:text-bosque hover:underline">2954-610340</a>
+            <a href="tel:+542954610340" class="hover:underline">2954-610340</a>
           </p>
           <p class="mt-1 text-sm break-all">
-            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:text-bosque hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
+            <a href="mailto:bibliotecapopularedgarmorisoli@gmail.com" class="hover:underline">bibliotecapopularedgarmorisoli@gmail.com</a>
           </p>
 
-          <h3 class="mt-6 text-lg font-semibold text-bosque">Redes</h3>
+          <h3 class="mt-6 text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Redes</h3>
           <p class="mt-2 flex gap-4 text-sm">
-            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="hover:text-bosque hover:underline">Instagram</a>
-            <a href="#" class="hover:text-bosque hover:underline">Facebook</a>
+            <a href="https://www.instagram.com/bibliotecaedgarmorisoli" target="_blank" rel="noopener" class="font-semibold text-biblio-moss hover:underline dark:text-biblio-pistachio">Instagram</a>
           </p>
         </div>
 
         <div class="flex flex-col items-start gap-4 md:items-end">
-          <img src="assets/img/logo-biblioteca.png" alt="Biblioteca Popular Edgar Morisoli" class="h-24 w-auto">
-          <p class="text-xs text-oliva md:text-right">
+          <img src="assets/img/logo-192.png" alt="Biblioteca Popular Edgar Morisoli" width="195" height="192" loading="lazy" class="h-24 w-auto">
+          <p class="muted text-xs md:text-right">
             Biblioteca afiliada a CONABIP<br>Registro Nro. 4124
           </p>
         </div>
       </div>
 
-      <p class="mt-12 border-t border-oliva/30 pt-6 text-center text-xs text-oliva">
-        &copy; <span id="year"></span> Biblioteca Popular Edgar Morisoli
+      <p class="muted mt-12 border-t border-biblio-sage/30 pt-6 text-center text-xs dark:border-biblio-moss">
+        &copy; <span id="year">2026</span> Biblioteca Popular Edgar Morisoli
       </p>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>
