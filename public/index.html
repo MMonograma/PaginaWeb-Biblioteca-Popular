@@ -6,8 +6,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Biblioteca Popular Edgar Morisoli</title>
-  <meta name="description" content="Biblioteca Popular Edgar Morisoli — Santa Rosa, La Pampa. Lectura, talleres y cultura para toda la comunidad.">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="">
+  <link rel="icon" href="assets/img/logo-96.png" sizes="96x96" type="image/png">
+  <link rel="icon" href="assets/img/logo-192.png" sizes="192x192" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/logo-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -85,9 +87,12 @@
 
   <main id="contenido" class="flex-1">
 <section class="relative isolate overflow-hidden bg-biblio-moss text-biblio-paper">
-      <img src="assets/img/hero-estanterias.jpg" alt="" data-optional
-           class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/60 to-biblio-moss/80"></div>
+      <!-- La foto va a opacidad plena y el verde encima: así la imagen se ve,
+           pero el texto blanco mantiene el contraste que pide WCAG AA. -->
+      <img src="assets/img/hero-bg.png" alt="" data-optional
+           width="1672" height="941"
+           class="absolute inset-0 -z-20 h-full w-full object-cover">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/85 via-biblio-moss/80 to-biblio-moss/90"></div>
 
       <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
         <p class="text-sm font-semibold tracking-[0.2em] text-biblio-pistachio uppercase">

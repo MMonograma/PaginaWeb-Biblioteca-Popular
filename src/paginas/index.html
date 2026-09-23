@@ -4,9 +4,12 @@
 -->
 
     <section class="relative isolate overflow-hidden bg-biblio-moss text-biblio-paper">
-      <img src="assets/img/hero-estanterias.jpg" alt="" data-optional
-           class="absolute inset-0 -z-10 h-full w-full object-cover opacity-35">
-      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/60 to-biblio-moss/80"></div>
+      <!-- La foto va a opacidad plena y el verde encima: así la imagen se ve,
+           pero el texto blanco mantiene el contraste que pide WCAG AA. -->
+      <img src="assets/img/hero-bg.png" alt="" data-optional
+           width="1672" height="941"
+           class="absolute inset-0 -z-20 h-full w-full object-cover">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/85 via-biblio-moss/80 to-biblio-moss/90"></div>
 
       <div class="mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
         <p class="text-sm font-semibold tracking-[0.2em] text-biblio-pistachio uppercase">
