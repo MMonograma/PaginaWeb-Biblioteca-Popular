@@ -75,8 +75,10 @@
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition;
   }
   .btn-primary {
-    @apply bg-biblio-moss text-biblio-paper hover:bg-biblio-charcoal;
-    @apply dark:bg-biblio-pistachio dark:text-biblio-charcoal dark:hover:bg-biblio-paper;
+    @apply bg-gradient-to-b from-biblio-moss to-biblio-charcoal text-biblio-paper;
+    @apply hover:from-biblio-charcoal hover:to-biblio-charcoal;
+    @apply dark:from-biblio-paper dark:to-biblio-pistachio dark:text-biblio-charcoal;
+    @apply dark:hover:from-biblio-paper dark:hover:to-biblio-paper;
   }
   .btn-secondary {
     @apply border border-biblio-moss text-biblio-moss hover:bg-biblio-moss hover:text-biblio-paper;
@@ -85,7 +87,8 @@
   /* Para botones apoyados sobre el verde de marca, donde el fondo ya es oscuro
      en los dos modos y no corresponde invertir nada. */
   .btn-on-moss {
-    @apply bg-biblio-paper text-biblio-charcoal hover:bg-biblio-pistachio;
+    @apply bg-gradient-to-b from-biblio-paper to-biblio-pistachio text-biblio-charcoal;
+    @apply hover:from-biblio-pistachio hover:to-biblio-pistachio;
   }
   .btn:disabled {
     @apply cursor-not-allowed opacity-50;
@@ -97,8 +100,8 @@
   }
 
   .card {
-    @apply rounded-2xl border border-biblio-pistachio bg-white/60 p-6 transition;
-    @apply dark:border-biblio-moss dark:bg-biblio-card-dark;
+    @apply rounded-2xl border border-biblio-pistachio bg-gradient-to-b from-white/80 to-biblio-pistachio/25 p-6 transition;
+    @apply dark:border-biblio-moss dark:from-biblio-card-dark dark:to-biblio-charcoal;
   }
   .card-hover {
     @apply hover:-translate-y-0.5 hover:border-biblio-sage hover:shadow-lg;
@@ -142,6 +145,33 @@
   .skeleton {
     @apply animate-pulse rounded-2xl bg-biblio-pistachio/50 dark:bg-biblio-card-dark;
   }
+
+  /* --- Bandas con gradiente vertical -------------------------------------
+     Todas van de arriba hacia abajo. El color fuerte arranca arriba y se
+     apaga contra el fondo de la pagina, asi la seccion no termina en una
+     linea dura y la lectura sigue de corrido.
+
+     Los gradientes cierran en un color explicito (paper / charcoal) y nunca
+     en to-transparent: el transparente se interpola pasando por un gris y
+     ensucia la mitad de la banda. */
+  .banda-clara {
+    @apply bg-gradient-to-b from-biblio-pistachio/70 via-biblio-pistachio/30 to-biblio-paper;
+    @apply dark:from-biblio-card-dark dark:via-biblio-card-dark dark:to-biblio-charcoal;
+  }
+
+  /* El pie hace el camino inverso: en vez de abrirse, se va cerrando. */
+  .banda-cierre {
+    @apply bg-gradient-to-b from-biblio-paper via-biblio-pistachio/40 to-biblio-pistachio/80;
+    @apply dark:from-biblio-charcoal dark:via-biblio-card-dark dark:to-biblio-card-dark;
+  }
+
+  /* Encabezado de cada pagina. El texto va en paper en los dos extremos:
+     8.3:1 sobre moss y 14.4:1 sobre charcoal, asi que el degrade nunca
+     atraviesa una zona donde el contraste caiga por debajo de AA. */
+  .banda-titulo {
+    @apply bg-gradient-to-b from-biblio-moss to-biblio-charcoal text-biblio-paper;
+  }
+
 }
 
 @layer utilities {

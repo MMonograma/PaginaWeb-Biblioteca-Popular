@@ -88,6 +88,11 @@ agrupa solo los días seguidos con el mismo horario ("Martes a viernes").
 
 ### 3.1 Publicar la hoja
 
+La hoja de **talleres** ya existe y está cargada:
+<https://docs.google.com/spreadsheets/d/1HArk3A14yExQUFeHPheYulK2y9PKui-xfs_GwBgvYg8/edit>
+
+Para la de noticias hay que crear otra igual.
+
 1. Crear una hoja de cálculo en Google Drive.
 2. **Archivo → Compartir → Publicar en la web**.
 3. Elegir la pestaña y el formato **CSV**.
@@ -136,7 +141,8 @@ Si hay video y también imagen, se muestra el video.
 | `Nombre` | Nombre del taller. |
 | `Descripción` | Texto breve en la tarjeta. |
 | `Categoría` | Etiqueta: "Infancias", "Adultxs mayores", etc. |
-| `Horario` | "Martes 17:00", "Consultar días y horarios"… texto libre. |
+| `Día` | "Martes", "Martes y jueves"… Se muestra junto al horario, separado por un punto. |
+| `Horario` | "17:00 a 19:00", "Consultar días y horarios"… texto libre. |
 | `Fecha` | Opcional, para talleres con fecha puntual. |
 | `Lugar` | Dónde se hace. |
 | `Docente` | Quién lo da. Se muestra como "A cargo de …". |
