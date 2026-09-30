@@ -5,6 +5,7 @@
 //   src/parciales/layout.html  — el esqueleto común
 //   src/parciales/header.html  — encabezado y menú
 //   src/parciales/footer.html  — pie con los datos de contacto
+//   src/parciales/loader.html  — pantalla de carga (libro animado)
 //   src/paginas/*.html         — el contenido propio de cada página
 //   src/datos/sitio.js         — los datos institucionales
 //
@@ -14,8 +15,9 @@
 
 import { readFileSync, writeFileSync, readdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
-import { BIBLIOTECA, HORARIOS, DIAS, MENU } from "./src/datos/sitio.js";
+import { BIBLIOTECA, HORARIOS, DIAS, MENU, ACCESO_CATALOGO } from "./src/datos/sitio.js";
 import { CATALOGO_DESTACADO } from "./src/datos/catalogo.js";
+import { RINCON_PAMPEANO, BIBLIOTECAS_DIGITALES } from "./src/datos/lectura.js";
 
 const leer = (ruta) => readFileSync(ruta, "utf8");
 
@@ -95,9 +97,22 @@ ${hijos}
             </li>`;
   }).join("\n");
 
+  // En escritorio el catálogo es un botón aparte (header.html); en celular ese
+  // botón no entra junto al logo, así que se suma como último ítem del menú.
+  const catalogo = `            <li class="lg:hidden"><a class="nav-link" href="${ACCESO_CATALOGO.url}"${activo(ACCESO_CATALOGO.url)}>${esc(ACCESO_CATALOGO.texto)}</a></li>`;
+
   return `          <ul class="flex flex-col gap-1 lg:flex-row lg:items-center">
 ${items}
+${catalogo}
           </ul>`;
+}
+
+function headerHTML(paginaActual) {
+  return aplicar(header.replace("{{NAV}}", navHTML(paginaActual)), {
+    CATALOGO_URL_NAV: ACCESO_CATALOGO.url,
+    CATALOGO_TEXTO_NAV: esc(ACCESO_CATALOGO.texto),
+    CATALOGO_ACTUAL: paginaActual === ACCESO_CATALOGO.url ? ' aria-current="page"' : "",
+  });
 }
 
 // --- Composición de cada página ---------------------------------------------
@@ -105,6 +120,7 @@ ${items}
 const layout = leer("src/parciales/layout.html");
 const header = leer("src/parciales/header.html");
 const footer = leer("src/parciales/footer.html");
+const loader = leer("src/parciales/loader.html");
 
 const { direccion: dir, contacto, conabip } = BIBLIOTECA;
 const mapaURL = `https://www.google.com/maps/search/?api=1&query=${dir.lat},${dir.lon}`;
@@ -153,6 +169,38 @@ ${libros}
       </div>`;
 }).join("\n");
 
+// --- Lectura virtual 24/7 ---------------------------------------------------
+
+const flecha = `<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg>`;
+
+const tarjetaLectura = ({ titulo, subtitulo, descripcion, url }) => `          <li>
+            <a href="${esc(url)}" target="_blank" rel="noopener"
+               class="card card-hover flex h-full flex-col border-biblio-pistachio/40 dark:border-biblio-moss">
+              <h4 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">${esc(titulo)}</h4>
+              ${subtitulo ? `<p class="mt-1 text-sm font-medium text-biblio-charcoal dark:text-biblio-pistachio">${esc(subtitulo)}</p>` : ""}
+              <p class="mt-2 flex-1 text-sm text-biblio-charcoal dark:text-biblio-pistachio">${esc(descripcion)}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-biblio-moss dark:text-biblio-pistachio">
+                Abrir ${flecha}<span class="sr-only"> (se abre en una pestaña nueva)</span>
+              </span>
+            </a>
+          </li>`;
+
+const lecturaPampeanaHTML = RINCON_PAMPEANO.length
+  ? `<ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+${RINCON_PAMPEANO.map((o) => tarjetaLectura({ titulo: o.titulo, subtitulo: o.autor, descripcion: o.descripcion, url: o.url })).join("\n")}
+        </ul>`
+  : `<div class="card mt-6 border-dashed border-biblio-pistachio/40 dark:border-biblio-moss" role="status">
+          <p class="section-kicker">En preparación</p>
+          <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+            Estamos reuniendo poemas y textos de Edgar Morisoli y de otros autores pampeanos que se puedan
+            compartir libremente. Mientras tanto, sus libros están en nuestros estantes: buscalos en el catálogo.
+          </p>
+        </div>`;
+
+const bibliotecasDigitalesHTML = `<ul class="mt-6 grid gap-4 sm:grid-cols-2">
+${BIBLIOTECAS_DIGITALES.map((b) => tarjetaLectura({ titulo: b.nombre, descripcion: b.descripcion, url: b.url })).join("\n")}
+        </ul>`;
+
 // Marcadores disponibles dentro del contenido de cada página.
 const reemplazosContenido = {
   ...reemplazosFooter,
@@ -168,6 +216,8 @@ const reemplazosContenido = {
   FUNDACION: BIBLIOTECA.fundacion,
   ANIO_FUNDACION: BIBLIOTECA.anioFundacion,
   CATALOGO_DESTACADO: catalogoHTML,
+  LECTURA_PAMPEANA: lecturaPampeanaHTML,
+  LECTURA_BIBLIOTECAS: bibliotecasDigitalesHTML,
 };
 
 
@@ -181,7 +231,9 @@ function leerCabecera(texto) {
   const m = texto.match(/^<!--\s*([\s\S]*?)-->\s*/);
   if (!m) return [{}, texto];
   const datos = {};
-  for (const linea of m[1].split("\n")) {
+  // \r?\n y no "\n": en Windows los archivos pueden venir con CRLF, y el \r
+  // que quedaba al final de cada línea hacía fallar la lectura del título.
+  for (const linea of m[1].split(/\r?\n/)) {
     const par = linea.match(/^\s*(\w+):\s*(.*)$/);
     if (par) datos[par[1]] = par[2].trim();
   }
@@ -196,7 +248,10 @@ for (const archivo of paginas) {
 
   const html = aplicar(
     layout
-      .replace("{{HEADER}}", header.replace("{{NAV}}", navHTML(archivo)))
+      // "loader: si" en la cabecera de la página = el loader se ve desde el
+      // primer pintado, porque esa página trae datos de afuera al cargar.
+      .replace("{{LOADER}}", loader.replace("{{LOADER_VISIBLE}}", meta.loader === "si" ? " data-visible" : ""))
+      .replace("{{HEADER}}", headerHTML(archivo))
       .replace("{{FOOTER}}", aplicar(footer, reemplazosFooter))
       .replace("{{CONTENIDO}}", cuerpo.trimEnd())
       .replace("{{TITULO}}", esc(meta.titulo ?? BIBLIOTECA.nombre))

@@ -21,6 +21,17 @@
         </nav>
 
         <div class="flex shrink-0 items-center gap-1">
+          <!-- Acceso al catálogo como acción secundaria, separado del menú de
+               texto. En celular no entra al lado del logo: ahí aparece como
+               último ítem del menú desplegable (lo agrega build.js). -->
+          <a href="{{CATALOGO_URL_NAV}}"{{CATALOGO_ACTUAL}} class="btn btn-secondary mr-1 hidden px-4 lg:inline-flex">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            {{CATALOGO_TEXTO_NAV}}
+          </a>
+
           <button id="tema-toggle" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro" class="icon-btn">
             <svg id="icono-luna" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>

@@ -1,68 +1,45 @@
 // ---------------------------------------------------------------------------
-// OBTENCIÓN DE DATOS
+// VALIDACIÓN DE LO QUE LLEGA DE AFUERA
 //
-// Único lugar que habla con la red. Las secciones piden datos acá y reciben
-// siempre la misma forma: { configurada, items }.
+// Todo lo que viene de la planilla o de Instagram se inserta con textContent,
+// que nunca interpreta HTML. Lo único que se usa como URL son enlaces e
+// imágenes, y pasan por acá antes de tocar el DOM.
 // ---------------------------------------------------------------------------
-
-/**
- * Pide una hoja a /api/hoja.
- * Si la función no existe (por ejemplo sirviendo public/ con `npx serve`),
- * se responde como "sin configurar" para que la página muestre el respaldo
- * en vez de un error que no le dice nada a quien visita.
- */
-export async function traerHoja(nombre) {
-  let respuesta;
-  try {
-    respuesta = await fetch(`/api/hoja?nombre=${encodeURIComponent(nombre)}`, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(10000),
-    });
-  } catch (error) {
-    throw new Error(`No se pudo conectar: ${error.message}`);
-  }
-
-  if (respuesta.status === 404) {
-    console.info(`/api/hoja no está disponible (¿estás sirviendo sólo public/?). Se usa el contenido de respaldo.`);
-    return { configurada: false, items: [] };
-  }
-  if (!respuesta.ok) throw new Error(`La API respondió ${respuesta.status}`);
-
-  const datos = await respuesta.json();
-  return { configurada: Boolean(datos.configurada), items: Array.isArray(datos.items) ? datos.items : [] };
-}
-
-// --- Validación de lo que llega de afuera ----------------------------------
-// Todo lo que viene de la hoja se inserta con textContent. Lo único que se
-// usa como URL son enlaces e imágenes, y se filtran acá.
 
 export const esEnlaceSeguro = (url) => /^https?:\/\//i.test(String(url ?? "").trim());
 
 export const esImagenSegura = (url) => /^https:\/\//i.test(String(url ?? "").trim());
 
 /**
- * Convierte la URL de un video en su dirección para insertar.
- * Sólo se aceptan YouTube y Vimeo: si la hoja trae cualquier otra cosa,
- * no se inserta ningún iframe.
+ * Enlace de Google Drive → dirección directa de la imagen.
+ *
+ * El enlace que da Drive al compartir (drive.google.com/file/d/ID/view) abre
+ * una página de vista previa, no la imagen: puesto en un <img> no muestra nada.
+ * lh3.googleusercontent.com/d/ID es el servidor de imágenes de Google y
+ * devuelve el archivo directo, ya optimizado.
+ *
+ * Reconoce las formas habituales:
+ *   https://drive.google.com/file/d/ID/view?usp=sharing
+ *   https://drive.google.com/open?id=ID
+ *   https://drive.google.com/uc?id=ID&export=view
+ * Cualquier otra URL https se usa tal cual. Si no hay nada usable, devuelve "".
+ *
+ * Ojo: la foto tiene que estar compartida como "Cualquier persona con el
+ * enlace puede ver". Si es privada, Google no la entrega y se ve la imagen
+ * por defecto.
  */
-export function urlDeVideo(url) {
-  const texto = String(url ?? "").trim();
-  if (!texto) return null;
+export function urlDeImagen(valor) {
+  const texto = String(valor ?? "").trim();
+  if (!texto) return "";
 
-  const youtube = texto.match(
-    /^https?:\/\/(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([\w-]{11})/i
-  );
-  // youtube-nocookie: no deja cookies de seguimiento hasta que se reproduce.
-  if (youtube) return `https://www.youtube-nocookie.com/embed/${youtube[1]}`;
+  const drive = texto.match(/^https?:\/\/(?:drive|docs)\.google\.com\/.*?(?:\/d\/|[?&]id=)([\w-]{20,})/i);
+  if (drive) return `https://lh3.googleusercontent.com/d/${drive[1]}`;
 
-  const vimeo = texto.match(/^https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/i);
-  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
-
-  return null;
+  return esImagenSegura(texto) ? texto : "";
 }
 
 /**
- * Fechas de la hoja a texto legible.
+ * Fechas a texto legible.
  * Acepta 2026-09-15 y 15/09/2026; si no entiende el formato, devuelve el
  * texto tal cual, porque puede ser algo como "Todos los martes".
  */

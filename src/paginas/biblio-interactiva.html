@@ -1,6 +1,6 @@
 <!--
   titulo: Biblio-Interactiva | Biblioteca Popular Edgar Morisoli
-  descripcion: Un espacio para explorar la biblioteca de forma interactiva.
+  descripcion: Un espacio para explorar la biblioteca de forma interactiva: recorrido virtual 360°, juegos y actividades.
 -->
     <section class="border-b border-biblio-pistachio dark:border-biblio-moss banda-titulo">
       <div class="mx-auto max-w-7xl px-4 py-10 sm:py-12">
@@ -9,23 +9,43 @@
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+    <section id="recorrido-virtual" aria-labelledby="recorrido-titulo" class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <p class="section-kicker">Para explorar</p>
-      <h2 class="section-title mt-2">Espacio interactivo</h2>
-      <p class="mt-4 max-w-2xl muted">
-        Un espacio para explorar la biblioteca de forma interactiva: recorridos virtuales, actividades y juegos
-        para grandes y chicos.
+      <h2 id="recorrido-titulo" class="section-title">Recorrido virtual 360°</h2>
+      <p class="section-lead">
+        Mirá la biblioteca por dentro desde tu casa: girá la vista con el dedo o con el mouse para recorrer
+        la sala de lectura y los rincones de libros.
       </p>
 
-      <div class="card mt-8 border-dashed bg-biblio-paper dark:bg-biblio-card-dark">
-        <p class="section-kicker">Próximamente</p>
-        <h3 class="mt-2 text-2xl font-semibold text-biblio-moss dark:text-biblio-paper">Recorrido virtual H5P</h3>
-        <p class="mt-3 max-w-3xl muted">Este espacio va a tener un recorrido interactivo hecho con H5P para conocer la biblioteca de una forma distinta, además de otras actividades para participar. Estamos preparando el contenido.</p>
-      </div>
+      <!-- Contenedor del visor. Para activarlo, agregarle este atributo con la
+           ruta de la foto equirectangular (2:1) y correr npm run build:
 
-      <div class="card mt-8 border-dashed bg-biblio-paper dark:bg-biblio-card-dark">
-        <p class="section-kicker">Próximamente</p>
-        <h3 class="mt-2 text-2xl font-semibold text-biblio-moss dark:text-biblio-paper">Actividades interactivas</h3>
-        <p class="mt-3 max-w-3xl muted">Vamos a sumar juegos, cuestionarios y otras actividades para participar desde esta página, pensadas para chicos y grandes de todas las edades.</p>
+             data-panorama="assets/img/recorrido-360.jpg"
+
+           js/recorrido.js carga Pannellum y reemplaza el cartel por el visor.
+           Ver los pasos completos al principio de public/js/recorrido.js. -->
+      <div id="visor-360" role="region" aria-label="Recorrido virtual 360° de la biblioteca"
+           class="mt-10 h-[450px] w-full overflow-hidden rounded-2xl border border-biblio-pistachio/50 bg-gradient-to-b from-biblio-pistachio/40 to-biblio-paper dark:border-biblio-moss dark:from-biblio-card-dark dark:to-biblio-charcoal">
+        <div class="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
+          <svg class="h-14 w-14 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="12" rx="10" ry="4"></ellipse>
+            <path d="M12 2a10 10 0 0 1 0 20 10 10 0 0 1 0-20z"></path>
+            <path d="m17 15 2 1.5-2 1.5"></path>
+          </svg>
+          <p class="max-w-md font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">
+            Próximamente: Recorrido Virtual 360° por nuestra sala de lectura y rincones de libros
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="banda-clara py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Para participar</p>
+        <h2 class="section-title">Actividades interactivas</h2>
+        <div class="card mt-8 border-dashed">
+          <p class="section-kicker">Próximamente</p>
+          <p class="mt-3 max-w-3xl muted">Vamos a sumar juegos, cuestionarios y otras actividades para participar desde esta página, pensadas para chicos y grandes de todas las edades.</p>
+        </div>
       </div>
     </section>

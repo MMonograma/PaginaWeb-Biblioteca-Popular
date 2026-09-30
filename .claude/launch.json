@@ -5,8 +5,7 @@
       "name": "sitio",
       "runtimeExecutable": "node",
       "runtimeArgs": [
-        "servidor-dev.js",
-        "--demo"
+        "servidor-dev.js"
       ],
       "port": 3000
     }

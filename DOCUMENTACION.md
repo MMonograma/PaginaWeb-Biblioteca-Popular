@@ -10,8 +10,7 @@ qué falta.
 ```bash
 npm install          # una sola vez
 npm run build        # genera el CSS y las páginas de public/
-npm run demo         # servidor local en http://localhost:3000 con datos de ejemplo
-npm run serve        # igual, pero leyendo las hojas de cálculo reales
+npm run serve        # servidor local en http://localhost:3000
 npm run dev          # vigila los cambios de CSS (no regenera el HTML)
 ```
 
@@ -25,21 +24,28 @@ npm run dev          # vigila los cambios de CSS (no regenera el HTML)
 src/
   input.css              Colores, tipografías y componentes (Tailwind v4)
   datos/
-    sitio.js             ← DATOS INSTITUCIONALES: horarios, contacto, menú
+    sitio.js             ← DATOS INSTITUCIONALES: horarios, contacto, menú,
+                           URL de la hoja de talleres
     catalogo.js          Títulos destacados que se muestran en Catálogo
+    lectura.js           Enlaces de "Lectura virtual 24/7"
   parciales/
     layout.html          Esqueleto común de todas las páginas
-    header.html          Encabezado y menú
+    header.html          Encabezado, menú y botón del catálogo
     footer.html          Pie de página
+    loader.html          Pantalla de carga (el libro animado)
   paginas/               El contenido propio de cada página
 build.js                 Arma las páginas combinando lo de arriba
-servidor-dev.js          Servidor local (sirve public/ y la API)
-api/
-  hoja.js                Lee las hojas de cálculo (corre en Vercel)
-  _csv.js                Parseo de CSV
-public/                  ← GENERADO. Lo que se publica.
-  js/                    JavaScript del navegador
+servidor-dev.js          Servidor local (sirve public/)
+scripts/
+  sync-instagram.py      Baja las últimas publicaciones de Instagram
+.github/workflows/
+  instagram-sync.yml     Corre el script de arriba dos veces por día
+public/                  ← Lo que se publica. Los .html son GENERADOS.
+  js/                    JavaScript del navegador (se edita acá)
   assets/img/            Imágenes
+  vendor/                Librerías de terceros copiadas (Pannellum)
+  data/noticias.json     ← GENERADO por la Action de Instagram
+  noticias/*.jpg         ← GENERADO por la Action de Instagram
 ```
 
 ### Por qué hay un generador
@@ -57,13 +63,16 @@ todas las páginas.
 Todo lo institucional está en **`src/datos/sitio.js`**: horarios, dirección,
 teléfono, correo, redes, registro de CONABIP y el menú.
 
+> Las páginas de `src/paginas/` empiezan con un comentario con `titulo`,
+> `descripcion` y, opcionalmente, `loader: si` (ver §5).
+
 Ese archivo alimenta a la vez:
 
 - el pie de página de todas las páginas,
 - el acordeón de horarios del inicio,
 - la sección de horarios de Quiénes Somos,
 - el cartel de "abierto ahora / cerrado", que se calcula en el navegador,
-- los enlaces de WhatsApp de los talleres.
+- el WhatsApp de los talleres que no tienen número propio en la hoja.
 
 **Si cambia un horario, se cambia ahí y en ningún otro lado.** Después,
 `npm run build`.
@@ -84,96 +93,92 @@ agrupa solo los días seguidos con el mismo horario ("Martes a viernes").
 
 ---
 
-## 3. Noticias y talleres desde Google Sheets
+## 3. Talleres desde Google Sheets
 
-### 3.1 Publicar la hoja
+La planilla es **"Talleres en Pagina web"**, pestaña **Talleres**:
+<https://docs.google.com/spreadsheets/d/1ecs1NkXN51SLfBm957ZRhZJ9f0ywrHgHSXLXI7mKbBQ/edit>
 
-La hoja de **talleres** ya existe y está cargada:
-<https://docs.google.com/spreadsheets/d/1HArk3A14yExQUFeHPheYulK2y9PKui-xfs_GwBgvYg8/edit>
+Está restringida (sólo la puede editar quien es dueño). Publicarla en la web no
+cambia eso: publicar genera una copia de **sólo lectura** del CSV, sin dar
+acceso al documento.
 
-Para la de noticias hay que crear otra igual.
+### 3.1 Columnas
 
-1. Crear una hoja de cálculo en Google Drive.
-2. **Archivo → Compartir → Publicar en la web**.
-3. Elegir la pestaña y el formato **CSV**.
-4. Copiar la URL que aparece.
-
-### 3.2 Configurar la URL en Vercel
-
-En el panel de Vercel: **Settings → Environment Variables**.
-
-| Variable | Contenido |
-|---|---|
-| `SHEET_NOTICIAS` | URL CSV de la hoja de noticias |
-| `SHEET_TALLERES` | URL CSV de la hoja de talleres |
-
-Después hay que volver a desplegar para que tome los valores.
-
-Mientras no estén configuradas, el sitio no se rompe: los talleres muestran la
-lista de respaldo y las noticias muestran un cartel que invita a seguir el
-Instagram.
-
-### 3.3 Columnas de la hoja de NOTICIAS
-
-Ninguna columna es obligatoria salvo el título. Los nombres no distinguen
-mayúsculas, tildes ni espacios: "URL Imagen" y "urlimagen" son lo mismo.
+La fila 1 tiene los nombres de las columnas. No distinguen mayúsculas, tildes,
+espacios ni guiones bajos: `dias_horarios`, "Días horarios" y `DIASHORARIOS`
+son lo mismo.
 
 | Columna | Para qué sirve |
 |---|---|
-| `ID` | Identificador propio. No se muestra. |
-| `Título` | Título de la tarjeta. **Es el único imprescindible.** |
-| `Descripción` | Texto breve debajo del título. |
-| `Fecha` | `2026-09-15` o `15/09/2026`. Se muestra como "15 de septiembre de 2026". |
-| `URL Imagen` | Dirección de la imagen. **Tiene que empezar con `https://`.** |
-| `Video` | Enlace de YouTube o Vimeo. Se muestra un botón y el video carga al tocarlo. |
-| `Enlace Instagram` | Enlace a la publicación. Agrega el botón "Ver en Instagram". |
-| `Categoría` | Etiqueta de color arriba de la tarjeta. |
-| `Publicado` | `no` para ocultar la fila. Vacío = se publica. |
-| `Orden` | Número: las más chicas aparecen primero. Sin este dato, se ordena por fecha. |
+| `id` | Identificador propio. No se muestra. |
+| `activo` | `SI` para mostrar el taller. Cualquier otra cosa (`NO`, vacío, "pausado") lo oculta sin borrar la fila. |
+| `titulo` | Nombre del taller. **Es el único imprescindible.** |
+| `categoria` | Etiqueta arriba de la tarjeta: "Infancias", "Adultxs mayores"… |
+| `dias_horarios` | Texto libre: "Martes 17 hs", "Último viernes de cada mes". |
+| `tallerista` | Quién lo da. Se muestra como "A cargo de …". |
+| `descripcion` | Texto breve de la tarjeta. |
+| `foto_url` | Enlace a la foto (ver 3.3). Vacío = imagen por defecto. |
+| `contacto_wsp` | WhatsApp de quien da el taller (ver 3.4). Vacío = el de la biblioteca. |
 
-Si hay video y también imagen, se muestra el video.
+Si una celda está vacía, esa línea directamente no aparece en la tarjeta.
 
-### 3.4 Columnas de la hoja de TALLERES
+### 3.2 Publicar la hoja y conectarla al sitio (una sola vez)
 
-| Columna | Para qué sirve |
-|---|---|
-| `ID` | Identificador propio. No se muestra. |
-| `Nombre` | Nombre del taller. |
-| `Descripción` | Texto breve en la tarjeta. |
-| `Categoría` | Etiqueta: "Infancias", "Adultxs mayores", etc. |
-| `Día` | "Martes", "Martes y jueves"… Se muestra junto al horario, separado por un punto. |
-| `Horario` | "17:00 a 19:00", "Consultar días y horarios"… texto libre. |
-| `Fecha` | Opcional, para talleres con fecha puntual. |
-| `Lugar` | Dónde se hace. |
-| `Docente` | Quién lo da. Se muestra como "A cargo de …". |
-| `Info` | Texto adicional; aparece al desplegar "Ver más". |
-| `Inscripción` | Enlace de inscripción (tiene que empezar con `http`). |
-| `Imagen` | Dirección de la imagen, con `https://`. |
-| `Publicado` | `no` para ocultar la fila. |
-| `Orden` | Número de orden. |
+1. En la planilla: **Archivo → Compartir → Publicar en la web**.
+2. En el primer desplegable elegir la pestaña **Talleres** (no "Todo el
+   documento"); en el segundo, **Valores separados por comas (.csv)**.
+3. **Publicar** y copiar la URL. Tiene la forma
+   `https://docs.google.com/spreadsheets/d/e/2PACX-…/pub?gid=0&single=true&output=csv`.
+4. Pegarla en `src/datos/sitio.js`, en `HOJA_TALLERES_CSV`.
+5. `npm run build`, commit y push.
 
-### 3.5 Cómo agregar una noticia
+Mientras `HOJA_TALLERES_CSV` esté vacía, o si Google no responde, el sitio
+muestra `TALLERES_RESPALDO` (los talleres escritos en `sitio.js`).
 
-1. Abrir la hoja de noticias.
-2. Agregar una fila con al menos el título.
-3. Guardar. **No hay que tocar el código ni volver a desplegar.**
+### 3.3 Fotos desde Google Drive
 
-El sitio tarda hasta 5 minutos en mostrarla: es el tiempo de caché, que evita
-consultar a Google en cada visita.
+1. Subir la foto a una carpeta de Drive.
+2. Compartirla como **"Cualquier persona con el enlace: Lector"**.
+3. Copiar el enlace (`https://drive.google.com/file/d/…/view?usp=sharing`) y
+   pegarlo tal cual en `foto_url`.
 
-### 3.6 Por qué los datos pasan por `/api/hoja`
+Ese enlace abre una página de vista previa, no la imagen, así que puesto en un
+`<img>` no mostraría nada. `urlDeImagen()` (en `public/js/fuente-datos.js`)
+saca el ID del archivo y lo convierte a `https://lh3.googleusercontent.com/d/ID`,
+el servidor de imágenes de Google, que entrega el archivo directo. Si la foto es
+privada o el enlace está roto, la tarjeta vuelve sola a la imagen por defecto.
 
-El navegador no consulta a Google directamente: le pide los datos a una función
-del propio sitio (`api/hoja.js`), que los va a buscar y los devuelve ya
-convertidos. Así:
+### 3.4 WhatsApp
 
-- la política de seguridad del sitio (CSP) sigue permitiendo conexiones solo al
-  propio dominio;
-- no dependemos de cómo Google configure los permisos entre dominios (CORS);
-- la respuesta queda cacheada 5 minutos, y si Google falla se sigue mostrando la
-  última versión buena durante una hora;
-- el día que haga falta una clave privada (por ejemplo la de Instagram), va en
-  una variable de entorno y **nunca** queda a la vista en el navegador.
+El botón "Consultar por WhatsApp" abre un chat con el mensaje ya escrito:
+*«¡Hola! Quisiera consultar por el taller de {titulo} en la Biblioteca.»*
+
+En `contacto_wsp` se puede escribir el número como salga: `2954610340`,
+`+54 9 2954 61-0340`… El sitio se queda con los dígitos y, si son 10
+(característica + número), le agrega el `549` de Argentina.
+
+> La columna está en formato **Texto sin formato** (Formato → Número). Si se
+> dejara en automático, Sheets podría convertir un número largo en `5,49E+12`
+> y perder dígitos.
+
+### 3.5 Cómo funciona la conexión (en vivo)
+
+```
+navegador ──fetch──▶ CSV publicado de Google ──▶ csv.js lo convierte en objetos
+                                               ──▶ talleres.js arma las tarjetas
+```
+
+Cada visita pide el CSV en el momento, desde el navegador. **No hay que volver
+a publicar el sitio para que se vean los cambios**: se edita la planilla y se
+recarga la página.
+
+Google tarda **unos minutos** (en general menos de 5) en actualizar la copia
+publicada después de cada cambio: es la única demora, y no depende del sitio.
+
+Para que el navegador pueda hacer ese pedido, la CSP de `vercel.json` permite
+conexiones (`connect-src`) a `docs.google.com` y a `*.googleusercontent.com`
+(Google redirige el CSV publicado a ese dominio). Es lo único que se abrió:
+scripts y estilos siguen limitados al propio sitio.
 
 ---
 
@@ -205,25 +210,170 @@ de CONABIP, no de este sitio; la página lo aclara.
 **Qué se podría pedir:** que CONABIP habilite HTTPS en `4124.bepe.ar`. Si algún
 día lo hacen, se podría integrar la búsqueda dentro del sitio.
 
+### Lectura virtual 24/7
+
+Al final de la página de Catálogo, la sección `#lectura-virtual` reúne lectura
+para cuando la biblioteca está cerrada. Los enlaces están en
+**`src/datos/lectura.js`**; se agregan ahí y se corre `npm run build`.
+
+- **Rincón Pampeano / Edgar Morisoli**: empieza vacío, con un aviso de "en
+  preparación". Morisoli es un autor contemporáneo y su obra sigue protegida
+  (en Argentina, hasta 70 años después de la muerte del autor): sólo se pueden
+  cargar textos con permiso de sus herederos o editoriales, o publicaciones ya
+  difundidas oficialmente.
+- **Bibliotecas digitales gratuitas**: Catálogo colectivo de CONABIP,
+  Biblioteca del Congreso, Biblioteca Virtual Miguel de Cervantes y Project
+  Gutenberg en español (verificados el 2026-09-30).
+- **Visor en pantalla** (`#visor-lectura`): el contenedor está preparado para
+  PDF.js o StPageFlip. Los PDF tendrían que estar en el propio sitio
+  (`public/lecturas/`), porque la CSP no deja leer archivos de otros dominios.
+
 ---
 
-## 5. Instagram
+## 5. Noticias de Instagram
 
-**No se puede traer el Instagram automáticamente sin complicar el mantenimiento.**
+Las noticias son las últimas **6 publicaciones de
+[@bibliotecaedgarmorisoli](https://www.instagram.com/bibliotecaedgarmorisoli)**,
+copiadas al sitio automáticamente.
 
-- La *Basic Display API*, que servía para esto, se apagó el 4/12/2024.
-- Lo que queda (Graph API) exige cuenta Business o Creator, una aplicación
-  registrada en Meta, revisión de la aplicación y un token que **vence cada 60
-  días**. Si nadie lo renueva, la sección deja de andar.
+```
+GitHub Action (12:00 y 21:00 UTC = 9 y 18 hs)
+  └─ scripts/sync-instagram.py
+       ├─ public/noticias/{shortcode}.jpg   la foto de cada publicación
+       └─ public/data/noticias.json         texto resumido, fecha y enlace
+  └─ si hubo cambios: commit + push  ──▶  Vercel publica solo
+```
 
-**Lo que se hizo:** la hoja de noticias tiene una columna `Enlace Instagram`. Se
-sube la foto, se pega el enlace de la publicación, y la tarjeta queda con el
-diseño del sitio y un botón "Ver en Instagram". Sin claves, sin vencimientos y
-sin cargar los rastreadores de Meta en cada visita.
+- Las fotos se **copian** al sitio porque los enlaces del CDN de Instagram
+  vencen a los pocos días.
+- Si no hay publicaciones nuevas, no hay commit (y no hay deploy).
+- Las fotos de publicaciones que ya salieron de las últimas 6 se borran, para
+  que el repositorio no crezca para siempre.
+- La página (`public/js/noticias.js`) sólo lee el JSON. No carga nada de
+  Instagram ni de Meta en cada visita.
+- Para correrlo a mano: pestaña **Actions → Sincronizar Instagram → Run
+  workflow**.
+
+### 5.1 Instagram rechaza las consultas anónimas: hace falta una sesión
+
+Probado el 2026-09-30: sin sesión, Instagram responde `401 — Please wait a few
+minutes before you try again`, incluso desde una conexión hogareña. Desde los
+servidores de GitHub es todavía más frecuente. Cuando pasa, el script **no
+toca nada** (el sitio sigue con lo último bueno) y deja un aviso amarillo en
+el resumen de la Action.
+
+La solución es darle al script una **sesión iniciada**. La contraseña se
+escribe una sola vez en tu computadora y no se guarda en ningún lado: sólo se
+guarda la sesión, que se revoca cerrando sesión en Instagram.
+
+```bash
+pip install instaloader
+instaloader --login bibliotecaedgarmorisoli
+```
+
+Pide la contraseña (y el código, si la cuenta tiene verificación en dos pasos)
+y guarda un archivo de sesión; al terminar muestra dónde. Después, en
+PowerShell:
+
+```powershell
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("RUTA\AL\ARCHIVO\DE\SESION"))
+```
+
+En GitHub: **Settings → Secrets and variables → Actions → New repository
+secret**, y crear dos:
+
+| Secreto | Valor |
+|---|---|
+| `IG_USUARIO` | `bibliotecaedgarmorisoli` |
+| `IG_SESION` | el texto base64 del paso anterior |
+
+Las sesiones duran meses, pero no para siempre: si la Action vuelve a mostrar
+el aviso del 401, hay que repetir estos pasos.
+
+> Instagram no permite oficialmente la lectura automatizada. Con dos consultas
+> por día sobre la propia cuenta el riesgo es bajo, pero no es cero: si algún
+> día Instagram pide verificar la cuenta, es por esto.
+
+### 5.2 Formato de `noticias.json`
+
+```json
+{
+  "actualizado": "2026-09-30T18:00-03:00",
+  "perfil": "https://www.instagram.com/bibliotecaedgarmorisoli/",
+  "noticias": [
+    {
+      "id": "shortcode",
+      "url": "https://www.instagram.com/p/shortcode/",
+      "imagen": "/noticias/shortcode.jpg",
+      "alt": "texto alternativo que genera Instagram",
+      "caption": "primeros 220 caracteres del texto…",
+      "fecha": "2026-09-28"
+    }
+  ]
+}
+```
+
+La fecha va en formato ISO y la página la muestra como "28 de septiembre de
+2026". Por seguridad, la página sólo acepta fotos de `/noticias/` y enlaces a
+`https://www.instagram.com/`.
 
 ---
 
-## 6. Mapa
+## 6. Pantalla de carga
+
+El libro animado vive en `src/parciales/loader.html` y lo maneja
+`public/js/loader-libro.js`, con dos funciones globales:
+
+```js
+mostrarLoader();   // lo muestra (cuenta cuántas cargas hay en curso)
+ocultarLoader();   // se va con un fundido cuando terminó la última
+await loaderLibro.durante(fetch(...));   // atajo: muestra, espera y oculta
+```
+
+- Las páginas con `loader: si` en su cabecera (Inicio, Talleres, Noticias) lo
+  muestran **desde el primer pintado**, y `main.js` lo oculta recién cuando las
+  tarjetas de talleres y noticias ya están en el DOM.
+- **Sin JavaScript no aparece nunca**: el CSS sólo lo muestra bajo `html.js`,
+  una clase que pone `loader-libro.js` en el `<head>`.
+- **Red de seguridad**: si algo falla y nadie llama a `ocultarLoader()`, a los
+  8 segundos se va solo (animación CSS). Las cargas de datos cortan a los 8 s.
+- Con "reducir movimiento" activado en el sistema, el libro queda quieto.
+
+> Ojo con Inicio: el loader tapa toda la página, hero incluido, hasta que llegan
+> los talleres, que están bastante más abajo. Si se nota lento, se saca
+> `loader: si` de `src/paginas/index.html` y los talleres se siguen viendo con
+> sus bloques grises de carga.
+
+---
+
+## 7. Recorrido virtual 360° (Biblio-Interactiva)
+
+La sección `#recorrido-virtual` tiene el contenedor `#visor-360` con un cartel
+de "Próximamente". El visor es **Pannellum 2.5.7** (licencia MIT), copiado en
+`public/vendor/pannellum-2.5.7/`.
+
+Se copió en lugar de enlazarlo a un CDN porque la CSP sólo permite scripts del
+propio sitio: habilitar un CDN en `script-src` habilitaría **cualquier**
+paquete publicado en ese CDN, no sólo este.
+
+**Para activarlo**, con la foto equirectangular (proporción 2:1):
+
+1. Guardarla en `public/assets/img/recorrido-360.jpg` (idealmente < 4 MB).
+2. En `src/paginas/biblio-interactiva.html`, agregar al `<div id="visor-360">`
+   el atributo `data-panorama="assets/img/recorrido-360.jpg"`.
+3. `npm run build`.
+
+Mientras no haya `data-panorama`, la librería ni se descarga. Cuando lo haya,
+se baja recién al acercarse al visor, y la foto recién cuando alguien toca
+"empezar el recorrido" (importante con datos móviles).
+
+Si el recorrido se hace con **Lumi / H5P**, el resultado es otra página HTML que
+va en un `<iframe>`: en ese caso hay que sumar su origen a `frame-src` en
+`vercel.json`.
+
+---
+
+## 8. Mapa
 
 El mapa de Google **no se carga solo**: se ve un panel con la dirección y un
 botón "Ver el mapa". El iframe aparece recién al tocarlo. Así la página no le
@@ -235,7 +385,7 @@ La dirección y las coordenadas (`-36.6277361, -64.3046025`) están en
 
 ---
 
-## 7. Colores y accesibilidad
+## 9. Colores y accesibilidad
 
 La paleta oficial se mantiene, con dos variantes agregadas porque los colores
 originales no alcanzaban el contraste mínimo en algunos usos.
@@ -270,21 +420,24 @@ horizontales en 375 px.
 
 ---
 
-## 8. Seguridad
+## 10. Seguridad
 
 - La CSP no permite scripts en línea. Por eso el tema se aplica desde
   `public/js/theme.js` y no con un `<script>` dentro del HTML.
-- Todo lo que llega de la hoja de cálculo se inserta con `textContent`, nunca con
-  `innerHTML`: si alguien escribiera HTML en una celda, se vería como texto.
-- Los enlaces se validan (solo `http://` y `https://`) y las imágenes exigen
-  `https://`, así un `javascript:` en una celda no puede ejecutarse.
-- Los videos solo se aceptan de YouTube y Vimeo; cualquier otra dirección se
-  ignora en lugar de insertar un iframe desconocido.
-- No hay ninguna clave ni token en el código del navegador.
+- Todo lo que llega de la planilla o de Instagram se inserta con `textContent`,
+  nunca con `innerHTML`: si alguien escribiera HTML en una celda, se vería como texto.
+- Las fotos de la planilla exigen `https://`, así un `javascript:` en una celda
+  no puede ejecutarse. Las de noticias sólo pueden ser archivos de `/noticias/`,
+  y sus enlaces sólo pueden ir a `https://www.instagram.com/`.
+- `connect-src` permite, además del propio sitio, sólo a Google (para leer la
+  planilla). `script-src` sigue siendo sólo `'self'`: por eso Pannellum está
+  copiado en `public/vendor/` y no enlazado a un CDN.
+- No hay ninguna clave ni token en el código del navegador. La sesión de
+  Instagram vive sólo en los secretos de GitHub.
 
 ---
 
-## 9. Pendientes y cosas para confirmar
+## 11. Pendientes y cosas para confirmar
 
 ### Datos a confirmar con la biblioteca
 
@@ -310,8 +463,8 @@ qué proporción. Hoy la única imagen real es el logo. Hacen falta:
 ### Secciones en preparación
 
 `Flotilla Literaria` y `Sala de Pensamiento` siguen como estaban, con su texto de
-"en preparación". `Biblio-Interactiva` menciona un recorrido con H5P: cuando se
-sume, hay que habilitar su dominio en `frame-src` dentro de `vercel.json`.
+"en preparación". En `Biblio-Interactiva` falta la foto del recorrido 360° (§7)
+y en Catálogo, los textos del Rincón Pampeano (§4).
 
 ### Ideas para más adelante
 

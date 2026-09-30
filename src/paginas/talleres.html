@@ -1,6 +1,7 @@
 <!--
   titulo: Talleres | Biblioteca Popular Edgar Morisoli
   descripcion: Talleres y actividades de la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa. Propuestas para todas las edades.
+  loader: si
 -->
 
     <section class="border-b border-biblio-pistachio banda-titulo dark:border-biblio-moss">
@@ -20,7 +21,7 @@
 
       <!-- Aviso que aparece sólo si falla la conexión con la hoja de cálculo. -->
       <p id="talleres-aviso" class="card mt-8 hidden border-biblio-sage text-sm" role="status">
-        No pudimos conectarnos para traer la programación actualizada. Te mostramos los talleres que ya teníamos
+        No pudimos conectarnos con la planilla de talleres. Te mostramos los talleres que ya teníamos
         cargados; para confirmar días y horarios, escribinos.
       </p>
 
@@ -36,51 +37,46 @@
       <!-- Dos tarjetas por fila en escritorio, una sola en celular. -->
       <div id="talleres-grid" class="mt-10 grid gap-6 md:grid-cols-2"></div>
 
+      <!-- Tarjeta de un taller. Cada data-* es una columna de la hoja:
+             data-titulo → titulo          data-horario    → dias_horarios
+             data-categoria → categoria    data-tallerista → tallerista
+             data-descripcion → descripcion
+             data-foto → foto_url (si está vacía o falla, queda la imagen por defecto)
+             data-wa → contacto_wsp (si está vacía, el WhatsApp general de la biblioteca)
+           Si una celda viene vacía, talleres.js saca el elemento entero
+           (data-fila) para que no queden huecos ni etiquetas sueltas. -->
       <template id="tpl-taller">
-        <article class="card card-hover flex flex-col overflow-hidden p-0">
-          <div data-imagen-marco class="aspect-[16/9] overflow-hidden border-b border-biblio-pistachio dark:border-biblio-moss">
-            <img data-imagen src="" alt="" class="h-full w-full object-cover">
+        <article class="card card-hover flex flex-col overflow-hidden border-biblio-pistachio/40 p-0 dark:border-biblio-moss">
+          <!-- aspect-[16/9] reserva el alto antes de que baje la foto: la tarjeta no salta. -->
+          <div class="aspect-[16/9] overflow-hidden border-b border-biblio-pistachio/40 bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
+            <img data-foto src="assets/img/taller-predeterminado.svg" alt="" width="640" height="360"
+                 loading="lazy" decoding="async" class="h-full w-full object-cover">
           </div>
 
           <div class="flex flex-1 flex-col p-6">
             <p data-categoria class="badge mb-3 self-start"></p>
-            <h3 data-nombre class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper"></h3>
+            <h3 data-titulo class="font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper"></h3>
 
             <dl class="mt-3 space-y-1 text-sm">
-              <div class="flex gap-2">
+              <div data-fila>
                 <dt class="sr-only">Días y horarios</dt>
-                <dd data-horario class="muted font-medium"></dd>
+                <dd data-horario class="font-medium text-biblio-charcoal dark:text-biblio-pistachio"></dd>
               </div>
-              <div class="flex gap-2">
-                <dt class="sr-only">Fecha</dt>
-                <dd data-fecha class="muted"></dd>
-              </div>
-              <div class="flex gap-2">
-                <dt class="sr-only">Lugar</dt>
-                <dd data-lugar class="muted"></dd>
-              </div>
-              <div class="flex gap-2">
+              <div data-fila>
                 <dt class="sr-only">A cargo de</dt>
-                <dd data-docente class="muted"></dd>
+                <dd data-tallerista class="text-biblio-charcoal dark:text-biblio-pistachio"></dd>
               </div>
             </dl>
 
-            <p data-descripcion class="muted mt-4 text-sm"></p>
+            <p data-descripcion class="mt-4 text-sm text-biblio-charcoal dark:text-biblio-pistachio"></p>
 
-            <!-- Detalle desplegable en la misma tarjeta: no tapa la página ni
-                 obliga a navegar a otro lado. -->
-            <div data-detalle class="grid grid-rows-cerrado transition-all duration-300" aria-hidden="true">
-              <div class="overflow-hidden">
-                <p data-info class="muted mt-4 border-t border-biblio-pistachio pt-4 text-sm dark:border-biblio-moss"></p>
-              </div>
-            </div>
-
-            <div class="mt-6 flex flex-wrap items-center gap-3 pt-2">
-              <a data-wa href="#" target="_blank" rel="noopener" class="btn btn-primary">Consultar</a>
-              <a data-inscripcion href="#" target="_blank" rel="noopener" class="btn btn-secondary">Inscribirme</a>
-              <button data-detalle-btn type="button" class="min-h-11 text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
-                <span data-detalle-texto>Ver más</span>
-              </button>
+            <div class="mt-auto pt-6">
+              <a data-wa href="#" target="_blank" rel="noopener" class="btn btn-primary">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"></path>
+                </svg>
+                Consultar por WhatsApp
+              </a>
             </div>
           </div>
         </article>

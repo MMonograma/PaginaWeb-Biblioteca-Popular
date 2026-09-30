@@ -61,7 +61,10 @@
 
 @layer components {
   .nav-link {
-    @apply flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-biblio-moss transition;
+    @apply flex min-h-11 items-center rounded-lg px-3 text-sm font-medium whitespace-nowrap text-biblio-moss transition;
+    /* Entre 1024 y 1280 px entran seis ítems + el botón del catálogo sólo si
+       se achica el relleno; si no, "Quiénes Somos" se parte en dos renglones. */
+    @apply lg:px-2 xl:px-3;
     @apply hover:bg-biblio-pistachio/60 hover:text-biblio-charcoal;
     @apply dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
   }
@@ -83,6 +86,11 @@
   .btn-secondary {
     @apply border border-biblio-moss text-biblio-moss hover:bg-biblio-moss hover:text-biblio-paper;
     @apply dark:border-biblio-pistachio dark:text-biblio-pistachio dark:hover:bg-biblio-moss dark:hover:text-biblio-paper;
+  }
+  /* El botón del catálogo en el encabezado, estando en catalogo.html:
+     queda relleno, igual que el subrayado marca la página actual en el menú. */
+  .btn-secondary[aria-current="page"] {
+    @apply bg-biblio-moss text-biblio-paper dark:bg-biblio-moss dark:text-biblio-paper;
   }
   /* Para botones apoyados sobre el verde de marca, donde el fondo ya es oscuro
      en los dos modos y no corresponde invertir nada. */
@@ -172,6 +180,38 @@
     @apply bg-gradient-to-b from-biblio-moss to-biblio-charcoal text-biblio-paper;
   }
 
+  /* --- Pantalla de carga (#app-loader) -----------------------------------
+     Se esconde con opacity + visibility y no con display:none, porque display
+     no se puede animar: así el loader se desvanece en vez de desaparecer de
+     golpe. visibility espera a que termine el fundido para sacarlo del árbol
+     de accesibilidad y dejar de capturar clics.
+
+     Sólo se muestra bajo html.js (la clase la pone loader-libro.js en el
+     <head>). Sin JavaScript, nunca tapa la página. */
+  .app-loader {
+    @apply fixed inset-0 z-[60] grid place-items-center bg-biblio-paper/90 backdrop-blur-sm;
+    @apply dark:bg-biblio-charcoal/90;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  }
+  .js .app-loader[data-visible] {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease;
+    /* Red de seguridad: si algo falla y nadie llama a ocultarLoader(), a los
+       8 segundos se va solo. Las cargas de datos cortan a los 8 s, así que
+       en el uso normal esta animación nunca llega a dispararse. */
+    animation: loader-salida 400ms ease 8s forwards;
+  }
+
+}
+
+@keyframes loader-salida {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 @layer utilities {

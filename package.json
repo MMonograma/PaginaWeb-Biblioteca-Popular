@@ -9,8 +9,7 @@
     "serve": "node servidor-dev.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify",
     "build:html": "node build.js",
-    "build": "npm run build:css && npm run build:html",
-    "demo": "node servidor-dev.js --demo"
+    "build": "npm run build:css && npm run build:html"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

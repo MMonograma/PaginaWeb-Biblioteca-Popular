@@ -66,16 +66,17 @@ export const HORARIOS = {
 export const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
 // Navegación principal. Un solo lugar para el orden y los nombres del menú.
+// Biblio-Interactiva va suelta y no dentro de Proyectos: es la puerta de
+// entrada para chicos y jóvenes, y un submenú la escondía un clic más abajo.
 export const MENU = [
   { texto: "Inicio", url: "index.html" },
   { texto: "Quiénes Somos", url: "quienes-somos.html" },
   { texto: "Noticias", url: "noticias.html" },
   { texto: "Talleres", url: "talleres.html" },
-  { texto: "Catálogo", url: "catalogo.html" },
+  { texto: "Biblio-Interactiva", url: "biblio-interactiva.html" },
   {
     texto: "Proyectos",
     hijos: [
-      { texto: "Biblio-Interactiva", url: "biblio-interactiva.html" },
       { texto: "Extensión Cultural", url: "extension-cultural.html" },
       { texto: "Flotilla Literaria", url: "flotilla-literaria.html" },
       { texto: "Sala de Pensamiento", url: "sala-pensamiento.html" },
@@ -83,16 +84,32 @@ export const MENU = [
   },
 ];
 
+// El catálogo sale del menú de texto y pasa a ser un botón al extremo derecho
+// del encabezado. No se elimina: el botón del hero sólo está en Inicio, y desde
+// cualquier otra página tiene que seguir habiendo un camino al catálogo.
+export const ACCESO_CATALOGO = { texto: "Catálogo", url: "catalogo.html" };
+
+// --- Hoja de talleres ------------------------------------------------------
+// Planilla "Talleres en Pagina web" en Google Drive. El navegador la lee en
+// vivo cada vez que alguien abre la página: no hace falta volver a publicar
+// el sitio para que se vean los cambios.
+//
+// La URL es la que da Google en:
+//   Archivo > Compartir > Publicar en la web > (pestaña de talleres) > CSV
+// Tiene la forma https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=0&single=true&output=csv
+// Mientras esté vacía, el sitio muestra TALLERES_RESPALDO.
+export const HOJA_TALLERES_CSV = "";
+
 // Talleres que ya estaban cargados en el sitio. Se muestran mientras la hoja
-// de cálculo no esté configurada, o si falla la conexión con Google.
-// Los campos son los mismos que las columnas de la hoja.
+// no esté configurada, o si falla la conexión con Google.
+// Los campos son las mismas columnas de la hoja (ver DOCUMENTACION.md).
 export const TALLERES_RESPALDO = [
-  { nombre: "Arte y Literatura", categoria: "Infancias", horario: "Consultar días y horarios", descripcion: "Taller de arte y literatura para las infancias del barrio." },
-  { nombre: "Club del Crochet", categoria: "Anual", horario: "Taller anual", descripcion: "Encuentros para aprender y compartir crochet." },
-  { nombre: "Poesía, Memoria y Expresión", categoria: "Adultxs mayores", horario: "Consultar días y horarios", descripcion: "Un espacio de escritura y memoria para adultxs mayores." },
-  { nombre: "La Juglaría", categoria: "Arte gráfico", horario: "Consultar días y horarios", descripcion: "Taller de arte gráfico." },
-  { nombre: "Viñetas en la biblio", categoria: "Historietas", horario: "Consultar días y horarios", descripcion: "Taller de historietas." },
-  { nombre: "Ciclo de cine", categoria: "Cine", horario: "Último viernes de cada mes", descripcion: "Proyección y charla abierta a la comunidad." },
-  { nombre: "Música y Literatura", categoria: "Infancias", horario: "Consultar días y horarios", descripcion: "Taller de música y literatura para las infancias." },
-  { nombre: "Yoga", categoria: "Cuerpo", horario: "Consultar días y horarios", descripcion: "Clases de yoga abiertas a la comunidad." },
+  { titulo: "Arte y Literatura", categoria: "Infancias", dias_horarios: "Consultar días y horarios", descripcion: "Taller de arte y literatura para las infancias del barrio." },
+  { titulo: "Club del Crochet", categoria: "Anual", dias_horarios: "Taller anual", descripcion: "Encuentros para aprender y compartir crochet." },
+  { titulo: "Poesía, Memoria y Expresión", categoria: "Adultxs mayores", dias_horarios: "Consultar días y horarios", descripcion: "Un espacio de escritura y memoria para adultxs mayores." },
+  { titulo: "La Juglaría", categoria: "Arte gráfico", dias_horarios: "Consultar días y horarios", descripcion: "Taller de arte gráfico." },
+  { titulo: "Viñetas en la biblio", categoria: "Historietas", dias_horarios: "Consultar días y horarios", descripcion: "Taller de historietas." },
+  { titulo: "Ciclo de cine", categoria: "Cine", dias_horarios: "Último viernes de cada mes", descripcion: "Proyección y charla abierta a la comunidad." },
+  { titulo: "Música y Literatura", categoria: "Infancias", dias_horarios: "Consultar días y horarios", descripcion: "Taller de música y literatura para las infancias." },
+  { titulo: "Yoga", categoria: "Cuerpo", dias_horarios: "Consultar días y horarios", descripcion: "Clases de yoga abiertas a la comunidad." },
 ];

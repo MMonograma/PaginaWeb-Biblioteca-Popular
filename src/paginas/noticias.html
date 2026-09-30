@@ -1,6 +1,7 @@
 <!--
   titulo: Noticias | Biblioteca Popular Edgar Morisoli
   descripcion: Novedades, talleres y actividades de la Biblioteca Popular Edgar Morisoli.
+  loader: si
 -->
 
     <section class="border-b border-biblio-pistachio banda-titulo dark:border-biblio-moss">
@@ -12,12 +13,11 @@
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <p class="section-kicker">Al día</p>
-      <!-- tabindex="-1": no entra en el recorrido del tabulador, pero se le
-           puede dar el foco al cambiar de página de la paginación. -->
-      <h2 id="noticias-titulo" tabindex="-1" class="section-title">Novedades y actividades</h2>
-      <p class="section-lead">Acá vamos compartiendo las novedades, talleres y actividades de la biblioteca.</p>
+      <h2 id="noticias-titulo" class="section-title">Novedades y actividades</h2>
+      <p class="section-lead">Las últimas publicaciones de nuestro Instagram, actualizadas dos veces por día.</p>
 
-      <!-- Los cuatro estados posibles de la sección. Sólo uno se ve a la vez. -->
+      <!-- Los tres estados posibles de la sección (cargando, sin datos, error)
+           más la lista. Sólo uno se ve a la vez. -->
 
       <div id="noticias-skeleton" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
         <div class="skeleton h-80"></div>
@@ -38,11 +38,6 @@
         <a href="{{INSTAGRAM}}" target="_blank" rel="noopener" class="btn btn-primary mt-6">Ver nuestro Instagram</a>
       </div>
 
-      <div id="noticias-vacio" class="card mt-10 hidden border-dashed" role="status">
-        <h3 class="font-display text-2xl font-semibold text-biblio-moss dark:text-biblio-paper">Todavía no hay novedades publicadas</h3>
-        <p class="muted mt-3">Volvé a visitarnos pronto: seguimos cargando las actividades de la biblioteca.</p>
-      </div>
-
       <div id="noticias-error" class="card mt-10 hidden border-biblio-sage" role="alert">
         <h3 class="font-display text-2xl font-semibold text-biblio-moss dark:text-biblio-paper">No pudimos cargar las novedades</h3>
         <p class="muted mt-3">
@@ -52,29 +47,26 @@
       </div>
 
       <div id="noticias-lista" class="hidden">
-        <p id="noticias-contador" class="muted mt-8 text-sm" role="status" aria-live="polite"></p>
-        <div id="noticias-grid" class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
-        <nav id="noticias-paginacion" class="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Paginación de noticias"></nav>
+        <div id="noticias-grid" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
       </div>
 
+      <!-- Una publicación de Instagram. Los datos salen de public/data/noticias.json,
+           que genera scripts/sync-instagram.py (ver DOCUMENTACION.md). -->
       <template id="tpl-noticia">
-        <article class="card card-hover flex flex-col overflow-hidden p-0">
+        <article class="card card-hover flex flex-col overflow-hidden border-biblio-pistachio/40 p-0 dark:border-biblio-moss">
+          <h3 data-titulo class="sr-only"></h3>
           <!-- aspect-square reserva el espacio antes de que baje la imagen:
                así la tarjeta no cambia de alto y el texto no salta. -->
-          <div data-medio class="aspect-square overflow-hidden border-b border-biblio-pistachio bg-biblio-pistachio/40 dark:border-biblio-moss dark:bg-biblio-card-dark">
-            <img data-imagen src="" alt="" class="h-full w-full object-cover">
+          <div data-medio class="aspect-square overflow-hidden border-b border-biblio-pistachio/40 bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
+            <img data-imagen src="" alt="" width="640" height="640" loading="lazy" decoding="async" class="h-full w-full object-cover">
           </div>
 
           <div class="flex flex-1 flex-col p-5">
-            <div class="flex flex-wrap items-center gap-2">
-              <span data-categoria class="badge"></span>
-              <time data-fecha class="muted text-sm"></time>
-            </div>
-            <h3 data-titulo class="mt-3 font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper"></h3>
-            <p data-descripcion class="muted mt-2 text-sm"></p>
+            <time data-fecha class="text-sm font-medium text-biblio-sage-oscuro dark:text-biblio-pistachio"></time>
+            <p data-caption class="mt-2 text-sm text-biblio-charcoal dark:text-biblio-pistachio"></p>
             <a data-enlace href="#" target="_blank" rel="noopener"
-               class="mt-4 inline-flex min-h-11 items-center self-start text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
-              <span data-enlace-texto>Ver la publicación</span>
+               class="mt-auto inline-flex min-h-11 items-center gap-1 self-start pt-4 text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
+              Ver en Instagram
             </a>
           </div>
         </article>

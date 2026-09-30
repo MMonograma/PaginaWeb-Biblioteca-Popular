@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+  <!-- Imagen por defecto de los talleres sin foto. Colores de la paleta:
+       pistachio → paper de fondo, moss y sage para el dibujo. -->
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c8d0b7"/>
+      <stop offset="1" stop-color="#f5f3e6"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#fondo)"/>
+  <g fill="none" stroke="#3d4b3e" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M320 130c-30-18-70-22-104-14v120c34-8 74-4 104 14 30-18 70-22 104-14V116c-34-8-74-4-104 14z" fill="#f5f3e6"/>
+    <path d="M320 130v120"/>
+  </g>
+  <g stroke="#6f7f64" stroke-width="4" stroke-linecap="round">
+    <path d="M240 150h56M240 172h56M240 194h44M344 150h56M344 172h56M344 194h44"/>
+  </g>
+</svg>

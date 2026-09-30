@@ -1,0 +1,64 @@
+# Sincroniza las últimas publicaciones de Instagram con la página Noticias.
+#
+# Corre scripts/sync-instagram.py y, si hay publicaciones nuevas, hace un
+# commit con las fotos y el JSON. Ese push dispara el deploy de Vercel.
+#
+# Para correrlo a mano: pestaña Actions > "Sincronizar Instagram" > Run workflow.
+
+name: Sincronizar Instagram
+
+on:
+  schedule:
+    # Los horarios de cron en GitHub son siempre UTC.
+    - cron: "0 12 * * *" # 9:00 en Argentina
+    - cron: "0 21 * * *" # 18:00 en Argentina
+  workflow_dispatch:
+
+# El GITHUB_TOKEN sólo necesita poder escribir el repositorio (para el commit).
+permissions:
+  contents: write
+
+# Si una corrida manual coincide con la programada, la segunda espera a que
+# termine la primera en vez de pisarse los commits.
+concurrency:
+  group: instagram-sync
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Traer el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Versiones fijas: una actualización de instaloader no puede romper la
+      # sincronización sin que nadie la haya probado antes.
+      - name: Instalar dependencias
+        run: pip install "instaloader==4.15.3" "requests==2.34.2"
+
+      - name: Leer Instagram
+        env:
+          # Opcionales. Sin ellos el script consulta de forma anónima,
+          # que Instagram suele rechazar (ver DOCUMENTACION.md).
+          IG_USUARIO: ${{ secrets.IG_USUARIO }}
+          IG_SESION: ${{ secrets.IG_SESION }}
+        run: python scripts/sync-instagram.py
+
+      - name: Guardar cambios
+        run: |
+          git add --all public/noticias public/data 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No hay publicaciones nuevas: no se hace commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Noticias: sincronizar publicaciones de Instagram"
+          git push

@@ -1,5 +1,9 @@
-// Parseo de CSV y normalización de filas.
-// Vive en api/ con guion bajo para que Vercel no lo publique como una ruta.
+// ---------------------------------------------------------------------------
+// CSV → OBJETOS
+//
+// Convierte el CSV que publica Google Sheets en una lista de objetos, uno por
+// fila, con los encabezados de la fila 1 como claves.
+// ---------------------------------------------------------------------------
 
 // Parser propio en vez de una librería: el CSV de Google usa comillas dobles
 // para escapar y esto son treinta líneas sin dependencias que auditar.
@@ -41,10 +45,16 @@ export function parsearCSV(texto) {
   return filas;
 }
 
-// "Días y Horarios" -> "diasyhorarios", para que el nombre de la columna
-// en la hoja no dependa de mayúsculas, tildes ni espacios.
+// "Días y Horarios", "dias_horarios" y "DIAS HORARIOS" terminan todos en
+// "diashorarios": el nombre de la columna no depende de mayúsculas, tildes,
+// espacios ni guiones bajos.
 export const normalizarClave = (s) =>
-  s.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+  String(s).trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+
+// Aplica normalizarClave a las claves de un objeto que ya existe
+// (por ejemplo, los talleres de respaldo escritos a mano).
+export const normalizarFila = (obj) =>
+  Object.fromEntries(Object.entries(obj).map(([k, v]) => [normalizarClave(k), String(v ?? "").trim()]));
 
 export function filasAObjetos(texto) {
   const filas = parsearCSV(texto).filter((f) => f.some((c) => c.trim() !== ""));
@@ -57,22 +67,5 @@ export function filasAObjetos(texto) {
       if (clave) obj[clave] = (fila[i] ?? "").trim();
     });
     return obj;
-  });
-}
-
-// Una fila se publica salvo que diga explícitamente que no.
-const NEGATIVOS = new Set(["no", "false", "0", "oculto", "borrador", "n"]);
-export const estaPublicada = (fila) => {
-  const v = (fila.publicado ?? fila.estado ?? "").toLowerCase().trim();
-  return v === "" || !NEGATIVOS.has(v);
-};
-
-// Ordena por la columna "orden" si existe; si no, por fecha descendente.
-export function ordenar(filas) {
-  return [...filas].sort((a, b) => {
-    const oa = Number(a.orden);
-    const ob = Number(b.orden);
-    if (Number.isFinite(oa) && Number.isFinite(ob) && oa !== ob) return oa - ob;
-    return String(b.fecha ?? "").localeCompare(String(a.fecha ?? ""));
   });
 }

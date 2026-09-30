@@ -60,7 +60,64 @@
 {{CATALOGO_DESTACADO}}
     </section>
 
-    <section class="banda-clara py-16 sm:py-20">
+    <!-- LECTURA VIRTUAL 24/7
+         La biblioteca abre martes a viernes; esta sección es para leer el resto
+         del tiempo. Las tarjetas salen de src/datos/lectura.js (build.js las
+         las inserta en los dos marcadores LECTURA_ de abajo). -->
+    <section id="lectura-virtual" aria-labelledby="lectura-titulo" class="banda-clara py-16 sm:py-20">
+      <div class="mx-auto max-w-7xl px-4">
+        <p class="section-kicker">Abierta siempre</p>
+        <h2 id="lectura-titulo" class="section-title">Lectura virtual 24/7</h2>
+        <p class="section-lead">
+          Cuando la biblioteca está cerrada, la lectura sigue. Te dejamos textos y bibliotecas digitales
+          gratuitas para leer desde el celular o la compu, a cualquier hora.
+        </p>
+
+        <div class="mt-12">
+          <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Rincón Pampeano / Edgar Morisoli</h3>
+          <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+            Poesía y textos de Edgar Morisoli, que le da nombre a esta biblioteca, y de otros autores de La Pampa.
+          </p>
+          {{LECTURA_PAMPEANA}}
+        </div>
+
+        <div class="mt-14">
+          <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Bibliotecas digitales gratuitas</h3>
+          <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+            Catálogos y colecciones públicas para leer en línea, sin registrarte ni pagar.
+          </p>
+          {{LECTURA_BIBLIOTECAS}}
+        </div>
+
+        <!-- VISOR DE LECTURA EN PANTALLA (preparado, todavía sin librería)
+             Acá va a ir un visor para leer sin descargar nada:
+               - PDF.js (Mozilla) para PDFs: public/vendor/pdfjs/ + un <canvas>.
+               - StPageFlip si se quiere efecto de pasar la hoja.
+             Los PDF tienen que estar en el propio sitio (public/lecturas/):
+             la CSP (connect-src) no deja leer archivos de otros dominios, y
+             así tampoco dependemos de que otro sitio siga en pie.
+             Igual que Pannellum, la librería se copia a public/vendor/ y se
+             carga sólo cuando alguien abre una lectura. -->
+        <div id="visor-lectura" class="card mt-14 border-dashed border-biblio-pistachio/40 dark:border-biblio-moss" role="region" aria-labelledby="visor-lectura-titulo">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <svg class="h-10 w-10 shrink-0 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="6" y="2" width="12" height="20" rx="2"></rect>
+              <path d="M9 7h6M9 11h6M9 15h4"></path>
+            </svg>
+            <div>
+              <p class="section-kicker">Próximamente</p>
+              <h3 id="visor-lectura-titulo" class="mt-1 font-display text-xl font-semibold text-biblio-moss dark:text-biblio-paper">Leé en pantalla, sin descargar</h3>
+              <p class="mt-1 text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+                Estamos preparando un lector para abrir textos directamente desde el celular.
+              </p>
+            </div>
+          </div>
+          <div data-visor-destino class="mt-6 hidden aspect-[3/4] w-full overflow-hidden rounded-xl sm:aspect-[4/3]"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="border-t border-biblio-pistachio py-16 sm:py-20 dark:border-biblio-moss">
       <div class="mx-auto max-w-3xl px-4 text-center">
         <h2 class="section-title">¿No encontrás lo que buscás?</h2>
         <p class="section-lead mx-auto">
