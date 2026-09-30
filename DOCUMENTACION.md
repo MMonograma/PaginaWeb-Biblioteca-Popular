@@ -233,7 +233,7 @@ para cuando la biblioteca está cerrada. Los enlaces están en
 
 ## 5. Noticias de Instagram
 
-Las noticias son las últimas **6 publicaciones de
+Las noticias son las últimas **12 publicaciones de
 [@bibliotecaedgarmorisoli](https://www.instagram.com/bibliotecaedgarmorisoli)**,
 copiadas al sitio automáticamente.
 
@@ -248,7 +248,7 @@ GitHub Action (cada 3 horas, de 9 a 21 hs de Argentina)
 - Las fotos se **copian** al sitio porque los enlaces del CDN de Instagram
   vencen a los pocos días.
 - Si no hay publicaciones nuevas, no hay commit (y no hay deploy).
-- Las fotos de publicaciones que ya salieron de las últimas 6 se borran, para
+- Las fotos de publicaciones que ya salieron de las últimas 12 se borran, para
   que el repositorio no crezca para siempre.
 - La página (`public/js/noticias.js`) sólo lee el JSON. No carga nada de
   Instagram ni de Meta en cada visita.

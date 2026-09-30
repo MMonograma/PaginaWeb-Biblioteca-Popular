@@ -37,7 +37,9 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 PERFIL = "bibliotecaedgarmorisoli"
-CANTIDAD = 6
+# 12 es el máximo: es lo que Instagram manda en la página del perfil a quien
+# entra sin sesión. Para ver más habría que desplazarse y eso sí pide login.
+CANTIDAD = 12
 LARGO_RESUMEN = 220
 ARGENTINA = timezone(timedelta(hours=-3))  # sin horario de verano
 
@@ -178,7 +180,7 @@ def main() -> int:
 
         navegador.close()
 
-    # Borra las fotos de publicaciones que ya salieron de las últimas 6,
+    # Borra las fotos de publicaciones que ya salieron de las últimas 12,
     # para que el repositorio no crezca para siempre.
     vigentes = {f"{n['id']}.jpg" for n in noticias}
     for vieja in DIR_FOTOS.glob("*.jpg"):
