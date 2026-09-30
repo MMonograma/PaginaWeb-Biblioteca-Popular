@@ -235,9 +235,13 @@
            (data-fila) para que no queden huecos ni etiquetas sueltas. -->
       <template id="tpl-taller">
         <article class="card card-hover flex flex-col overflow-hidden border-biblio-pistachio/40 p-0 dark:border-biblio-moss">
-          <!-- aspect-[16/9] reserva el alto antes de que baje la foto: la tarjeta no salta. -->
-          <div class="aspect-[16/9] overflow-hidden border-b border-biblio-pistachio/40 bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
-            <img data-foto src="assets/img/taller-predeterminado.svg" alt="" width="640" height="360"
+          <!-- Marco 4:3, la proporción de las fotos de celular y de la mayoría de los
+               flyers. aspect-[4/3] reserva el alto antes de que baje la foto (la
+               tarjeta no salta) y object-cover hace que la imagen llene el marco
+               entero: si la foto tiene otra proporción, se recorta lo que sobra
+               desde el centro, nunca se deforma. -->
+          <div class="aspect-[4/3] overflow-hidden border-b border-biblio-pistachio/40 bg-biblio-pistachio/30 dark:border-biblio-moss dark:bg-biblio-card-dark">
+            <img data-foto src="assets/img/taller-predeterminado.svg" alt="" width="640" height="480"
                  loading="lazy" decoding="async" class="h-full w-full object-cover">
           </div>
 

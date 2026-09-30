@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
 // NOTICIAS — últimas publicaciones de Instagram.
 //
-// No se habla con Instagram desde el navegador. Dos veces por día, una GitHub
-// Action corre scripts/sync-instagram.py, que baja las últimas publicaciones
+// No se habla con Instagram desde el navegador. Cada 3 horas (de 9 a 21), una
+// GitHub Action corre scripts/sync-instagram.py, que baja las últimas publicaciones
 // y deja en el repositorio:
 //   public/data/noticias.json    la lista de publicaciones
 //   public/noticias/{id}.jpg     la foto de cada una, copiada acá porque los

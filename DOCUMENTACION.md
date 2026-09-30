@@ -39,7 +39,7 @@ servidor-dev.js          Servidor local (sirve public/)
 scripts/
   sync-instagram.py      Baja las últimas publicaciones de Instagram
 .github/workflows/
-  instagram-sync.yml     Corre el script de arriba dos veces por día
+  instagram-sync.yml     Corre el script de arriba 5 veces por día
 public/                  ← Lo que se publica. Los .html son GENERADOS.
   js/                    JavaScript del navegador (se edita acá)
   assets/img/            Imágenes
@@ -238,7 +238,7 @@ Las noticias son las últimas **6 publicaciones de
 copiadas al sitio automáticamente.
 
 ```
-GitHub Action (12:00 y 21:00 UTC = 9 y 18 hs)
+GitHub Action (cada 3 horas, de 9 a 21 hs de Argentina)
   └─ scripts/sync-instagram.py  (abre el perfil en un Chromium sin ventana)
        ├─ public/noticias/{shortcode}.jpg   la foto de cada publicación
        └─ public/data/noticias.json         texto resumido, fecha y enlace

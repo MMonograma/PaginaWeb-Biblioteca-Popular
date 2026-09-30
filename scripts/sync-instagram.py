@@ -1,8 +1,8 @@
 """
 Sincroniza las últimas publicaciones de Instagram de la biblioteca.
 
-Lo corre la GitHub Action .github/workflows/instagram-sync.yml dos veces por
-día. También se puede correr a mano:
+Lo corre la GitHub Action .github/workflows/instagram-sync.yml cada 3 horas,
+de 9 a 21 hs. También se puede correr a mano:
 
     pip install playwright
     python -m playwright install chromium
@@ -187,7 +187,7 @@ def main() -> int:
 
     # Sólo se reescribe el JSON si cambió el contenido. Si se escribiera
     # siempre (con una fecha de "actualizado" nueva), habría un commit y un
-    # deploy dos veces por día aunque no hubiera nada nuevo.
+    # deploy en cada corrida aunque no hubiera nada nuevo.
     anterior = None
     if ARCHIVO_JSON.exists():
         try:

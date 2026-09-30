@@ -9,9 +9,12 @@ name: Sincronizar Instagram
 
 on:
   schedule:
-    # Los horarios de cron en GitHub son siempre UTC.
-    - cron: "0 12 * * *" # 9:00 en Argentina
-    - cron: "0 21 * * *" # 18:00 en Argentina
+    # Cada 3 horas, de 9 a 21 en Argentina: 5 veces por día.
+    # Los horarios de cron en GitHub son siempre UTC, y Argentina es UTC-3
+    # todo el año: 9, 12, 15, 18 y 21 hs de acá = 12, 15, 18, 21 y 0 UTC.
+    # Se eligió un ritmo bajo a propósito: muchas visitas automáticas seguidas
+    # es lo que hace que Instagram empiece a pedir inicio de sesión.
+    - cron: "0 0,12,15,18,21 * * *"
   workflow_dispatch:
 
 # El GITHUB_TOKEN sólo necesita poder escribir el repositorio (para el commit).
