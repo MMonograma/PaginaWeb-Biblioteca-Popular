@@ -132,8 +132,9 @@ Si una celda está vacía, esa línea directamente no aparece en la tarjeta.
 4. Pegarla en `src/datos/sitio.js`, en `HOJA_TALLERES_CSV`.
 5. `npm run build`, commit y push.
 
-Mientras `HOJA_TALLERES_CSV` esté vacía, o si Google no responde, el sitio
-muestra `TALLERES_RESPALDO` (los talleres escritos en `sitio.js`).
+**Ya está publicada** (desde el 2026-09-30) y la URL está cargada en `sitio.js`.
+Si Google no responde, el sitio muestra `TALLERES_RESPALDO` (los talleres
+escritos en `sitio.js`) y un aviso.
 
 ### 3.3 Fotos desde Google Drive
 
@@ -238,7 +239,7 @@ copiadas al sitio automáticamente.
 
 ```
 GitHub Action (12:00 y 21:00 UTC = 9 y 18 hs)
-  └─ scripts/sync-instagram.py
+  └─ scripts/sync-instagram.py  (abre el perfil en un Chromium sin ventana)
        ├─ public/noticias/{shortcode}.jpg   la foto de cada publicación
        └─ public/data/noticias.json         texto resumido, fecha y enlace
   └─ si hubo cambios: commit + push  ──▶  Vercel publica solo
@@ -254,45 +255,29 @@ GitHub Action (12:00 y 21:00 UTC = 9 y 18 hs)
 - Para correrlo a mano: pestaña **Actions → Sincronizar Instagram → Run
   workflow**.
 
-### 5.1 Instagram rechaza las consultas anónimas: hace falta una sesión
+### 5.1 Por qué un navegador sin ventana (y no una API)
 
-Probado el 2026-09-30: sin sesión, Instagram responde `401 — Please wait a few
-minutes before you try again`, incluso desde una conexión hogareña. Desde los
-servidores de GitHub es todavía más frecuente. Cuando pasa, el script **no
-toca nada** (el sitio sigue con lo último bueno) y deja un aviso amarillo en
-el resumen de la Action.
+- La API simple de Instagram (Basic Display) la apagó Meta en diciembre de 2024.
+  La que queda (Graph API) exige cuenta Business, una app registrada en Meta y
+  un token que vence cada 60 días.
+- Las consultas directas a la API interna (lo que hace instaloader) ahora
+  responden `401 require_login` sin sesión. Probado el 2026-09-30.
+- **Pero el perfil público se sigue viendo en un navegador sin iniciar sesión.**
+  Instagram manda las últimas 12 publicaciones dentro de la propia página
+  (en un bloque JSON). El script abre el perfil con Playwright, un Chromium sin
+  ventana, y lee ese bloque. No hay contraseña, sesión ni token que mantener.
+- La página no trae la fecha de cada publicación, pero el ID numérico (`pk`)
+  la tiene adentro: `(pk >> 23) + 1314220021721` da los milisegundos del
+  momento en que se publicó.
 
-La solución es darle al script una **sesión iniciada**. La contraseña se
-escribe una sola vez en tu computadora y no se guarda en ningún lado: sólo se
-guarda la sesión, que se revoca cerrando sesión en Instagram.
+**Qué puede fallar:** si Instagram cambia cómo arma esa página, o empieza a
+pedir inicio de sesión a los servidores de GitHub. En los dos casos el script
+no toca nada, el sitio sigue mostrando lo último bueno y la Action deja un
+aviso amarillo ("Instagram no mandó publicaciones…"). Si ese aviso se repite
+varios días seguidos, hay que revisar el script.
 
-```bash
-pip install instaloader
-instaloader --login bibliotecaedgarmorisoli
-```
-
-Pide la contraseña (y el código, si la cuenta tiene verificación en dos pasos)
-y guarda un archivo de sesión; al terminar muestra dónde. Después, en
-PowerShell:
-
-```powershell
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("RUTA\AL\ARCHIVO\DE\SESION"))
-```
-
-En GitHub: **Settings → Secrets and variables → Actions → New repository
-secret**, y crear dos:
-
-| Secreto | Valor |
-|---|---|
-| `IG_USUARIO` | `bibliotecaedgarmorisoli` |
-| `IG_SESION` | el texto base64 del paso anterior |
-
-Las sesiones duran meses, pero no para siempre: si la Action vuelve a mostrar
-el aviso del 401, hay que repetir estos pasos.
-
-> Instagram no permite oficialmente la lectura automatizada. Con dos consultas
-> por día sobre la propia cuenta el riesgo es bajo, pero no es cero: si algún
-> día Instagram pide verificar la cuenta, es por esto.
+> Instagram no permite oficialmente la lectura automatizada. Con dos visitas
+> por día al perfil público de la propia biblioteca el riesgo es mínimo.
 
 ### 5.2 Formato de `noticias.json`
 
@@ -432,8 +417,8 @@ horizontales en 375 px.
 - `connect-src` permite, además del propio sitio, sólo a Google (para leer la
   planilla). `script-src` sigue siendo sólo `'self'`: por eso Pannellum está
   copiado en `public/vendor/` y no enlazado a un CDN.
-- No hay ninguna clave ni token en el código del navegador. La sesión de
-  Instagram vive sólo en los secretos de GitHub.
+- No hay ninguna clave ni token: ni en el código del navegador ni en GitHub.
+  La sincronización de Instagram lee el perfil público sin iniciar sesión.
 
 ---
 

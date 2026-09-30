@@ -27,7 +27,7 @@ concurrency:
 jobs:
   sincronizar:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Traer el repositorio
@@ -38,22 +38,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      # Versiones fijas: una actualización de instaloader no puede romper la
+      # Versión fija: una actualización de Playwright no puede romper la
       # sincronización sin que nadie la haya probado antes.
-      - name: Instalar dependencias
-        run: pip install "instaloader==4.15.3" "requests==2.34.2"
+      # --with-deps instala también las librerías del sistema que necesita
+      # Chromium en Ubuntu.
+      - name: Instalar Playwright y Chromium
+        run: |
+          pip install "playwright==1.63.0"
+          python -m playwright install --with-deps chromium
 
       - name: Leer Instagram
-        env:
-          # Opcionales. Sin ellos el script consulta de forma anónima,
-          # que Instagram suele rechazar (ver DOCUMENTACION.md).
-          IG_USUARIO: ${{ secrets.IG_USUARIO }}
-          IG_SESION: ${{ secrets.IG_SESION }}
         run: python scripts/sync-instagram.py
 
       - name: Guardar cambios
         run: |
-          git add --all public/noticias public/data 2>/dev/null || true
+          git add --all public/noticias public/data
           if git diff --cached --quiet; then
             echo "No hay publicaciones nuevas: no se hace commit."
             exit 0

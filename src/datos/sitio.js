@@ -98,7 +98,8 @@ export const ACCESO_CATALOGO = { texto: "Catálogo", url: "catalogo.html" };
 //   Archivo > Compartir > Publicar en la web > (pestaña de talleres) > CSV
 // Tiene la forma https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?gid=0&single=true&output=csv
 // Mientras esté vacía, el sitio muestra TALLERES_RESPALDO.
-export const HOJA_TALLERES_CSV = "";
+export const HOJA_TALLERES_CSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRnsDryGZkMAMjsEVyPkUZ5gMEm-39vi9gitxJE92Bz9Y9adGDFWaD9glKl91tN8LM9qO5HouyIlQPp/pub?gid=0&single=true&output=csv";
 
 // Talleres que ya estaban cargados en el sitio. Se muestran mientras la hoja
 // no esté configurada, o si falla la conexión con Google.
