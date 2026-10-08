@@ -180,38 +180,33 @@
     @apply bg-gradient-to-b from-biblio-moss to-biblio-charcoal text-biblio-paper;
   }
 
-  /* --- Pantalla de carga (#app-loader) -----------------------------------
-     Se esconde con opacity + visibility y no con display:none, porque display
-     no se puede animar: así el loader se desvanece en vez de desaparecer de
-     golpe. visibility espera a que termine el fundido para sacarlo del árbol
-     de accesibilidad y dejar de capturar clics.
-
-     Sólo se muestra bajo html.js (la clase la pone loader-libro.js en el
-     <head>). Sin JavaScript, nunca tapa la página. */
-  .app-loader {
-    @apply fixed inset-0 z-[60] grid place-items-center bg-biblio-paper/90 backdrop-blur-sm;
-    @apply dark:bg-biblio-charcoal/90;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 400ms ease, visibility 0s linear 400ms;
+  /* --- Loader de sección (libro animado chico) ---------------------------
+     Va encima de los bloques grises de carga de talleres y noticias, y se va
+     con ellos cuando llegan los datos. Sólo bajo html.js: sin JavaScript los
+     datos nunca llegan, y un libro girando para siempre confundiría. */
+  .loader-seccion {
+    @apply pointer-events-none absolute inset-0 hidden place-items-start justify-items-center pt-5;
   }
-  .js .app-loader[data-visible] {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 400ms ease;
-    /* Red de seguridad: si algo falla y nadie llama a ocultarLoader(), a los
-       8 segundos se va solo. Las cargas de datos cortan a los 8 s, así que
-       en el uso normal esta animación nunca llega a dispararse. */
-    animation: loader-salida 400ms ease 8s forwards;
+  .js .loader-seccion {
+    @apply grid;
+  }
+  .loader-libro {
+    @apply flex flex-col items-center gap-1 rounded-2xl bg-biblio-paper/85 px-5 pt-2 pb-3 shadow-sm;
+    @apply dark:bg-biblio-charcoal/85;
   }
 
-}
-
-@keyframes loader-salida {
-  to {
-    opacity: 0;
-    visibility: hidden;
+  /* --- Próximamente ---------------------------------------------------------
+     Para todo lo que todavía no está listo para publicarse. Un solo estilo en
+     todo el sitio, así se reconoce enseguida. */
+  .badge-proximamente {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-dashed border-biblio-sage px-3 py-1 text-xs font-semibold tracking-[0.15em] text-biblio-sage-oscuro uppercase;
+    @apply dark:border-biblio-moss-claro dark:text-biblio-pistachio;
   }
+  .card-proximamente {
+    @apply rounded-2xl border border-dashed border-biblio-sage bg-biblio-pistachio/20 p-6 sm:p-8;
+    @apply dark:border-biblio-moss dark:bg-biblio-card-dark/60;
+  }
+
 }
 
 @layer utilities {

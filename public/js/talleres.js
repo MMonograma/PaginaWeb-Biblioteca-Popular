@@ -59,24 +59,71 @@ function enlaceWhatsApp(numero, titulo) {
   return `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
 }
 
-const estaActivo = (fila) => !("activo" in fila) || AFIRMATIVOS.has(fila.activo.toLowerCase());
+// "proximamente" (o "en construccion") en la columna activo = el taller se
+// muestra como anticipo: tarjeta de "Próximamente", sin horario ni WhatsApp.
+const sinTildes = (s) => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+const PALABRAS_PROXIMAMENTE = /proximamente|en construccion|en preparacion/;
+
+const estaActivo = (fila) =>
+  !("activo" in fila) || AFIRMATIVOS.has(fila.activo.toLowerCase()) || PALABRAS_PROXIMAMENTE.test(sinTildes(fila.activo));
+
+// Textos de la fila de ejemplo de la planilla ("TITULO", "Nombre de
+// Tallerista", "Descripcion"...). Si una celda trae sólo eso, se toma como
+// vacía: así una fila de plantilla nunca se publica como si fuera un taller.
+const TEXTOS_DE_EJEMPLO = new Set([
+  "titulo", "categoria", "categorias", "horario", "horarios", "dias y horarios", "dias_horarios",
+  "tallerista", "nombre de tallerista", "nombre del tallerista", "descripcion", "foto", "foto_url",
+  "contacto", "contacto_wsp", "-", "x",
+]);
+const real = (valor) => {
+  const v = String(valor ?? "").trim();
+  return TEXTOS_DE_EJEMPLO.has(sinTildes(v)) ? "" : v;
+};
+
+// Saca del título las marcas de "en construcción" y la palabra de ejemplo
+// "TITULO": "TITULO - En Construccion" queda vacío, "Ajedrez (próximamente)"
+// queda "Ajedrez".
+function limpiarTitulo(titulo) {
+  return real(
+    String(titulo ?? "")
+      .replace(/[-–—(]*\s*(pr[oó]ximamente|en construcci[oó]n|en preparaci[oó]n)\s*\)?/gi, "")
+      .replace(/^\s*t[ií]tulo\b\s*[-–—:]?\s*/i, "")
+      .trim()
+  );
+}
 
 // Las claves ya vienen normalizadas: "dias_horarios" → "diashorarios".
 // Se aceptan también los nombres de la hoja anterior (nombre, horario,
 // docente, imagen) para que una planilla vieja no deje de funcionar.
 function aTaller(fila) {
+  const tituloOriginal = fila.titulo || fila.nombre || "";
+  const titulo = limpiarTitulo(tituloOriginal);
+  // Es un anticipo si la hoja lo marca así, o si es la fila de ejemplo de la
+  // planilla (título vacío después de limpiar "TITULO - En Construccion").
+  const proximamente =
+    PALABRAS_PROXIMAMENTE.test(sinTildes(fila.activo)) ||
+    PALABRAS_PROXIMAMENTE.test(sinTildes(tituloOriginal)) ||
+    (!titulo && Boolean(tituloOriginal.trim()));
+
   return {
-    titulo: fila.titulo || fila.nombre || "",
-    categoria: fila.categoria || "",
-    horario: fila.diashorarios || fila.horario || "",
-    tallerista: fila.tallerista || fila.docente || "",
-    descripcion: fila.descripcion || "",
-    foto: urlDeImagen(fila.fotourl || fila.imagen),
+    titulo,
+    proximamente,
+    categoria: real(fila.categoria),
+    horario: real(fila.diashorarios || fila.horario),
+    tallerista: real(fila.tallerista || fila.docente),
+    descripcion: real(fila.descripcion),
+    foto: urlDeImagen(real(fila.fotourl || fila.imagen)),
     whatsapp: numeroWhatsApp(fila.contactowsp),
   };
 }
 
-const prepararTalleres = (filas) => filas.filter(estaActivo).map(aTaller).filter((t) => t.titulo);
+// Los talleres confirmados primero; los anticipos ("Próximamente") al final.
+const prepararTalleres = (filas) =>
+  filas
+    .filter(estaActivo)
+    .map(aTaller)
+    .filter((t) => t.titulo || t.proximamente)
+    .sort((a, b) => Number(a.proximamente) - Number(b.proximamente));
 
 // --- Lectura de la planilla -------------------------------------------------
 
@@ -118,6 +165,7 @@ function texto(nodo, selector, valor) {
 
 function tarjetaTaller(taller, plantilla) {
   const nodo = plantilla.content.cloneNode(true);
+  if (taller.proximamente) return tarjetaProximamente(taller, nodo);
 
   texto(nodo, "[data-categoria]", taller.categoria);
   texto(nodo, "[data-titulo]", taller.titulo);
@@ -142,6 +190,43 @@ function tarjetaTaller(taller, plantilla) {
     wa.setAttribute("aria-label", `Consultar por WhatsApp sobre el taller ${taller.titulo} (se abre en una pestaña nueva)`);
   }
 
+  return nodo;
+}
+
+// Anticipo de un taller que todavía no arrancó (o fila de ejemplo de la hoja):
+// misma tarjeta, pero con la etiqueta "Próximamente", sin horario, sin
+// tallerista de ejemplo y sin botón de WhatsApp.
+function tarjetaProximamente(taller, nodo) {
+  const etiqueta = nodo.querySelector("[data-categoria]");
+  if (etiqueta) {
+    etiqueta.className = "badge-proximamente mb-3 self-start";
+    etiqueta.textContent = "Próximamente";
+  }
+  texto(nodo, "[data-titulo]", taller.titulo || "Nuevo taller");
+  texto(nodo, "[data-horario]", "");
+  texto(nodo, "[data-tallerista]", taller.tallerista && `A cargo de ${taller.tallerista}`);
+  texto(
+    nodo,
+    "[data-descripcion]",
+    taller.descripcion || "Estamos preparando una nueva propuesta. Muy pronto vas a encontrar acá los días y horarios."
+  );
+
+  const foto = nodo.querySelector("[data-foto]");
+  if (foto && taller.foto) {
+    foto.addEventListener("error", () => { foto.src = FOTO_PREDETERMINADA; foto.alt = ""; }, { once: true });
+    foto.src = taller.foto;
+    foto.alt = `Foto del taller ${taller.titulo}`;
+  }
+
+  // El botón vive solo o dentro de un contenedor propio: se saca el que lo envuelve.
+  const wa = nodo.querySelector("[data-wa]");
+  (wa?.closest(".pt-6") ?? wa)?.remove();
+
+  // Sin horario ni tallerista, la lista de datos queda vacía: se saca para
+  // que no deje un hueco entre el título y la descripción.
+  for (const dl of nodo.querySelectorAll("dl")) if (!dl.children.length) dl.remove();
+
+  nodo.firstElementChild?.classList.add("border-dashed");
   return nodo;
 }
 

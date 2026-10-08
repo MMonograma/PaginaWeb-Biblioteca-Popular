@@ -1,11 +1,12 @@
-  <!-- PANTALLA DE CARGA
-       Se ve desde el primer pintado en las páginas que traen datos de afuera
-       (talleres y noticias) y se va cuando esos datos ya están en el DOM.
-       La maneja js/loader-libro.js con mostrarLoader() y ocultarLoader().
-       Sin JavaScript no aparece nunca: sólo se muestra bajo html.js. -->
-  <div id="app-loader" class="app-loader"{{LOADER_VISIBLE}}>
-    <div role="status" aria-label="Cargando" class="flex flex-col items-center gap-3">
-      <svg viewBox="30 14 140 142" class="w-48 h-48 overflow-visible" aria-hidden="true">
+<!-- LOADER CHICO (libro que sale del estante, se abre y pasa las hojas)
+     build.js lo inserta donde una página escribe el marcador LOADER_LIBRO
+     entre llaves dobles: va dentro de los bloques grises de carga de cada
+     sección que trae datos de afuera (talleres, noticias), y desaparece junto
+     con ellos cuando llegan los datos. El resto de la página se ve al instante.
+     Sin JavaScript no se muestra (sólo aparece bajo html.js). -->
+<div class="loader-seccion">
+  <div class="loader-libro" role="status" aria-label="Cargando">
+    <svg viewBox="30 14 140 142" class="h-20 w-20 overflow-visible" aria-hidden="true">
         <ellipse class="fill-black" cx="102" cy="153" rx="58" ry="3" opacity=".12"></ellipse>
         <rect class="fill-emerald-700" x="52" y="92" width="12" height="48" rx="3"></rect>
         <rect class="fill-white" x="55" y="94" width="2.5" height="44" rx="1.2" opacity=".18"></rect>
@@ -86,6 +87,6 @@
         <rect class="fill-amber-800" x="40" y="140" width="124" height="9" rx="4.5"></rect>
         <rect class="fill-amber-600" x="44" y="140" width="116" height="2" rx="1"></rect>
       </svg>
-      <span class="text-xs font-medium tracking-[0.2em] uppercase text-biblio-sage-oscuro motion-safe:animate-pulse dark:text-biblio-moss-claro">Cargando</span>
-    </div>
+    <span class="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-biblio-sage-oscuro motion-safe:animate-pulse dark:text-biblio-moss-claro">Cargando</span>
   </div>
+</div>

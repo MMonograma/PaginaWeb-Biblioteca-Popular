@@ -8,6 +8,12 @@
 // El catálogo completo vive en DigiBepé; esto es una vidriera.
 // ---------------------------------------------------------------------------
 
+// Mientras esté en false, la página muestra un recuadro de "Próximamente" en
+// lugar de esta lista: los títulos todavía no son la selección oficial de la
+// biblioteca. Cuando la biblioteca la confirme, se pone en true y se corre
+// `npm run build`.
+export const CATALOGO_DESTACADO_PUBLICADO = false;
+
 export const CATALOGO_DESTACADO = [
   {
     seccion: "Literatura contemporánea",

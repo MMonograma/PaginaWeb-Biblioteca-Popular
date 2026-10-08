@@ -1,7 +1,6 @@
 <!--
   titulo: Noticias | Biblioteca Popular Edgar Morisoli
   descripcion: Novedades, talleres y actividades de la Biblioteca Popular Edgar Morisoli.
-  loader: si
 -->
 
     <section class="border-b border-biblio-pistachio banda-titulo dark:border-biblio-moss">
@@ -19,10 +18,11 @@
       <!-- Los tres estados posibles de la sección (cargando, sin datos, error)
            más la lista. Sólo uno se ve a la vez. -->
 
-      <div id="noticias-skeleton" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
-        <div class="skeleton h-80"></div>
-        <div class="skeleton h-80"></div>
-        <div class="skeleton h-80"></div>
+      <div id="noticias-skeleton" class="relative mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="skeleton h-80" aria-hidden="true"></div>
+        <div class="skeleton h-80" aria-hidden="true"></div>
+        <div class="skeleton h-80" aria-hidden="true"></div>
+        {{LOADER_LIBRO}}
       </div>
 
       <div id="noticias-sin-configurar" class="card mt-10 hidden border-dashed" role="status">

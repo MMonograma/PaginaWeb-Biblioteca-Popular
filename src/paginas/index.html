@@ -1,14 +1,18 @@
 <!--
   titulo: Biblioteca Popular Edgar Morisoli
   descripcion: Biblioteca Popular Edgar Morisoli — Santa Rosa, La Pampa. Lectura, talleres y cultura para toda la comunidad.
-  loader: si
 -->
 
     <section class="relative isolate overflow-hidden bg-biblio-moss text-biblio-paper">
       <!-- La foto va a opacidad plena y el verde encima: así la imagen se ve,
            pero el texto blanco mantiene el contraste que pide WCAG AA. -->
-      <img src="assets/img/hero-bg.png" alt="" data-optional
-           width="1672" height="941"
+      <!-- Es el elemento más grande de la pantalla (el LCP de Lighthouse): va en
+           WebP liviano, con versión chica para celular, y con prioridad alta
+           para que el navegador la pida antes que el resto. -->
+      <img src="assets/img/hero-bg-1600.webp"
+           srcset="assets/img/hero-bg-800.webp 800w, assets/img/hero-bg-1600.webp 1600w"
+           sizes="100vw" alt="" data-optional
+           width="1600" height="900" fetchpriority="high" decoding="async"
            class="absolute inset-0 -z-20 h-full w-full object-cover">
       <div class="absolute inset-0 -z-10 bg-gradient-to-b from-biblio-charcoal/85 via-biblio-moss/80 to-biblio-moss/90"></div>
 
@@ -68,33 +72,29 @@
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <p class="section-kicker">Novedades</p>
       <h2 class="section-title">Novedades literarias</h2>
-      <p class="section-lead">Los últimos títulos que sumamos a nuestros estantes.</p>
+      <div class="card-proximamente mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" role="status">
+        <svg class="h-10 w-10 shrink-0 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2h12M6 22h12M7 2c0 5 5 6 5 10s-5 5-5 10M17 2c0 5-5 6-5 10s5 5 5 10"></path>
+          </svg>
+        <div>
+          <p class="badge-proximamente">Próximamente</p>
+          <p class="mt-3 max-w-2xl text-biblio-charcoal dark:text-biblio-pistachio">Muy pronto vas a ver acá los últimos libros que sumamos a nuestros estantes, con sus tapas. Mientras tanto, podés buscar cualquier título en nuestro catálogo.</p>
+        </div>
+      </div>
 
-      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <li class="card card-hover">
-          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">El buen mal</h3>
-          <p class="muted text-sm">Samanta Schweblin</p>
-        </li>
-        <li class="card card-hover">
-          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La traición de mi lengua</h3>
-          <p class="muted text-sm">Camila Sosa Villada</p>
-        </li>
-        <li class="card card-hover">
-          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">Los jardines de Juana</h3>
-          <p class="muted text-sm">Natalia Bericat</p>
-        </li>
-        <li class="card card-hover">
-          <div class="img-placeholder mb-4 aspect-[2/3]">Foto de tapa del libro (vertical, 2:3)</div>
-          <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">La Vegetariana</h3>
-          <p class="muted text-sm">Han Kang</p>
-        </li>
-      </ul>
+      <!-- PARA PUBLICAR LAS NOVEDADES: reemplazar el recuadro de arriba por una
+           lista como esta, con la foto real de cada tapa (vertical, 2:3).
+        <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="card card-hover">
+            <img src="assets/img/tapas/titulo.webp" alt="Tapa de «Título»" width="400" height="600" loading="lazy" class="mb-4 aspect-[2/3] w-full rounded-xl object-cover">
+            <h3 class="text-lg font-semibold text-biblio-charcoal dark:text-biblio-paper">Título</h3>
+            <p class="muted text-sm">Autor/a</p>
+          </li>
+        </ul>
+      -->
 
       <div class="mt-10">
-        <a href="catalogo.html" class="btn btn-secondary">Ver todo el catálogo</a>
+        <a href="catalogo.html" class="btn btn-secondary">Buscar en el catálogo</a>
       </div>
     </section>
 
@@ -107,9 +107,10 @@
         <!-- Vista breve: el detalle completo vive en talleres.html, que se
              alimenta de la misma hoja de cálculo. -->
         <div id="talleres-destacados" class="mt-10 grid gap-6 sm:grid-cols-2"></div>
-        <div id="talleres-destacados-skeleton" class="mt-10 grid gap-6 sm:grid-cols-2">
+        <div id="talleres-destacados-skeleton" class="relative mt-10 grid gap-6 sm:grid-cols-2">
           <div class="skeleton h-40"></div>
           <div class="skeleton h-40"></div>
+          {{LOADER_LIBRO}}
         </div>
 
         <template id="tpl-taller-breve">
@@ -133,7 +134,12 @@
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div class="img-placeholder aspect-[4/3]">Foto de la biblioteca por dentro o de una actividad (horizontal, 4:3)</div>
+        <img src="assets/img/fachada-1400.webp"
+             srcset="assets/img/fachada-700.webp 700w, assets/img/fachada-1400.webp 1400w"
+             sizes="(min-width: 1024px) 600px, 100vw"
+             alt="Fachada de la Biblioteca Popular Edgar Morisoli"
+             width="1400" height="1050" loading="lazy" decoding="async"
+             class="aspect-[4/3] w-full rounded-2xl object-cover">
         <div>
           <p class="section-kicker">Desde {{ANIO_FUNDACION}}</p>
           <h2 class="section-title">Una biblioteca popular en el corazón de Santa Rosa</h2>

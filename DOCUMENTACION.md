@@ -63,8 +63,8 @@ todas las páginas.
 Todo lo institucional está en **`src/datos/sitio.js`**: horarios, dirección,
 teléfono, correo, redes, registro de CONABIP y el menú.
 
-> Las páginas de `src/paginas/` empiezan con un comentario con `titulo`,
-> `descripcion` y, opcionalmente, `loader: si` (ver §5).
+> Las páginas de `src/paginas/` empiezan con un comentario con `titulo` y
+> `descripcion`.
 
 Ese archivo alimenta a la vez:
 
@@ -111,7 +111,7 @@ son lo mismo.
 | Columna | Para qué sirve |
 |---|---|
 | `id` | Identificador propio. No se muestra. |
-| `activo` | `SI` para mostrar el taller. Cualquier otra cosa (`NO`, vacío, "pausado") lo oculta sin borrar la fila. |
+| `activo` | `SI` para mostrar el taller. `PROXIMAMENTE` lo muestra como anticipo (tarjeta "Próximamente", sin horario ni WhatsApp). Cualquier otra cosa (`NO`, vacío, "pausado") lo oculta sin borrar la fila. |
 | `titulo` | Nombre del taller. **Es el único imprescindible.** |
 | `categoria` | Etiqueta arriba de la tarjeta: "Infancias", "Adultxs mayores"… |
 | `dias_horarios` | Texto libre: "Martes 17 hs", "Último viernes de cada mes". |
@@ -121,6 +121,13 @@ son lo mismo.
 | `contacto_wsp` | WhatsApp de quien da el taller (ver 3.4). Vacío = el de la biblioteca. |
 
 Si una celda está vacía, esa línea directamente no aparece en la tarjeta.
+
+**Filas de ejemplo.** Las celdas que sólo traen el texto de plantilla
+("TITULO", "CATEGORIAS", "Horarios", "Nombre de Tallerista", "Descripcion") se
+toman como vacías, y un título con "En construcción" o "Próximamente" convierte
+la fila en una tarjeta de "Próximamente". Así una fila de ejemplo nunca se
+publica como si fuera un taller real. Los talleres confirmados van siempre
+antes que los anticipos.
 
 ### 3.2 Publicar la hoja y conectarla al sitio (una sola vez)
 
@@ -304,30 +311,59 @@ La fecha va en formato ISO y la página la muestra como "28 de septiembre de
 
 ---
 
-## 6. Pantalla de carga
+## 6. Loaders de sección (el libro animado)
 
-El libro animado vive en `src/parciales/loader.html` y lo maneja
-`public/js/loader-libro.js`, con dos funciones globales:
+El libro animado vive en `src/parciales/loader.html`. `build.js` lo inserta
+donde una página pone el marcador `{{LOADER_LIBRO}}`: hoy está dentro de los
+bloques grises de carga de talleres (Inicio y Talleres) y de noticias.
 
-```js
-mostrarLoader();   // lo muestra (cuenta cuántas cargas hay en curso)
-ocultarLoader();   // se va con un fundido cuando terminó la última
-await loaderLibro.durante(fetch(...));   // atajo: muestra, espera y oculta
-```
+- **No tapa la página.** Antes era una pantalla completa que esperaba a que
+  llegaran los datos de Google Sheets; eso demoraba todo lo que se ve (y bajaba
+  el puntaje de Lighthouse). Ahora la página aparece al instante y el libro sólo
+  ocupa el lugar de lo que falta cargar.
+- **No hay que encenderlo ni apagarlo**: cuando `talleres.js` o `noticias.js`
+  ocultan su bloque de carga, el libro se va con él.
+- **Sin JavaScript no aparece**: el CSS sólo lo muestra bajo `html.js`, una
+  clase que pone `theme.js` en el `<head>`.
+- Con "reducir movimiento" activado en el sistema, el libro queda quieto
+  (`public/js/loader-libro.js`).
 
-- Las páginas con `loader: si` en su cabecera (Inicio, Talleres, Noticias) lo
-  muestran **desde el primer pintado**, y `main.js` lo oculta recién cuando las
-  tarjetas de talleres y noticias ya están en el DOM.
-- **Sin JavaScript no aparece nunca**: el CSS sólo lo muestra bajo `html.js`,
-  una clase que pone `loader-libro.js` en el `<head>`.
-- **Red de seguridad**: si algo falla y nadie llama a `ocultarLoader()`, a los
-  8 segundos se va solo (animación CSS). Las cargas de datos cortan a los 8 s.
-- Con "reducir movimiento" activado en el sistema, el libro queda quieto.
+Para sumar un loader a otra sección que cargue datos: poner `{{LOADER_LIBRO}}`
+dentro de su contenedor de carga y darle `relative` a ese contenedor.
 
-> Ojo con Inicio: el loader tapa toda la página, hero incluido, hasta que llegan
-> los talleres, que están bastante más abajo. Si se nota lento, se saca
-> `loader: si` de `src/paginas/index.html` y los talleres se siguen viendo con
-> sus bloques grises de carga.
+---
+
+## 6.1 Contenido "Próximamente"
+
+Todo lo que todavía no está listo para publicarse se muestra con el mismo
+estilo: la etiqueta `.badge-proximamente` y el recuadro `.card-proximamente`
+(en `src/input.css`). Hoy lo tienen:
+
+| Dónde | Cómo se publica |
+|---|---|
+| Inicio → Novedades literarias | Reemplazar el recuadro por la lista con tapas reales (hay un ejemplo comentado en `src/paginas/index.html`). |
+| Catálogo → Algunos títulos | Poner `CATALOGO_DESTACADO_PUBLICADO = true` en `src/datos/catalogo.js` cuando la biblioteca confirme la selección. |
+| Extensión Cultural → Proyectos y Visitas de escuelas | Reemplazar los recuadros por las tarjetas con fotos. |
+| Flotilla Literaria, Sala de Pensamiento | Páginas enteras en preparación. |
+| Biblio-Interactiva, Rincón Pampeano, visor de lectura | Ver §4 y §7. |
+| Talleres | Desde la planilla: `activo = PROXIMAMENTE` (ver §3.1). |
+
+---
+
+## 6.2 Imágenes
+
+Las fotos se sirven en **WebP** con dos tamaños (`srcset`): el celular baja la
+chica y la computadora la grande. El fondo del inicio pasó de 1,8 MB (PNG) a
+37 KB / 86 KB, y lleva `fetchpriority="high"` porque es lo primero que mide
+Lighthouse (LCP).
+
+Para sumar una foto nueva, convertirla a WebP (por ejemplo en
+<https://squoosh.app>, calidad 70-75) en dos anchos y usar el mismo patrón que
+`hero-bg-800.webp` / `hero-bg-1600.webp` en `src/paginas/index.html`.
+
+Los PNG originales (`hero-bg.png`, `fachada.png`, `fachada-2.png`) y
+`logo-biblioteca.png` (4,8 MB) ya no se usan en ninguna página: se pueden
+borrar del repositorio.
 
 ---
 
@@ -453,7 +489,6 @@ y en Catálogo, los textos del Rincón Pampeano (§4).
 
 ### Ideas para más adelante
 
-- Convertir las imágenes a WebP cuando lleguen las fotos reales.
 - Alojar las tipografías en el propio sitio, para no depender de Google Fonts.
 - Datos estructurados (schema.org `Library`) para que Google muestre horarios y
   dirección en los resultados de búsqueda.

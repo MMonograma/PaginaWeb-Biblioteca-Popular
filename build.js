@@ -5,7 +5,7 @@
 //   src/parciales/layout.html  — el esqueleto común
 //   src/parciales/header.html  — encabezado y menú
 //   src/parciales/footer.html  — pie con los datos de contacto
-//   src/parciales/loader.html  — pantalla de carga (libro animado)
+//   src/parciales/loader.html  — loader chico de sección (libro animado)
 //   src/paginas/*.html         — el contenido propio de cada página
 //   src/datos/sitio.js         — los datos institucionales
 //
@@ -16,7 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
 import { BIBLIOTECA, HORARIOS, DIAS, MENU, ACCESO_CATALOGO } from "./src/datos/sitio.js";
-import { CATALOGO_DESTACADO } from "./src/datos/catalogo.js";
+import { CATALOGO_DESTACADO, CATALOGO_DESTACADO_PUBLICADO } from "./src/datos/catalogo.js";
 import { RINCON_PAMPEANO, BIBLIOTECAS_DIGITALES } from "./src/datos/lectura.js";
 
 const leer = (ruta) => readFileSync(ruta, "utf8");
@@ -147,7 +147,19 @@ const reemplazosFooter = {
 const busquedaEnOPAC = (indice, termino) =>
   `${conabipCatalogoBusqueda}?idx=${indice}&q=${encodeURIComponent(termino)}`;
 
-const catalogoHTML = CATALOGO_DESTACADO.map((seccion) => {
+// --- Recuadro de "Próximamente" ----------------------------------------------
+// El mismo para todo lo que todavía no está listo para publicarse.
+const proximamenteHTML = (texto) => `<div class="card-proximamente mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" role="status">
+        <svg class="h-10 w-10 shrink-0 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 2h12M6 22h12M7 2c0 5 5 6 5 10s-5 5-5 10M17 2c0 5-5 6-5 10s5 5 5 10"></path>
+        </svg>
+        <div>
+          <p class="badge-proximamente">Próximamente</p>
+          <p class="mt-3 max-w-2xl text-biblio-charcoal dark:text-biblio-pistachio">${texto}</p>
+        </div>
+      </div>`;
+
+const catalogoListaHTML = CATALOGO_DESTACADO.map((seccion) => {
   const libros = seccion.libros
     .map(
       (libro) => `          <li>
@@ -169,6 +181,17 @@ ${libros}
       </div>`;
 }).join("\n");
 
+const catalogoHTML = CATALOGO_DESTACADO_PUBLICADO
+  ? `<p class="section-lead">
+        Una selección de lo que vas a encontrar. Tocá cualquier libro para ver su ficha en el catálogo.
+      </p>
+      <div class="mt-10">
+${catalogoListaHTML}
+      </div>`
+  : proximamenteHTML(
+      "Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, usá el buscador de arriba para encontrar cualquier título de nuestros estantes."
+    );
+
 // --- Lectura virtual 24/7 ---------------------------------------------------
 
 const flecha = `<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"></path></svg>`;
@@ -189,8 +212,8 @@ const lecturaPampeanaHTML = RINCON_PAMPEANO.length
   ? `<ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 ${RINCON_PAMPEANO.map((o) => tarjetaLectura({ titulo: o.titulo, subtitulo: o.autor, descripcion: o.descripcion, url: o.url })).join("\n")}
         </ul>`
-  : `<div class="card mt-6 border-dashed border-biblio-pistachio/40 dark:border-biblio-moss" role="status">
-          <p class="section-kicker">En preparación</p>
+  : `<div class="card-proximamente mt-6" role="status">
+          <p class="badge-proximamente">Próximamente</p>
           <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
             Estamos reuniendo poemas y textos de Edgar Morisoli y de otros autores pampeanos que se puedan
             compartir libremente. Mientras tanto, sus libros están en nuestros estantes: buscalos en el catálogo.
@@ -218,6 +241,8 @@ const reemplazosContenido = {
   CATALOGO_DESTACADO: catalogoHTML,
   LECTURA_PAMPEANA: lecturaPampeanaHTML,
   LECTURA_BIBLIOTECAS: bibliotecasDigitalesHTML,
+  // El libro animado chico, para poner dentro de los bloques de carga.
+  LOADER_LIBRO: loader.trim(),
 };
 
 
@@ -248,9 +273,6 @@ for (const archivo of paginas) {
 
   const html = aplicar(
     layout
-      // "loader: si" en la cabecera de la página = el loader se ve desde el
-      // primer pintado, porque esa página trae datos de afuera al cargar.
-      .replace("{{LOADER}}", loader.replace("{{LOADER_VISIBLE}}", meta.loader === "si" ? " data-visible" : ""))
       .replace("{{HEADER}}", headerHTML(archivo))
       .replace("{{FOOTER}}", aplicar(footer, reemplazosFooter))
       .replace("{{CONTENIDO}}", cuerpo.trimEnd())

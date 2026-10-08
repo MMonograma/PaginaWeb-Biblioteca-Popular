@@ -1,7 +1,6 @@
 <!--
   titulo: Talleres | Biblioteca Popular Edgar Morisoli
   descripcion: Talleres y actividades de la Biblioteca Popular Edgar Morisoli, en Santa Rosa, La Pampa. Propuestas para todas las edades.
-  loader: si
 -->
 
     <section class="border-b border-biblio-pistachio banda-titulo dark:border-biblio-moss">
@@ -27,11 +26,12 @@
 
       <!-- Bloques de carga: reservan el alto de las tarjetas reales para que
            el diseño no salte cuando llegan los datos. -->
-      <div id="talleres-skeleton" class="mt-10 grid gap-6 md:grid-cols-2">
+      <div id="talleres-skeleton" class="relative mt-10 grid gap-6 md:grid-cols-2">
         <div class="skeleton h-64"></div>
         <div class="skeleton h-64"></div>
         <div class="skeleton h-64"></div>
         <div class="skeleton h-64"></div>
+        {{LOADER_LIBRO}}
       </div>
 
       <!-- Dos tarjetas por fila en escritorio, una sola en celular. -->
