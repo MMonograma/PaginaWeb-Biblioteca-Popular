@@ -200,6 +200,19 @@ En la página de Catálogo hay un buscador que arma la consulta y abre los
 resultados en una pestaña nueva, más los títulos destacados, que enlazan a la
 búsqueda de ese libro.
 
+### Estado actual: buscador en "Próximamente"
+
+CONABIP todavía no confirmó la dirección del catálogo, así que en
+`src/datos/sitio.js` está `catalogoDisponible: false`. Con eso:
+
+- el buscador se ve **desenfocado**, no se puede usar (`inert`: no recibe
+  clics, foco ni teclado) y tiene encima un cartel de "Próximamente";
+- **no queda ningún enlace a `4124.bepe.ar`** en la página (el párrafo del
+  enlace directo se publica como comentario HTML).
+
+Cuando pasen la dirección: revisar `catalogo` y `catalogoBusqueda` en
+`sitio.js`, poner `catalogoDisponible: true` y correr `npm run build`.
+
 ### Limitación conocida: el catálogo no tiene HTTPS
 
 El servidor de CONABIP responde por `http://`, y su certificado de HTTPS es de

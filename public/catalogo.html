@@ -109,38 +109,54 @@
     <section class="banda-clara border-b border-biblio-pistachio py-12 dark:border-biblio-moss">
       <div class="mx-auto max-w-3xl px-4">
         <h2 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Buscar en el catálogo</h2>
-        <p class="muted mt-2 text-sm">
-          La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
-          Los resultados se abren en una pestaña nueva.
-        </p>
+        <!-- Mientras catalogoDisponible sea false (src/datos/sitio.js), todo este
+             bloque se ve desenfocado, no se puede usar y lleva encima el cartel
+             de "Próximamente". build.js arma los marcadores CATALOGO_*. -->
+        <div class="relative min-h-52">
+          <div class="pointer-events-none select-none blur-[3px] opacity-70" inert aria-hidden="true">
+          <p class="muted mt-2 text-sm">
+            La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
+            Los resultados se abren en una pestaña nueva.
+          </p>
 
-        <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
-              data-catalogo-url="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl">
-          <div class="flex-1">
-            <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
-            <input id="catalogo-q" name="q" type="search" required autocomplete="off"
-                   placeholder="Título, autor o tema" class="field">
-          </div>
-          <div class="sm:w-52">
-            <label for="catalogo-idx" class="sr-only">Buscar por</label>
-            <select id="catalogo-idx" name="idx" class="field">
-              <option value="">En todo el catálogo</option>
-              <option value="ti">Título</option>
-              <option value="au">Autor</option>
-              <option value="su">Materia</option>
-              <option value="nb">ISBN</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+          <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
+                data-catalogo-url="">
+            <div class="flex-1">
+              <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
+              <input id="catalogo-q" name="q" type="search" required autocomplete="off"
+                     placeholder="Título, autor o tema" class="field">
+            </div>
+            <div class="sm:w-52">
+              <label for="catalogo-idx" class="sr-only">Buscar por</label>
+              <select id="catalogo-idx" name="idx" class="field">
+                <option value="">En todo el catálogo</option>
+                <option value="ti">Título</option>
+                <option value="au">Autor</option>
+                <option value="su">Materia</option>
+                <option value="nb">ISBN</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </form>
 
-        <p class="muted mt-4 text-sm">
-          También podés
-          <a href="http://4124.bepe.ar" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
-            entrar directamente al catálogo</a>.
-          Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
-          <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
-        </p>
+          <!-- <p class="muted mt-4 text-sm">
+            También podés
+            <a href="" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
+              entrar directamente al catálogo</a>.
+            Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
+            <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
+          </p> -->
+          </div>
+          <div class="absolute inset-0 grid place-items-center p-4">
+            <div class="card-proximamente max-w-md bg-biblio-paper/95 text-center shadow-lg dark:bg-biblio-charcoal/95" role="status">
+              <p class="badge-proximamente">Próximamente</p>
+              <p class="mt-3 text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+                Muy pronto vas a poder buscar libros en nuestro catálogo desde acá.
+                Mientras tanto, consultanos por correo o acercate a la biblioteca.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -153,7 +169,7 @@
         </svg>
         <div>
           <p class="badge-proximamente">Próximamente</p>
-          <p class="mt-3 max-w-2xl text-biblio-charcoal dark:text-biblio-pistachio">Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, usá el buscador de arriba para encontrar cualquier título de nuestros estantes.</p>
+          <p class="mt-3 max-w-2xl text-biblio-charcoal dark:text-biblio-pistachio">Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, acercate a la biblioteca o escribinos para consultar por un libro.</p>
         </div>
       </div>
     </section>
@@ -180,7 +196,7 @@
           <p class="badge-proximamente">Próximamente</p>
           <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
             Estamos reuniendo poemas y textos de Edgar Morisoli y de otros autores pampeanos que se puedan
-            compartir libremente. Mientras tanto, sus libros están en nuestros estantes: buscalos en el catálogo.
+            compartir libremente. Mientras tanto, sus libros están en nuestros estantes: consultá por ellos en la biblioteca.
           </p>
         </div>
         </div>

@@ -189,7 +189,7 @@ const catalogoHTML = CATALOGO_DESTACADO_PUBLICADO
 ${catalogoListaHTML}
       </div>`
   : proximamenteHTML(
-      "Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, usá el buscador de arriba para encontrar cualquier título de nuestros estantes."
+      "Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, acercate a la biblioteca o escribinos para consultar por un libro."
     );
 
 // --- Lectura virtual 24/7 ---------------------------------------------------
@@ -216,13 +216,49 @@ ${RINCON_PAMPEANO.map((o) => tarjetaLectura({ titulo: o.titulo, subtitulo: o.aut
           <p class="badge-proximamente">Próximamente</p>
           <p class="mt-2 max-w-2xl text-sm text-biblio-charcoal dark:text-biblio-pistachio">
             Estamos reuniendo poemas y textos de Edgar Morisoli y de otros autores pampeanos que se puedan
-            compartir libremente. Mientras tanto, sus libros están en nuestros estantes: buscalos en el catálogo.
+            compartir libremente. Mientras tanto, sus libros están en nuestros estantes: consultá por ellos en la biblioteca.
           </p>
         </div>`;
 
 const bibliotecasDigitalesHTML = `<ul class="mt-6 grid gap-4 sm:grid-cols-2">
 ${BIBLIOTECAS_DIGITALES.map((b) => tarjetaLectura({ titulo: b.nombre, descripcion: b.descripcion, url: b.url })).join("\n")}
         </ul>`;
+
+// --- Buscador del catálogo ---------------------------------------------------
+// Mientras CONABIP no confirme la dirección del catálogo, el buscador se ve
+// desenfocado e inutilizable (inert: no recibe clics, foco ni teclado) con un
+// cartel encima, y no queda ningún enlace a DigiBepé en la página.
+const catalogoListo = conabip.catalogoDisponible === true;
+
+const catalogoBuscador = catalogoListo
+  ? {
+      CATALOGO_URL: conabip.catalogo,
+      CATALOGO_BUSQUEDA: conabip.catalogoBusqueda,
+      CATALOGO_ALTO: "",
+      CATALOGO_BLOQUEO: "",
+      CATALOGO_AVISO: "",
+      CATALOGO_ENLACE_DIRECTO_INICIO: "",
+      CATALOGO_ENLACE_DIRECTO_FIN: "",
+    }
+  : {
+      CATALOGO_URL: "",
+      CATALOGO_BUSQUEDA: "",
+      // Alto mínimo para que el cartel no se salga del bloque en escritorio.
+      CATALOGO_ALTO: " min-h-52",
+      CATALOGO_BLOQUEO: ' class="pointer-events-none select-none blur-[3px] opacity-70" inert aria-hidden="true"',
+      CATALOGO_AVISO: `<div class="absolute inset-0 grid place-items-center p-4">
+            <div class="card-proximamente max-w-md bg-biblio-paper/95 text-center shadow-lg dark:bg-biblio-charcoal/95" role="status">
+              <p class="badge-proximamente">Próximamente</p>
+              <p class="mt-3 text-sm text-biblio-charcoal dark:text-biblio-pistachio">
+                Muy pronto vas a poder buscar libros en nuestro catálogo desde acá.
+                Mientras tanto, consultanos por correo o acercate a la biblioteca.
+              </p>
+            </div>
+          </div>`,
+      // El párrafo con el enlace directo no se publica: queda como comentario.
+      CATALOGO_ENLACE_DIRECTO_INICIO: "<!-- ",
+      CATALOGO_ENLACE_DIRECTO_FIN: " -->",
+    };
 
 // Marcadores disponibles dentro del contenido de cada página.
 const reemplazosContenido = {
@@ -234,8 +270,7 @@ const reemplazosContenido = {
   LAT: dir.lat,
   LON: dir.lon,
   INSTAGRAM_USUARIO: contacto.instagramUsuario,
-  CATALOGO_URL: conabip.catalogo,
-  CATALOGO_BUSQUEDA: conabip.catalogoBusqueda,
+  ...catalogoBuscador,
   FUNDACION: BIBLIOTECA.fundacion,
   ANIO_FUNDACION: BIBLIOTECA.anioFundacion,
   CATALOGO_DESTACADO: catalogoHTML,

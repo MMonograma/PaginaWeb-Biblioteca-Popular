@@ -15,38 +15,46 @@
     <section class="banda-clara border-b border-biblio-pistachio py-12 dark:border-biblio-moss">
       <div class="mx-auto max-w-3xl px-4">
         <h2 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Buscar en el catálogo</h2>
-        <p class="muted mt-2 text-sm">
-          La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
-          Los resultados se abren en una pestaña nueva.
-        </p>
+        <!-- Mientras catalogoDisponible sea false (src/datos/sitio.js), todo este
+             bloque se ve desenfocado, no se puede usar y lleva encima el cartel
+             de "Próximamente". build.js arma los marcadores CATALOGO_*. -->
+        <div class="relative{{CATALOGO_ALTO}}">
+          <div{{CATALOGO_BLOQUEO}}>
+          <p class="muted mt-2 text-sm">
+            La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
+            Los resultados se abren en una pestaña nueva.
+          </p>
 
-        <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
-              data-catalogo-url="{{CATALOGO_BUSQUEDA}}">
-          <div class="flex-1">
-            <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
-            <input id="catalogo-q" name="q" type="search" required autocomplete="off"
-                   placeholder="Título, autor o tema" class="field">
-          </div>
-          <div class="sm:w-52">
-            <label for="catalogo-idx" class="sr-only">Buscar por</label>
-            <select id="catalogo-idx" name="idx" class="field">
-              <option value="">En todo el catálogo</option>
-              <option value="ti">Título</option>
-              <option value="au">Autor</option>
-              <option value="su">Materia</option>
-              <option value="nb">ISBN</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
+          <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
+                data-catalogo-url="{{CATALOGO_BUSQUEDA}}">
+            <div class="flex-1">
+              <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
+              <input id="catalogo-q" name="q" type="search" required autocomplete="off"
+                     placeholder="Título, autor o tema" class="field">
+            </div>
+            <div class="sm:w-52">
+              <label for="catalogo-idx" class="sr-only">Buscar por</label>
+              <select id="catalogo-idx" name="idx" class="field">
+                <option value="">En todo el catálogo</option>
+                <option value="ti">Título</option>
+                <option value="au">Autor</option>
+                <option value="su">Materia</option>
+                <option value="nb">ISBN</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </form>
 
-        <p class="muted mt-4 text-sm">
-          También podés
-          <a href="{{CATALOGO_URL}}" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
-            entrar directamente al catálogo</a>.
-          Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
-          <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
-        </p>
+          {{CATALOGO_ENLACE_DIRECTO_INICIO}}<p class="muted mt-4 text-sm">
+            También podés
+            <a href="{{CATALOGO_URL}}" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
+              entrar directamente al catálogo</a>.
+            Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
+            <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
+          </p>{{CATALOGO_ENLACE_DIRECTO_FIN}}
+          </div>
+          {{CATALOGO_AVISO}}
+        </div>
       </div>
     </section>
 

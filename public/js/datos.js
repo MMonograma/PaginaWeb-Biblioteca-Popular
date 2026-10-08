@@ -39,6 +39,11 @@ export const BIBLIOTECA = {
 
   conabip: {
     registro: "4124",
+    // false = el buscador del catálogo se muestra desenfocado, sin funcionar y
+    // con un cartel de "Próximamente", y no se enlaza a DigiBepé en ningún
+    // lado. Pasarlo a true cuando CONABIP confirme la dirección del catálogo
+    // (y revisar que las dos URL de abajo sean las correctas).
+    catalogoDisponible: false,
     // El subdominio del OPAC es el número de registro CONABIP.
     // Solo HTTP: su certificado es de otro dominio, así que HTTPS da error.
     catalogo: "http://4124.bepe.ar",

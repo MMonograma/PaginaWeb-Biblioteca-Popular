@@ -21,7 +21,12 @@ export function iniciarBuscadorCatalogo() {
   if (!form) return;
 
   const base = form.dataset.catalogoUrl;
-  if (!base) return;
+  // Sin dirección del catálogo (catalogoDisponible: false en sitio.js) el
+  // formulario no hace nada: ni abre DigiBepé ni recarga la página.
+  if (!base) {
+    form.addEventListener("submit", (evento) => evento.preventDefault());
+    return;
+  }
 
   form.addEventListener("submit", (evento) => {
     evento.preventDefault();
