@@ -112,15 +112,15 @@
         <!-- Mientras catalogoDisponible sea false (src/datos/sitio.js), todo este
              bloque se ve desenfocado, no se puede usar y lleva encima el cartel
              de "Próximamente". build.js arma los marcadores CATALOGO_*. -->
-        <div class="relative min-h-52">
-          <div class="pointer-events-none select-none blur-[3px] opacity-70" inert aria-hidden="true">
+        <div class="relative">
+          <div>
           <p class="muted mt-2 text-sm">
             La búsqueda se hace en DigiBepé, el sistema de CONABIP donde está catalogado nuestro acervo.
             Los resultados se abren en una pestaña nueva.
           </p>
 
           <form id="buscador-catalogo" class="mt-6 flex flex-col gap-3 sm:flex-row"
-                data-catalogo-url="">
+                data-catalogo-url="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl">
             <div class="flex-1">
               <label for="catalogo-q" class="sr-only">Qué querés buscar</label>
               <input id="catalogo-q" name="q" type="search" required autocomplete="off"
@@ -139,23 +139,15 @@
             <button type="submit" class="btn btn-primary">Buscar</button>
           </form>
 
-          <!-- <p class="muted mt-4 text-sm">
+          <p class="muted mt-4 text-sm">
             También podés
-            <a href="" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-main.pl" target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">
               entrar directamente al catálogo</a>.
             Es un sitio de CONABIP y todavía no usa HTTPS, así que tu navegador puede avisarte que
             <span class="font-medium">«no es seguro»</span>: no tiene que ver con este sitio y podés consultarlo igual.
-          </p> -->
+          </p>
           </div>
-          <div class="absolute inset-0 grid place-items-center p-4">
-            <div class="card-proximamente max-w-md bg-biblio-paper/95 text-center shadow-lg dark:bg-biblio-charcoal/95" role="status">
-              <p class="badge-proximamente">Próximamente</p>
-              <p class="mt-3 text-sm text-biblio-charcoal dark:text-biblio-pistachio">
-                Muy pronto vas a poder buscar libros en nuestro catálogo desde acá.
-                Mientras tanto, consultanos por correo o acercate a la biblioteca.
-              </p>
-            </div>
-          </div>
+          
         </div>
       </div>
     </section>
@@ -163,15 +155,1168 @@
     <section class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
       <p class="section-kicker">En nuestros estantes</p>
       <h2 class="section-title">Algunos títulos</h2>
-      <div class="card-proximamente mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" role="status">
-        <svg class="h-10 w-10 shrink-0 text-biblio-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 2h12M6 22h12M7 2c0 5 5 6 5 10s-5 5-5 10M17 2c0 5-5 6-5 10s5 5 5 10"></path>
-        </svg>
-        <div>
-          <p class="badge-proximamente">Próximamente</p>
-          <p class="mt-3 max-w-2xl text-biblio-charcoal dark:text-biblio-pistachio">Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, acercate a la biblioteca o escribinos para consultar por un libro.</p>
+      <p class="section-lead">
+          Una selección de lo que vas a encontrar. Tocá cualquier libro para consultar su ficha en el catálogo DigiBepé.
+        </p>
+        <div class="mt-10">
+      <div class="mt-12 first:mt-0">
+          <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Literatura contemporánea</h3>
+          <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20Vegetariana" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788426404244-M.jpg?default=false"
+             alt="Portada de «La Vegetariana»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La Vegetariana</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Han Kang</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La Vegetariana</h3>
+                  <p class="muted mt-1 text-xs">Han Kang</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Ladrilleros" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9789876701778-M.jpg?default=false"
+             alt="Portada de «Ladrilleros»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Ladrilleros</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Selva Almada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Ladrilleros</h3>
+                  <p class="muted mt-1 text-xs">Selva Almada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Las%20malas" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788417617547-M.jpg?default=false"
+             alt="Portada de «Las malas»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Las malas</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Camila Sosa Villada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Las malas</h3>
+                  <p class="muted mt-1 text-xs">Camila Sosa Villada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20sorrentinos" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9789873752766-M.jpg?default=false"
+             alt="Portada de «Los sorrentinos»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Los sorrentinos</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Virginia Higa</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Los sorrentinos</h3>
+                  <p class="muted mt-1 text-xs">Virginia Higa</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Temporada%20de%20Huracanes" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788439733478-M.jpg?default=false"
+             alt="Portada de «Temporada de Huracanes»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Temporada de Huracanes</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Fernanda Melchor</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Temporada de Huracanes</h3>
+                  <p class="muted mt-1 text-xs">Fernanda Melchor</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Galaxia" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9789877186109-M.jpg?default=false"
+             alt="Portada de «Galaxia»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Galaxia</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Juan Solá</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Galaxia</h3>
+                  <p class="muted mt-1 text-xs">Juan Solá</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Soy%20toda%20o%C3%ADdos" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Soy toda oídos</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Kim Hye Jin</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Soy toda oídos</h3>
+                  <p class="muted mt-1 text-xs">Kim Hye Jin</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Piedra%20sobre%20Piedra" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Piedra sobre Piedra</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Nina Ferrari</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Piedra sobre Piedra</h3>
+                  <p class="muted mt-1 text-xs">Nina Ferrari</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Las%20amigas" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Las amigas</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Aurora Venturini</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Las amigas</h3>
+                  <p class="muted mt-1 text-xs">Aurora Venturini</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Cuentos%20Completos" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Cuentos Completos</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Evelio Rosero</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Cuentos Completos</h3>
+                  <p class="muted mt-1 text-xs">Evelio Rosero</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20novia%20de%20Sandro" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La novia de Sandro</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Camila Sosa Villada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La novia de Sandro</h3>
+                  <p class="muted mt-1 text-xs">Camila Sosa Villada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20marido%20de%20mi%20madrastra" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">El marido de mi madrastra</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Aurora Venturini</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">El marido de mi madrastra</h3>
+                  <p class="muted mt-1 text-xs">Aurora Venturini</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Tracci%C3%B3n%20a%20sangre" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Tracción a sangre</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">José Luis Pascuet</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Tracción a sangre</h3>
+                  <p class="muted mt-1 text-xs">José Luis Pascuet</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Sustancia" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Sustancia</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Nina Ferrari</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Sustancia</h3>
+                  <p class="muted mt-1 text-xs">Nina Ferrari</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Sobre%20mi%20hija" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Sobre mi hija</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Kim Hye Jin</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Sobre mi hija</h3>
+                  <p class="muted mt-1 text-xs">Kim Hye Jin</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20jardines%20de%20Juana" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Los jardines de Juana</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Natalia Bericat</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Los jardines de Juana</h3>
+                  <p class="muted mt-1 text-xs">Natalia Bericat</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Alarido" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Alarido</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Nina Ferrari</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Alarido</h3>
+                  <p class="muted mt-1 text-xs">Nina Ferrari</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Los%20amores%20urgentes" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Los amores urgentes</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Juan Solá</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Los amores urgentes</h3>
+                  <p class="muted mt-1 text-xs">Juan Solá</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20viaje%20in%C3%BAtil" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">El viaje inútil</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Camila Sosa Villada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">El viaje inútil</h3>
+                  <p class="muted mt-1 text-xs">Camila Sosa Villada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Mariposas%20Negras" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Mariposas Negras</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Nina Ferrari</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Mariposas Negras</h3>
+                  <p class="muted mt-1 text-xs">Nina Ferrari</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=%C3%89pica%20Urbana" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Épica Urbana</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Juan Solá</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Épica Urbana</h3>
+                  <p class="muted mt-1 text-xs">Juan Solá</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Soy%20una%20tonta%20por%20quererte" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Soy una tonta por quererte</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Camila Sosa Villada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Soy una tonta por quererte</h3>
+                  <p class="muted mt-1 text-xs">Camila Sosa Villada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20traici%C3%B3n%20de%20mi%20lengua" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La traición de mi lengua</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Camila Sosa Villada</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La traición de mi lengua</h3>
+                  <p class="muted mt-1 text-xs">Camila Sosa Villada</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Malparidas" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Malparidas</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Natalia Bericat</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Malparidas</h3>
+                  <p class="muted mt-1 text-xs">Natalia Bericat</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20buen%20mal" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">El buen mal</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Samanta Schweblin</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">El buen mal</h3>
+                  <p class="muted mt-1 text-xs">Samanta Schweblin</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          </ul>
         </div>
-      </div>
+      <div class="mt-12 first:mt-0">
+          <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">Terror y Suspenso</h3>
+          <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20resplandor" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788497593793-M.jpg?default=false"
+             alt="Portada de «El resplandor»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">El resplandor</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Stephen King</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">El resplandor</h3>
+                  <p class="muted mt-1 text-xs">Stephen King</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=It%20(Eso)" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788466345347-M.jpg?default=false"
+             alt="Portada de «It (Eso)»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">It (Eso)</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Stephen King</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">It (Eso)</h3>
+                  <p class="muted mt-1 text-xs">Stephen King</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Misery%20(Miseria)" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788497595469-M.jpg?default=false"
+             alt="Portada de «Misery (Miseria)»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Misery (Miseria)</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Stephen King</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Misery (Miseria)</h3>
+                  <p class="muted mt-1 text-xs">Stephen King</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=Cementerio%20de%20animales" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788497594349-M.jpg?default=false"
+             alt="Portada de «Cementerio de animales»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">Cementerio de animales</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Stephen King</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">Cementerio de animales</h3>
+                  <p class="muted mt-1 text-xs">Stephen King</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20asistenta" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                <img data-portada src="https://covers.openlibrary.org/b/isbn/9788418045950-M.jpg?default=false"
+             alt="Portada de «La asistenta»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La asistenta</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Freida McFadden</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La asistenta</h3>
+                  <p class="muted mt-1 text-xs">Freida McFadden</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20mujer%20de%20arriba" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La mujer de arriba</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Freida McFadden</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La mujer de arriba</h3>
+                  <p class="muted mt-1 text-xs">Freida McFadden</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=El%20secreto%20de%20la%20asistenta" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">El secreto de la asistenta</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Freida McFadden</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">El secreto de la asistenta</h3>
+                  <p class="muted mt-1 text-xs">Freida McFadden</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="h-full">
+            <a href="http://4124.bepe.ar/cgi-bin/koha/opac-search.pl?idx=ti&q=La%20asistenta%20te%20vigila" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">La asistenta te vigila</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">Freida McFadden</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">La asistenta te vigila</h3>
+                  <p class="muted mt-1 text-xs">Freida McFadden</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>
+          </ul>
+        </div>
+        </div>
+        <p class="muted mt-8 text-center text-xs">
+  * Las imágenes de las portadas son de carácter ilustrativo y pueden diferir de la edición física disponible en la biblioteca.
+</p>
     </section>
 
     <!-- LECTURA VIRTUAL 24/7

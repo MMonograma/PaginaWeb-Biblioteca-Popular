@@ -200,18 +200,13 @@ En la página de Catálogo hay un buscador que arma la consulta y abre los
 resultados en una pestaña nueva, más los títulos destacados, que enlazan a la
 búsqueda de ese libro.
 
-### Estado actual: buscador en "Próximamente"
+### Estado actual: buscador conectado y activo
 
-CONABIP todavía no confirmó la dirección del catálogo, así que en
-`src/datos/sitio.js` está `catalogoDisponible: false`. Con eso:
-
-- el buscador se ve **desenfocado**, no se puede usar (`inert`: no recibe
-  clics, foco ni teclado) y tiene encima un cartel de "Próximamente";
-- **no queda ningún enlace a `4124.bepe.ar`** en la página (el párrafo del
-  enlace directo se publica como comentario HTML).
-
-Cuando pasen la dirección: revisar `catalogo` y `catalogoBusqueda` en
-`sitio.js`, poner `catalogoDisponible: true` y correr `npm run build`.
+El catálogo está conectado a **http://4124.bepe.ar/cgi-bin/koha/opac-main.pl** con
+`catalogoDisponible: true` en `src/datos/sitio.js`. El buscador permite realizar
+consultas directas abriendo los resultados en Koha / DigiBepé en una pestaña nueva.
+Las portadas se cargan mediante Open Library Covers API por ISBN, con diseño editorial
+de respaldo en CSS para títulos sin portada en línea.
 
 ### Limitación conocida: el catálogo no tiene HTTPS
 
@@ -375,8 +370,7 @@ Para sumar una foto nueva, convertirla a WebP (por ejemplo en
 `hero-bg-800.webp` / `hero-bg-1600.webp` en `src/paginas/index.html`.
 
 Los PNG originales (`hero-bg.png`, `fachada.png`, `fachada-2.png`) y
-`logo-biblioteca.png` (4,8 MB) ya no se usan en ninguna página: se pueden
-borrar del repositorio.
+`logo-biblioteca.png` (4,8 MB) ya no se usan y fueron eliminados del repositorio.
 
 ---
 

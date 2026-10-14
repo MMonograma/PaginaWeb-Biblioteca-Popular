@@ -173,6 +173,12 @@ export function iniciarVarios() {
   for (const img of document.querySelectorAll("img[data-optional]")) {
     img.addEventListener("error", () => img.remove());
   }
-  const anio = document.getElementById("year");
-  if (anio) anio.textContent = new Date().getFullYear();
+
+  // Si la portada de un libro falla o no está disponible, se oculta para
+  // mostrar la tapa editorial de diseño que vive debajo.
+  for (const img of document.querySelectorAll("img[data-portada]")) {
+    img.addEventListener("error", () => {
+      img.style.display = "none";
+    });
+  }
 }

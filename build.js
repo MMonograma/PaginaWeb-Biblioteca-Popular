@@ -16,7 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, copyFileSync } from "node:fs";
 import { join } from "node:path";
 import { BIBLIOTECA, HORARIOS, DIAS, MENU, ACCESO_CATALOGO } from "./src/datos/sitio.js";
-import { CATALOGO_DESTACADO, CATALOGO_DESTACADO_PUBLICADO } from "./src/datos/catalogo.js";
+import { CATALOGO_DESTACADO, CATALOGO_DESTACADO_PUBLICADO, NOVEDADES_LITERARIAS } from "./src/datos/catalogo.js";
 import { RINCON_PAMPEANO, BIBLIOTECAS_DIGITALES } from "./src/datos/lectura.js";
 
 const leer = (ruta) => readFileSync(ruta, "utf8");
@@ -159,35 +159,83 @@ const proximamenteHTML = (texto) => `<div class="card-proximamente mt-10 flex fl
         </div>
       </div>`;
 
-const catalogoListaHTML = CATALOGO_DESTACADO.map((seccion) => {
-  const libros = seccion.libros
-    .map(
-      (libro) => `          <li>
-            <a href="${busquedaEnOPAC("ti", libro.titulo)}" target="_blank" rel="noopener"
-               class="card card-hover flex h-full flex-col justify-between">
-              <h3 class="font-semibold text-biblio-charcoal dark:text-biblio-paper">${esc(libro.titulo)}</h3>
-              <p class="muted mt-1 text-sm">${esc(libro.autor)}</p>
-              <span class="muted mt-3 text-xs font-semibold uppercase">Buscar en el catálogo &rarr;</span>
-            </a>
-          </li>`
-    )
-    .join("\n");
+// --- Libros: Portadas Open Library + Tapa Editorial de Respaldo -------------
+const aclaracionPortadas = `<p class="muted mt-8 text-center text-xs">
+  * Las imágenes de las portadas son de carácter ilustrativo y pueden diferir de la edición física disponible en la biblioteca.
+</p>`;
 
-  return `      <div class="mt-12 first:mt-0">
-        <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">${esc(seccion.seccion)}</h3>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-${libros}
-        </ul>
-      </div>`;
-}).join("\n");
+function tarjetaLibro(libro) {
+  const urlOpac = busquedaEnOPAC("ti", libro.titulo);
+  const portadaImg = libro.isbn
+    ? `<img data-portada src="https://covers.openlibrary.org/b/isbn/${esc(libro.isbn)}-M.jpg?default=false"
+             alt="Portada de «${esc(libro.titulo)}»" width="300" height="450" loading="lazy" decoding="async"
+             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">`
+    : "";
+
+  return `          <li class="h-full">
+            <a href="${urlOpac}" target="_blank" rel="noopener"
+               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                ${portadaImg}
+                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+                  <div class="flex items-center justify-between opacity-70">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                      <path d="M6 2v20"></path>
+                    </svg>
+                    <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
+                  </div>
+                  <div>
+                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">${esc(libro.titulo)}</span>
+                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">${esc(libro.autor)}</span>
+                  </div>
+                  <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
+                    Biblioteca Edgar Morisoli
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-1 flex-col justify-between p-4">
+                <div>
+                  ${libro.categoria ? `<span class="badge mb-2 text-[10px]">${esc(libro.categoria)}</span>` : ""}
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">${esc(libro.titulo)}</h3>
+                  <p class="muted mt-1 text-xs">${esc(libro.autor)}</p>
+                </div>
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
+                  Ver en el catálogo &rarr;
+                </span>
+              </div>
+            </a>
+          </li>`;
+}
+
+// Novedades para el inicio
+const novedadesHTML = `<div class="mt-10">
+  <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+${NOVEDADES_LITERARIAS.map(tarjetaLibro).join("\n")}
+  </ul>
+  ${aclaracionPortadas}
+</div>`;
 
 const catalogoHTML = CATALOGO_DESTACADO_PUBLICADO
-  ? `<p class="section-lead">
-        Una selección de lo que vas a encontrar. Tocá cualquier libro para ver su ficha en el catálogo.
-      </p>
-      <div class="mt-10">
+  ? (() => {
+      const catalogoListaHTML = CATALOGO_DESTACADO.map((seccion) => {
+        const libros = seccion.libros.map(tarjetaLibro).join("\n");
+        return `      <div class="mt-12 first:mt-0">
+          <h3 class="font-display text-2xl font-bold text-biblio-moss dark:text-biblio-paper">${esc(seccion.seccion)}</h3>
+          <ul class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+${libros}
+          </ul>
+        </div>`;
+      }).join("\n");
+
+      return `<p class="section-lead">
+          Una selección de lo que vas a encontrar. Tocá cualquier libro para consultar su ficha en el catálogo DigiBepé.
+        </p>
+        <div class="mt-10">
 ${catalogoListaHTML}
-      </div>`
+        </div>
+        ${aclaracionPortadas}`;
+    })()
   : proximamenteHTML(
       "Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, acercate a la biblioteca o escribinos para consultar por un libro."
     );
@@ -274,6 +322,7 @@ const reemplazosContenido = {
   FUNDACION: BIBLIOTECA.fundacion,
   ANIO_FUNDACION: BIBLIOTECA.anioFundacion,
   CATALOGO_DESTACADO: catalogoHTML,
+  NOVEDADES_LITERARIAS: novedadesHTML,
   LECTURA_PAMPEANA: lecturaPampeanaHTML,
   LECTURA_BIBLIOTECAS: bibliotecasDigitalesHTML,
   // El libro animado chico, para poner dentro de los bloques de carga.
