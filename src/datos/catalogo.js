@@ -2,9 +2,26 @@
 // TÍTULOS DESTACADOS DEL CATÁLOGO Y NOVEDADES LITERARIAS
 //
 // Esta lista alimenta la vidriera de libros en catalogo.html e index.html.
-// Cada libro se enlaza a una búsqueda por título en el OPAC de DigiBepé.
-// Las portadas se obtienen mediante Open Library Covers API por ISBN, con
-// respaldo automático de diseño editorial en caso de no contar con imagen.
+// Al tocar un libro se abre una ficha (modal) con tapa, sinopsis y datos de
+// la edición, más un botón para consultar disponibilidad por WhatsApp.
+//
+// Portadas y sinopsis: NO se cargan acá. Las busca `npm run libros` por
+// título + autor en Google Books y Open Library, y quedan guardadas en
+// src/datos/libros-info.json. Cuando agregues un libro nuevo:
+//     1. Sumalo a la lista de abajo (titulo y autor alcanzan).
+//     2. npm run libros
+//     3. npm run build
+//
+// Si la búsqueda trae algo equivocado, se corrige acá, libro por libro:
+//   portada:    "https://..."  URL de la tapa que querés mostrar.
+//               false          no buscar tapa: usar siempre la de diseño.
+//   sinopsis:   "Texto..."     reemplaza la sinopsis encontrada.
+//   buscarComo: "Otro título"  título con el que buscar (p. ej. el original).
+//   editorial, anio, paginas, isbn: reemplazan los datos encontrados.
+//
+// Los ISBN que había antes se quitaron: varios eran de otros libros (el de
+// «Ladrilleros» mostraba una novela de Petros Márkaris y el de «El
+// resplandor», la tapa de «It»).
 // ---------------------------------------------------------------------------
 
 export const CATALOGO_DESTACADO_PUBLICADO = true;
@@ -14,25 +31,21 @@ export const NOVEDADES_LITERARIAS = [
   {
     titulo: "La Vegetariana",
     autor: "Han Kang",
-    isbn: "9788426404244",
     categoria: "Premio Nobel",
   },
   {
     titulo: "Ladrilleros",
     autor: "Selva Almada",
-    isbn: "9789876701778",
     categoria: "Literatura argentina",
   },
   {
     titulo: "El resplandor",
     autor: "Stephen King",
-    isbn: "9788497593793",
     categoria: "Terror",
   },
   {
     titulo: "Las malas",
     autor: "Camila Sosa Villada",
-    isbn: "9788417617547",
     categoria: "Narrativa contemporánea",
   },
 ];
@@ -41,12 +54,12 @@ export const CATALOGO_DESTACADO = [
   {
     seccion: "Literatura contemporánea",
     libros: [
-      { titulo: "La Vegetariana", autor: "Han Kang", isbn: "9788426404244" },
-      { titulo: "Ladrilleros", autor: "Selva Almada", isbn: "9789876701778" },
-      { titulo: "Las malas", autor: "Camila Sosa Villada", isbn: "9788417617547" },
-      { titulo: "Los sorrentinos", autor: "Virginia Higa", isbn: "9789873752766" },
-      { titulo: "Temporada de Huracanes", autor: "Fernanda Melchor", isbn: "9788439733478" },
-      { titulo: "Galaxia", autor: "Juan Solá", isbn: "9789877186109" },
+      { titulo: "La Vegetariana", autor: "Han Kang" },
+      { titulo: "Ladrilleros", autor: "Selva Almada" },
+      { titulo: "Las malas", autor: "Camila Sosa Villada" },
+      { titulo: "Los sorrentinos", autor: "Virginia Higa" },
+      { titulo: "Temporada de Huracanes", autor: "Fernanda Melchor" },
+      { titulo: "Galaxia", autor: "Juan Solá" },
       { titulo: "Soy toda oídos", autor: "Kim Hye Jin" },
       { titulo: "Piedra sobre Piedra", autor: "Nina Ferrari" },
       { titulo: "Las amigas", autor: "Aurora Venturini" },
@@ -71,11 +84,11 @@ export const CATALOGO_DESTACADO = [
   {
     seccion: "Terror y Suspenso",
     libros: [
-      { titulo: "El resplandor", autor: "Stephen King", isbn: "9788497593793" },
-      { titulo: "It (Eso)", autor: "Stephen King", isbn: "9788466345347" },
-      { titulo: "Misery (Miseria)", autor: "Stephen King", isbn: "9788497595469" },
-      { titulo: "Cementerio de animales", autor: "Stephen King", isbn: "9788497594349" },
-      { titulo: "La asistenta", autor: "Freida McFadden", isbn: "9788418045950" },
+      { titulo: "El resplandor", autor: "Stephen King" },
+      { titulo: "It (Eso)", autor: "Stephen King" },
+      { titulo: "Misery (Miseria)", autor: "Stephen King" },
+      { titulo: "Cementerio de animales", autor: "Stephen King" },
+      { titulo: "La asistenta", autor: "Freida McFadden" },
       { titulo: "La mujer de arriba", autor: "Freida McFadden" },
       { titulo: "El secreto de la asistenta", autor: "Freida McFadden" },
       { titulo: "La asistenta te vigila", autor: "Freida McFadden" },

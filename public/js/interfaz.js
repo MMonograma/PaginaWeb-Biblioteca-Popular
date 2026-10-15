@@ -176,9 +176,16 @@ export function iniciarVarios() {
 
   // Si la portada de un libro falla o no está disponible, se oculta para
   // mostrar la tapa editorial de diseño que vive debajo.
+  // Algunos servidores devuelven una imagen vacía de 1 px en vez de un error.
   for (const img of document.querySelectorAll("img[data-portada]")) {
-    img.addEventListener("error", () => {
+    const ocultar = () => {
       img.style.display = "none";
+    };
+    img.addEventListener("error", ocultar);
+    img.addEventListener("load", () => {
+      if (img.naturalWidth < 10) ocultar();
     });
+    // Por si ya terminó de cargar antes de que corriera este script.
+    if (img.complete && img.naturalWidth > 0 && img.naturalWidth < 10) ocultar();
   }
 }

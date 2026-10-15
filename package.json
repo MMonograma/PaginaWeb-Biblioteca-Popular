@@ -7,9 +7,10 @@
     "dev": "tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
     "watch": "npm run dev",
     "serve": "node servidor-dev.js",
+    "libros": "node scripts/buscar-libros.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify",
     "build:html": "node build.js",
-    "build": "npm run build:css && npm run build:html"
+    "build": "npm run build:css && node scripts/buscar-libros.js --build && npm run build:html"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

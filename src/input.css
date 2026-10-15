@@ -218,3 +218,46 @@
     grid-template-rows: 0fr;
   }
 }
+
+/* --- Ficha del libro (modal) ---------------------------------------------- */
+@layer components {
+  .ficha-libro {
+    @apply m-auto w-[calc(100%-2rem)] max-w-3xl overflow-hidden rounded-2xl border border-biblio-pistachio p-0 shadow-2xl;
+    @apply bg-biblio-paper text-biblio-charcoal dark:border-biblio-moss dark:bg-biblio-card-dark dark:text-biblio-paper;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .ficha-libro::backdrop {
+    background: rgb(30 35 32 / 0.65);
+    backdrop-filter: blur(3px);
+  }
+  .ficha-libro[open] {
+    animation: ficha-entra 180ms ease-out;
+  }
+  /* En pantallas grandes la sinopsis larga scrollea sola y la tapa queda quieta. */
+  @media (min-width: 640px) {
+    .ficha-sinopsis {
+      max-height: 16rem;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+  }
+  .ficha-sinopsis > p + p {
+    @apply mt-3;
+  }
+}
+
+@keyframes ficha-entra {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha-libro[open] { animation: none; }
+}
+
+/* Con la ficha abierta, la página de atrás no se desplaza. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}

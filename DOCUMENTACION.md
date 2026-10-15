@@ -26,7 +26,8 @@ src/
   datos/
     sitio.js             ← DATOS INSTITUCIONALES: horarios, contacto, menú,
                            URL de la hoja de talleres
-    catalogo.js          Títulos destacados que se muestran en Catálogo
+    catalogo.js          Títulos destacados que se muestran en Catálogo e Inicio
+    libros-info.json     Tapas y sinopsis encontradas (lo genera npm run libros)
     lectura.js           Enlaces de "Lectura virtual 24/7"
   parciales/
     layout.html          Esqueleto común de todas las páginas
@@ -34,10 +35,17 @@ src/
     footer.html          Pie de página
     loader.html          Pantalla de carga (el libro animado)
   paginas/               El contenido propio de cada página
+api/
+  catalogo.js            Función de Vercel: busca en DigiBepé (GET /api/catalogo)
+  libro.js               Función de Vercel: tapa y sinopsis (GET /api/libro)
+lib/
+  koha.js                Lee las respuestas del catálogo Koha
 build.js                 Arma las páginas combinando lo de arriba
 servidor-dev.js          Servidor local (sirve public/)
 scripts/
   sync-instagram.py      Baja las últimas publicaciones de Instagram
+  buscar-libros.js       Busca tapas y sinopsis de los libros (npm run libros)
+  fuentes-libros.js      Consultas a Google Books y Open Library
 .github/workflows/
   instagram-sync.yml     Corre el script de arriba 5 veces por día
 public/                  ← Lo que se publica. Los .html son GENERADOS.
@@ -196,19 +204,93 @@ El acervo está catalogado en **DigiBepé**, el sistema de CONABIP. El catálogo
 público de la biblioteca es **http://4124.bepe.ar** (el número es el registro de
 CONABIP, 4124).
 
-En la página de Catálogo hay un buscador que arma la consulta y abre los
-resultados en una pestaña nueva, más los títulos destacados, que enlazan a la
-búsqueda de ese libro.
+En la página de Catálogo hay un buscador que muestra los resultados **en la
+misma página** (con tapa, autor, editorial y año), más los títulos destacados. Al tocar un libro
+(en Catálogo o en Novedades de Inicio) se abre una **ficha en un modal** con
+tapa, sinopsis, editorial, año, páginas e ISBN, un botón para consultar
+disponibilidad por WhatsApp y un enlace secundario a DigiBepé.
 
 ### Estado actual: buscador conectado y activo
 
 El catálogo está conectado a **http://4124.bepe.ar/cgi-bin/koha/opac-main.pl** con
 `catalogoDisponible: true` en `src/datos/sitio.js`. El buscador permite realizar
 consultas directas abriendo los resultados en Koha / DigiBepé en una pestaña nueva.
-Las portadas se cargan mediante Open Library Covers API por ISBN, con diseño editorial
-de respaldo en CSS para títulos sin portada en línea.
+### Cómo funciona el buscador
+
+El navegador no puede leer `http://4124.bepe.ar` desde un sitio HTTPS, así que
+la búsqueda pasa por una **función de Vercel**:
+
+```
+navegador → /api/catalogo?q=...&idx=ti  →  (servidor) DigiBepé en formato RSS
+          ← JSON con título, autor, ISBN, editorial, año
+```
+
+- `api/catalogo.js` recibe la búsqueda y `lib/koha.js` lee la respuesta de Koha
+  (RSS; si no, la página HTML de resultados). Vercel guarda cada búsqueda 10
+  minutos en caché.
+- Si DigiBepé no responde (503, demora de más de 8 s), la página muestra un
+  aviso con WhatsApp y correo en lugar de romperse.
+- Las tapas de los resultados salen de Google Books **por ISBN**, sin API key ni
+  cuota; si Google no la tiene, de Open Library; si no, la tapa de diseño.
+- La sinopsis se pide a `api/libro.js` recién cuando alguien abre la ficha (una
+  consulta por libro, con un día de caché).
+- La búsqueda queda en la dirección (`catalogo.html?q=almada&idx=au`), así que
+  se puede compartir.
+- Local: `npm run serve` atiende también `/api/...` con los mismos archivos.
+
+### API key de Google Books (variable de entorno, nunca en el repositorio)
+
+La key **no se escribe en ningún archivo**. Se carga una sola vez en Vercel:
+
+1. Vercel → el proyecto → **Settings → Environment Variables**.
+2. Nombre `GOOGLE_BOOKS_API_KEY`, valor la key, entornos Production y Preview.
+3. Redeploy (Deployments → ⋯ → Redeploy).
+
+Con eso la usan las dos partes: `api/libro.js` (sinopsis de resultados del
+buscador) y `npm run build`, que antes de armar las páginas busca tapas y
+sinopsis de los libros destacados que todavía no estén en
+`src/datos/libros-info.json` (solo Google, con tope de 60 segundos; si falla,
+el deploy sigue igual).
+
+En la key de Google Cloud conviene dejar **Restricciones de API → Books API**.
+No hace falta restringirla por sitio web: nunca llega al navegador.
+
+### Tapas y sinopsis de los libros
+
+Las tarjetas ya no enlazan a DigiBepé (respondía 503 casi siempre): abren la
+ficha del libro dentro del sitio.
+
+Las tapas y sinopsis **no** se piden al abrir la página. Se buscan una vez, a
+mano, y quedan guardadas en `src/datos/libros-info.json`:
+
+```
+npm run libros            # busca solo los libros que todavía no tienen datos
+npm run libros -- --todos # vuelve a buscar todos
+npm run build
+```
+
+- Busca por **título + autor** (no por ISBN) en Google Books y, si falta algo,
+  en Open Library. Un resultado solo se acepta si coincide el título completo y
+  el apellido del autor; si no, el libro queda con la tapa de diseño.
+- Los ISBN que estaban cargados se quitaron: varios eran de otros libros
+  («Ladrilleros» mostraba una novela de Petros Márkaris y «El resplandor», la
+  tapa de «It»).
+- **Google Books sin API key** usa una cuota compartida que suele estar agotada
+  (error 429). Con una key gratuita de Google Cloud (API "Books") hay sinopsis en
+  castellano:
+  `$env:GOOGLE_BOOKS_API_KEY="tu-key"; npm run libros` (PowerShell).
+- Si una fuente está caída, el libro no se guarda y se reintenta en la próxima
+  corrida.
+- Correcciones a mano en `catalogo.js`, libro por libro: `portada` (URL https o
+  `false`), `sinopsis`, `buscarComo` (otro título para buscar, p. ej. el
+  original en inglés), `editorial`, `anio`, `paginas`, `isbn`. Siempre ganan
+  sobre lo encontrado.
+- Si una tapa no carga o el servidor devuelve una imagen vacía de 1 px, se ve
+  la tapa de diseño.
 
 ### Limitación conocida: el catálogo no tiene HTTPS
+
+(Resuelto para el buscador con `/api/catalogo`; lo de abajo explica por qué.)
 
 El servidor de CONABIP responde por `http://`, y su certificado de HTTPS es de
 otro dominio (`catalogo.colectivo.conabip.gob.ar`). Consecuencias comprobadas:

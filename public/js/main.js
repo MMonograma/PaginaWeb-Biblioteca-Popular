@@ -28,6 +28,11 @@ if (document.getElementById("buscador-catalogo")) {
   import("./catalogo.js").then((m) => m.iniciarBuscadorCatalogo());
 }
 
+// Ficha de libro en modal (Inicio y Catálogo)
+if (document.getElementById("ficha-libro")) {
+  import("./libros.js").then((m) => m.iniciarFichasLibros());
+}
+
 // Recorrido 360 (solo en biblio-interactiva)
 if (document.getElementById("visor-360")) {
   import("./recorrido.js").then((m) => m.iniciarRecorrido());

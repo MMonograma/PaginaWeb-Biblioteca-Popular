@@ -5,8 +5,8 @@
 //
 //   npm run serve   → http://localhost:3000
 //
-// Los talleres se leen de Google Sheets desde el navegador y las noticias de
-// public/data/noticias.json, así que no hace falta ninguna API local.
+// Las rutas /api/... (buscador del catálogo y fichas de libros) se atienden
+// con los mismos archivos de api/ que usa Vercel.
 // ---------------------------------------------------------------------------
 
 import { createServer } from "node:http";
@@ -31,6 +31,19 @@ const TIPOS = {
 
 const servidor = createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PUERTO}`);
+
+  // Funciones de api/ (lo mismo que hace Vercel con esa carpeta).
+  const api = url.pathname.match(/^\/api\/([a-z-]+)$/);
+  if (api) {
+    try {
+      const { default: handler } = await import(new URL(`./api/${api[1]}.js`, import.meta.url));
+      await handler(req, res);
+    } catch (e) {
+      res.writeHead(e.code === "ERR_MODULE_NOT_FOUND" ? 404 : 500, { "Content-Type": "application/json; charset=utf-8" });
+      res.end(JSON.stringify({ error: e.message }));
+    }
+    return;
+  }
 
   // normalize + quitar ".." impide salir de public/ con una ruta armada a mano.
   const pedido = decodeURIComponent(url.pathname === "/" ? "/index.html" : url.pathname);

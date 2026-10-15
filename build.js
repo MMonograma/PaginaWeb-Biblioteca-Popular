@@ -13,7 +13,7 @@
 // No usa ninguna dependencia: solo Node.
 // ---------------------------------------------------------------------------
 
-import { readFileSync, writeFileSync, readdirSync, copyFileSync } from "node:fs";
+import { readFileSync, writeFileSync, readdirSync, copyFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { BIBLIOTECA, HORARIOS, DIAS, MENU, ACCESO_CATALOGO } from "./src/datos/sitio.js";
 import { CATALOGO_DESTACADO, CATALOGO_DESTACADO_PUBLICADO, NOVEDADES_LITERARIAS } from "./src/datos/catalogo.js";
@@ -141,12 +141,6 @@ const reemplazosFooter = {
   ANIO: new Date().getFullYear(),
 };
 
-// --- Títulos destacados del catálogo ----------------------------------------
-// Cada libro se convierte en un enlace a la búsqueda por título en el OPAC.
-
-const busquedaEnOPAC = (indice, termino) =>
-  `${conabipCatalogoBusqueda}?idx=${indice}&q=${encodeURIComponent(termino)}`;
-
 // --- Recuadro de "Próximamente" ----------------------------------------------
 // El mismo para todo lo que todavía no está listo para publicarse.
 const proximamenteHTML = (texto) => `<div class="card-proximamente mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" role="status">
@@ -159,54 +153,162 @@ const proximamenteHTML = (texto) => `<div class="card-proximamente mt-10 flex fl
         </div>
       </div>`;
 
-// --- Libros: Portadas Open Library + Tapa Editorial de Respaldo -------------
+// --- Libros: portada, sinopsis y ficha (modal) ------------------------------
+// Los datos de cada libro salen de dos lugares:
+//   src/datos/libros-info.json — lo que encontró `npm run libros` en Google
+//                                Books / Open Library (tapa, sinopsis, etc.)
+//   src/datos/catalogo.js      — título, autor, categoría y las correcciones
+//                                a mano, que siempre ganan.
+// Las tarjetas ya no llevan a DigiBepé (que suele responder 503): abren una
+// ficha dentro del sitio. Los datos de la ficha van en un bloque JSON de la
+// misma página, así que no hay que pedir nada a ninguna API al abrirla.
+
+const ARCHIVO_INFO_LIBROS = "src/datos/libros-info.json";
+const infoLibros = existsSync(ARCHIVO_INFO_LIBROS) ? JSON.parse(leer(ARCHIVO_INFO_LIBROS)) : {};
+
+const normalizarClave = (s = "") =>
+  String(s)
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/[^a-z0-9ñ ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+// Misma clave que scripts/fuentes-libros.js.
+const claveLibro = (libro) => `${normalizarClave(libro.titulo)}|${normalizarClave(libro.autor)}`;
+
+// Solo se aceptan URLs https para las tapas: el sitio sirve todo por https.
+const urlSegura = (u) => (typeof u === "string" && /^https:\/\//.test(u) ? u : null);
+
+function datosLibro(libro) {
+  const info = infoLibros[claveLibro(libro)] ?? {};
+  const elegir = (campo) => (libro[campo] !== undefined ? libro[campo] : info[campo] ?? null);
+  const sinopsisPropia = typeof libro.sinopsis === "string";
+  return {
+    id: claveLibro(libro),
+    titulo: libro.titulo,
+    autor: libro.autor,
+    categoria: libro.categoria ?? null,
+    portada: libro.portada === false ? null : urlSegura(elegir("portada")),
+    sinopsis: elegir("sinopsis"),
+    editorial: elegir("editorial"),
+    anio: elegir("anio"),
+    paginas: elegir("paginas"),
+    isbn: elegir("isbn"),
+    // Para dar crédito a la fuente de la sinopsis cuando no la escribió la biblioteca.
+    fuente: sinopsisPropia ? null : (info.fuentes ?? []).join(" / ") || null,
+  };
+}
+
 const aclaracionPortadas = `<p class="muted mt-8 text-center text-xs">
-  * Las imágenes de las portadas son de carácter ilustrativo y pueden diferir de la edición física disponible en la biblioteca.
+  * Las portadas y sinopsis son de carácter ilustrativo y pueden diferir de la edición física disponible en la biblioteca.
 </p>`;
 
-function tarjetaLibro(libro) {
-  const urlOpac = busquedaEnOPAC("ti", libro.titulo);
-  const portadaImg = libro.isbn
-    ? `<img data-portada src="https://covers.openlibrary.org/b/isbn/${esc(libro.isbn)}-M.jpg?default=false"
-             alt="Portada de «${esc(libro.titulo)}»" width="300" height="450" loading="lazy" decoding="async"
-             class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 z-10">`
-    : "";
-
-  return `          <li class="h-full">
-            <a href="${urlOpac}" target="_blank" rel="noopener"
-               class="card card-hover group flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss">
-              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
-                ${portadaImg}
-                <div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left z-0">
+// Tapa de diseño: se ve cuando no hay portada o mientras no cargó.
+const tapaDeDiseno = (titulo, autor, { tituloAttr = "", autorAttr = "" } = {}) => `<div class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-br from-biblio-pistachio/40 via-biblio-paper/70 to-biblio-pistachio/60 dark:from-biblio-card-dark dark:via-biblio-charcoal dark:to-biblio-card-dark text-left" aria-hidden="true">
                   <div class="flex items-center justify-between opacity-70">
-                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <svg class="h-5 w-5 text-biblio-moss dark:text-biblio-pistachio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                       <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
                       <path d="M6 2v20"></path>
                     </svg>
                     <span class="text-[10px] font-semibold uppercase tracking-wider text-biblio-moss dark:text-biblio-pistachio">Libro</span>
                   </div>
                   <div>
-                    <span class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">${esc(libro.titulo)}</span>
-                    <span class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">${esc(libro.autor)}</span>
+                    <span${tituloAttr} class="font-display text-sm sm:text-base font-bold leading-snug text-biblio-moss dark:text-biblio-paper line-clamp-3 block">${esc(titulo)}</span>
+                    <span${autorAttr} class="mt-1 text-xs text-biblio-charcoal dark:text-biblio-pistachio line-clamp-2 block">${esc(autor)}</span>
                   </div>
                   <div class="border-t border-biblio-sage/30 pt-1 text-[9px] uppercase tracking-wider text-biblio-sage-oscuro dark:text-biblio-moss-claro">
                     Biblioteca Edgar Morisoli
                   </div>
-                </div>
+                </div>`;
+
+// Tarjeta: el botón está en el título y su ::after cubre toda la tarjeta,
+// así se puede tocar en cualquier parte y el lector de pantalla anuncia
+// un solo control con el nombre del libro.
+function tarjetaLibro(libro) {
+  const d = datosLibro(libro);
+  const portadaImg = d.portada
+    ? `<img data-portada src="${esc(d.portada)}" alt="" width="300" height="450" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+                     class="absolute inset-0 z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">`
+    : "";
+
+  return `          <li class="h-full">
+            <article class="card card-hover group relative flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss focus-within:ring-2 focus-within:ring-biblio-moss dark:focus-within:ring-biblio-pistachio">
+              <div class="relative aspect-[2/3] w-full overflow-hidden bg-biblio-pistachio/25 dark:bg-biblio-card-dark border-b border-biblio-pistachio/40 dark:border-biblio-moss">
+                ${portadaImg}
+                ${tapaDeDiseno(d.titulo, d.autor)}
               </div>
               <div class="flex flex-1 flex-col justify-between p-4">
                 <div>
-                  ${libro.categoria ? `<span class="badge mb-2 text-[10px]">${esc(libro.categoria)}</span>` : ""}
-                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">${esc(libro.titulo)}</h3>
-                  <p class="muted mt-1 text-xs">${esc(libro.autor)}</p>
+                  ${d.categoria ? `<span class="badge mb-2 text-[10px]">${esc(d.categoria)}</span>` : ""}
+                  <h3 class="font-display font-semibold text-biblio-charcoal dark:text-biblio-paper text-sm sm:text-base leading-tight">
+                    <button type="button" data-libro="${esc(d.id)}" aria-haspopup="dialog"
+                            class="text-left after:absolute after:inset-0 after:z-20 after:content-[''] focus-visible:outline-none">${esc(d.titulo)}</button>
+                  </h3>
+                  <p class="muted mt-1 text-xs">${esc(d.autor)}</p>
                 </div>
-                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio">
-                  Ver en el catálogo &rarr;
+                <span class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-biblio-moss group-hover:underline underline-offset-4 dark:text-biblio-pistachio" aria-hidden="true">
+                  Ver ficha del libro &rarr;
                 </span>
               </div>
-            </a>
+            </article>
           </li>`;
 }
+
+// Datos de las fichas en JSON. Va como <script type="application/json">: el
+// navegador no lo ejecuta, así que la CSP (script-src 'self') no lo bloquea.
+// Se escapa "<" para que ningún texto pueda cerrar el bloque.
+function datosFichasJSON(libros) {
+  const vistos = new Map();
+  for (const libro of libros) {
+    const d = datosLibro(libro);
+    if (!vistos.has(d.id)) vistos.set(d.id, d);
+  }
+  const json = JSON.stringify(Object.fromEntries(vistos)).replace(/</g, "\\u003c");
+  return `<script type="application/json" id="datos-libros">${json}</script>`;
+}
+
+const enlaceWhatsApp = `https://wa.me/${contacto.whatsapp}`;
+
+// Ficha del libro: un <dialog> nativo (Escape, foco atrapado y fondo inerte
+// vienen del navegador). public/js/libros.js lo completa al abrirlo.
+const fichaLibroHTML = `<dialog id="ficha-libro" class="ficha-libro" aria-labelledby="ficha-titulo"
+        data-whatsapp="${esc(enlaceWhatsApp)}" data-opac="${esc(conabip.catalogoDisponible ? conabipCatalogoBusqueda : "")}">
+  <div class="relative grid gap-6 p-5 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-8 sm:p-8">
+    <button type="button" data-cerrar-ficha class="icon-btn absolute top-2 right-2 z-30" aria-label="Cerrar ficha">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+    </button>
+
+    <div class="relative mx-auto aspect-[2/3] w-40 shrink-0 overflow-hidden rounded-xl border border-biblio-pistachio/60 shadow-md sm:mx-0 sm:w-full dark:border-biblio-moss">
+      <img data-ficha-portada alt="" width="300" height="450" decoding="async" referrerpolicy="no-referrer"
+           class="invisible absolute inset-0 z-10 h-full w-full object-cover">
+      ${tapaDeDiseno("", "", { tituloAttr: " data-ficha-tapa-titulo", autorAttr: " data-ficha-tapa-autor" })}
+    </div>
+
+    <div class="flex min-w-0 flex-col">
+      <p data-ficha-categoria class="badge mb-3 self-start text-[10px]"></p>
+      <h2 id="ficha-titulo" class="pr-10 outline-none font-display text-2xl font-bold leading-tight text-biblio-moss sm:text-3xl dark:text-biblio-paper"></h2>
+      <p data-ficha-autor class="mt-1 text-base font-medium text-biblio-charcoal dark:text-biblio-pistachio"></p>
+
+      <dl data-ficha-datos class="mt-4 flex flex-wrap gap-x-8 gap-y-3 text-sm"></dl>
+
+      <h3 class="mt-6 text-xs font-semibold tracking-[0.2em] text-biblio-moss uppercase dark:text-biblio-pistachio">Sinopsis</h3>
+      <div data-ficha-sinopsis class="ficha-sinopsis mt-2 text-sm leading-relaxed text-biblio-charcoal dark:text-biblio-paper/90"></div>
+      <p data-ficha-fuente class="muted mt-2 text-xs"></p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3 border-t border-biblio-pistachio/60 pt-5 dark:border-biblio-moss">
+        <a data-ficha-whatsapp href="${esc(enlaceWhatsApp)}" target="_blank" rel="noopener" class="btn btn-primary">
+          Consultar por WhatsApp
+          <span class="sr-only"> si está disponible (se abre en una pestaña nueva)</span>
+        </a>
+        <a data-ficha-opac href="#" target="_blank" rel="noopener" class="hidden text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
+          Buscar en DigiBepé<span class="sr-only"> (catálogo de CONABIP, se abre en una pestaña nueva)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</dialog>`;
 
 // Novedades para el inicio
 const novedadesHTML = `<div class="mt-10">
@@ -214,7 +316,8 @@ const novedadesHTML = `<div class="mt-10">
 ${NOVEDADES_LITERARIAS.map(tarjetaLibro).join("\n")}
   </ul>
   ${aclaracionPortadas}
-</div>`;
+</div>
+${datosFichasJSON(NOVEDADES_LITERARIAS)}`;
 
 const catalogoHTML = CATALOGO_DESTACADO_PUBLICADO
   ? (() => {
@@ -229,12 +332,13 @@ ${libros}
       }).join("\n");
 
       return `<p class="section-lead">
-          Una selección de lo que vas a encontrar. Tocá cualquier libro para consultar su ficha en el catálogo DigiBepé.
+          Una selección de lo que vas a encontrar. Tocá cualquier libro para ver su tapa, la sinopsis y consultar si está disponible.
         </p>
         <div class="mt-10">
 ${catalogoListaHTML}
         </div>
-        ${aclaracionPortadas}`;
+        ${aclaracionPortadas}
+        ${datosFichasJSON(CATALOGO_DESTACADO.flatMap((s) => s.libros))}`;
     })()
   : proximamenteHTML(
       "Estamos armando una selección de libros recomendados por la biblioteca. Mientras tanto, acercate a la biblioteca o escribinos para consultar por un libro."
@@ -285,8 +389,6 @@ const catalogoBuscador = catalogoListo
       CATALOGO_ALTO: "",
       CATALOGO_BLOQUEO: "",
       CATALOGO_AVISO: "",
-      CATALOGO_ENLACE_DIRECTO_INICIO: "",
-      CATALOGO_ENLACE_DIRECTO_FIN: "",
     }
   : {
       CATALOGO_URL: "",
@@ -303,9 +405,6 @@ const catalogoBuscador = catalogoListo
               </p>
             </div>
           </div>`,
-      // El párrafo con el enlace directo no se publica: queda como comentario.
-      CATALOGO_ENLACE_DIRECTO_INICIO: "<!-- ",
-      CATALOGO_ENLACE_DIRECTO_FIN: " -->",
     };
 
 // Marcadores disponibles dentro del contenido de cada página.
@@ -318,11 +417,15 @@ const reemplazosContenido = {
   LAT: dir.lat,
   LON: dir.lon,
   INSTAGRAM_USUARIO: contacto.instagramUsuario,
+  WHATSAPP: contacto.whatsapp,
   ...catalogoBuscador,
   FUNDACION: BIBLIOTECA.fundacion,
   ANIO_FUNDACION: BIBLIOTECA.anioFundacion,
   CATALOGO_DESTACADO: catalogoHTML,
   NOVEDADES_LITERARIAS: novedadesHTML,
+  // La ficha (modal) va suelta: la usan tanto los destacados como los
+  // resultados del buscador, aunque los destacados no estén publicados.
+  FICHA_LIBRO: fichaLibroHTML,
   LECTURA_PAMPEANA: lecturaPampeanaHTML,
   LECTURA_BIBLIOTECAS: bibliotecasDigitalesHTML,
   // El libro animado chico, para poner dentro de los bloques de carga.
