@@ -146,15 +146,6 @@ export function iniciarFichasLibros() {
     const wa = $("[data-ficha-whatsapp]");
     const mensaje = `¡Hola! Quería consultar si está disponible «${libro.titulo}»${libro.autor ? ` de ${libro.autor}` : ""}.`;
     wa.href = `${dialogo.dataset.whatsapp}?text=${encodeURIComponent(mensaje)}`;
-
-    const opac = $("[data-ficha-opac]");
-    if (dialogo.dataset.opac) {
-      const url = new URL(dialogo.dataset.opac);
-      url.searchParams.set("idx", "ti");
-      url.searchParams.set("q", libro.titulo);
-      opac.href = url.toString();
-      opac.classList.remove("hidden");
-    }
   }
 
   // Sinopsis de un resultado del buscador: una consulta por libro, una sola vez.

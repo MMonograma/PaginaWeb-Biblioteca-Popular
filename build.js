@@ -282,7 +282,7 @@ const enlaceWhatsApp = `https://wa.me/${contacto.whatsapp}`;
 // Ficha del libro: un <dialog> nativo (Escape, foco atrapado y fondo inerte
 // vienen del navegador). public/js/libros.js lo completa al abrirlo.
 const fichaLibroHTML = `<dialog id="ficha-libro" class="ficha-libro" aria-labelledby="ficha-titulo"
-        data-whatsapp="${esc(enlaceWhatsApp)}" data-opac="${esc(conabip.catalogoDisponible ? conabipCatalogoBusqueda : "")}">
+        data-whatsapp="${esc(enlaceWhatsApp)}">
   <div class="relative grid gap-6 p-5 sm:grid-cols-[minmax(0,13rem)_1fr] sm:gap-8 sm:p-8">
     <button type="button" data-cerrar-ficha class="icon-btn absolute top-2 right-2 z-30" aria-label="Cerrar ficha">
       <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
@@ -309,9 +309,6 @@ const fichaLibroHTML = `<dialog id="ficha-libro" class="ficha-libro" aria-labell
         <a data-ficha-whatsapp href="${esc(enlaceWhatsApp)}" target="_blank" rel="noopener" class="btn btn-primary">
           Consultar por WhatsApp
           <span class="sr-only"> si está disponible (se abre en una pestaña nueva)</span>
-        </a>
-        <a data-ficha-opac href="#" target="_blank" rel="noopener" class="hidden text-sm font-semibold text-biblio-moss underline underline-offset-4 dark:text-biblio-pistachio">
-          Buscar en DigiBepé<span class="sr-only"> (catálogo de CONABIP, se abre en una pestaña nueva)</span>
         </a>
       </div>
     </div>
@@ -393,7 +390,8 @@ const catalogoListo = conabip.catalogoDisponible === true;
 const catalogoBuscador = catalogoListo
   ? {
       CATALOGO_URL: conabip.catalogo,
-      CATALOGO_BUSQUEDA: conabip.catalogoBusqueda,
+      // El formulario busca en la API propia; la dirección de DigiBepé no se publica.
+      CATALOGO_BUSQUEDA: "/api/catalogo",
       CATALOGO_ALTO: "",
       CATALOGO_BLOQUEO: "",
       CATALOGO_AVISO: "",

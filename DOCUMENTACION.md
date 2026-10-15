@@ -208,7 +208,7 @@ En la página de Catálogo hay un buscador que muestra los resultados **en la
 misma página** (con tapa, autor, editorial y año), más los títulos destacados. Al tocar un libro
 (en Catálogo o en Novedades de Inicio) se abre una **ficha en un modal** con
 tapa, sinopsis, editorial, año, páginas e ISBN, un botón para consultar
-disponibilidad por WhatsApp y un enlace secundario a DigiBepé.
+disponibilidad por WhatsApp. El sitio no tiene enlaces a DigiBepé: todo se muestra dentro de la página.
 
 ### Estado actual: buscador conectado y activo
 
