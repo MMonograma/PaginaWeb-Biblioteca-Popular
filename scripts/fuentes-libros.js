@@ -70,14 +70,33 @@ const anioDe = (fecha) => {
 
 async function pedirJSON(url) {
   // Open Library a veces tarda o se cae: sin límite de tiempo el script
-  // quedaría colgado.
-  const r = await fetch(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(20000) });
+  // quedaría colgado (y en Vercel, el deploy).
+  const r = await fetch(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(10000) });
   if (!r.ok) {
-    const error = new Error(`HTTP ${r.status} en ${new URL(url).host}`);
+    // Google explica el problema en el cuerpo ("API key not valid", "Daily
+    // limit exceeded", "unknownLocation"...). Se muestra ese texto, nunca la
+    // URL: lleva la API key.
+    let detalle = "";
+    try {
+      const cuerpo = await r.json();
+      detalle = cuerpo?.error?.message ?? cuerpo?.error?.errors?.[0]?.reason ?? "";
+    } catch {
+      // El cuerpo no era JSON.
+    }
+    const error = new Error(`HTTP ${r.status} en ${new URL(url).host}${detalle ? `: ${detalle}` : ""}`);
     error.status = r.status;
     throw error;
   }
   return r.json();
+}
+
+// Google Books filtra resultados por país y, desde servidores en la nube
+// (Vercel), a veces no puede deducirlo y responde vacío o con error
+// "unknownLocation". Indicar el país lo evita.
+function paramsGoogle(base, apiKey) {
+  const params = new URLSearchParams({ ...base, country: "AR" });
+  if (apiKey) params.set("key", apiKey);
+  return params;
 }
 
 // --- Google Books -----------------------------------------------------------
@@ -86,8 +105,7 @@ export async function buscarEnGoogleBooks(libro, { apiKey } = {}) {
   const termino = libro.buscarComo ?? libro.titulo;
   const apellido = normalizar(libro.autor).split(" ").pop();
   const q = `intitle:${termino} inauthor:${apellido}`;
-  const params = new URLSearchParams({ q, maxResults: "20", printType: "books" });
-  if (apiKey) params.set("key", apiKey);
+  const params = paramsGoogle({ q, maxResults: "20", printType: "books" }, apiKey);
   const datos = await pedirJSON(`https://www.googleapis.com/books/v1/volumes?${params}`);
 
   const candidatos = (datos.items ?? [])
@@ -170,15 +188,14 @@ export async function buscarEnOpenLibrary(libro) {
 // Para libros que vienen del catálogo de la biblioteca: el ISBN es el de su
 // propio registro, así que la tapa corresponde a la edición que tienen.
 
-export async function buscarPorISBN(isbn, { apiKey } = {}) {
-  const params = new URLSearchParams({ q: `isbn:${isbn}`, maxResults: "3" });
-  if (apiKey) params.set("key", apiKey);
+export async function buscarPorISBN(isbn, { apiKey, avisos = [] } = {}) {
+  const params = paramsGoogle({ q: `isbn:${isbn}`, maxResults: "3" }, apiKey);
   let v = null;
   try {
     const datos = await pedirJSON(`https://www.googleapis.com/books/v1/volumes?${params}`);
     v = datos.items?.[0]?.volumeInfo ?? null;
-  } catch {
-    // Sigue con Open Library.
+  } catch (e) {
+    avisos.push(`Google Books: ${e.message}`);
   }
   if (v) {
     return {

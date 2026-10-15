@@ -174,18 +174,30 @@ export function iniciarVarios() {
     img.addEventListener("error", () => img.remove());
   }
 
-  // Si la portada de un libro falla o no está disponible, se oculta para
-  // mostrar la tapa editorial de diseño que vive debajo.
-  // Algunos servidores devuelven una imagen vacía de 1 px en vez de un error.
+  // Tapas de los libros destacados. Si la tapa no carga, o el servidor
+  // devuelve una imagen vacía (1 px de Open Library, cartel "image not
+  // available" de 128×170 de Google), se prueba la de respaldo por ISBN y,
+  // si tampoco hay, se oculta para que se vea la tapa de diseño de abajo.
+  const vacia = (img) =>
+    img.naturalWidth < 10 ||
+    (img.src.includes("books.google") && img.naturalWidth === 128 && img.naturalHeight === 170);
+
   for (const img of document.querySelectorAll("img[data-portada]")) {
-    const ocultar = () => {
+    const fallar = () => {
+      const respaldo = img.dataset.respaldo;
+      if (respaldo) {
+        delete img.dataset.respaldo;
+        img.src = respaldo;
+        return;
+      }
       img.style.display = "none";
     };
-    img.addEventListener("error", ocultar);
+    img.addEventListener("error", fallar);
     img.addEventListener("load", () => {
-      if (img.naturalWidth < 10) ocultar();
+      if (vacia(img)) fallar();
     });
-    // Por si ya terminó de cargar antes de que corriera este script.
-    if (img.complete && img.naturalWidth > 0 && img.naturalWidth < 10) ocultar();
+    // Por si ya terminó de cargar antes de que corriera este script. (No se
+    // mira naturalWidth 0: una imagen lazy que todavía no se pidió también da 0.)
+    if (img.complete && img.naturalWidth > 0 && vacia(img)) fallar();
   }
 }

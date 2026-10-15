@@ -27,11 +27,13 @@ export default async function handler(req, res) {
   }
 
   let datos = null;
+  const avisos = [];
   try {
-    if (isbn) datos = await buscarPorISBN(isbn, { apiKey });
+    if (isbn) datos = await buscarPorISBN(isbn, { apiKey, avisos });
     // Sin ISBN, o sin sinopsis para ese ISBN: se completa buscando por título y autor.
     if ((!datos || !datos.sinopsis) && titulo && autor) {
       const porTitulo = await buscarLibro({ titulo, autor }, { apiKey });
+      avisos.push(...(porTitulo.avisos ?? []));
       datos = datos ?? {};
       for (const [campo, valor] of Object.entries(porTitulo)) {
         if (datos[campo] == null && valor != null) datos[campo] = valor;
@@ -41,8 +43,12 @@ export default async function handler(req, res) {
     // Si Google y Open Library fallan, la ficha se muestra igual sin sinopsis.
   }
 
-  const { avisos, ...limpio } = datos ?? {};
-  // Un día en la caché de Vercel: cada libro se consulta, como mucho, una vez por día.
-  res.setHeader("Cache-Control", datos ? "public, s-maxage=86400, stale-while-revalidate=604800" : "no-store");
-  res.end(JSON.stringify(limpio));
+  const { avisos: _, ...limpio } = datos ?? {};
+  // Un día en la caché de Vercel: cada libro se consulta, como mucho, una vez
+  // por día. Si alguna fuente falló, no se guarda en caché para reintentar.
+  const completo = datos && !avisos.length;
+  res.setHeader("Cache-Control", completo ? "public, s-maxage=86400, stale-while-revalidate=604800" : "no-store");
+  // Los avisos (p. ej. "Google Books: HTTP 403 ...") sirven para diagnosticar
+  // desde el navegador; no incluyen la API key.
+  res.end(JSON.stringify({ ...limpio, ...(avisos.length ? { avisos } : {}) }));
 }

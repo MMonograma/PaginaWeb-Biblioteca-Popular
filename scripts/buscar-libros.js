@@ -31,8 +31,8 @@ const ARCHIVO = "src/datos/libros-info.json";
 const todos = process.argv.includes("--todos");
 const apiKey = process.env.GOOGLE_BOOKS_API_KEY || "";
 
-// Modo build (npm run build en Vercel): solo corre si hay API key, usa solo
-// Google (rápido), tiene un tope de tiempo y nunca hace fallar el deploy.
+// Modo build (npm run build en Vercel): solo corre si hay API key, tiene un
+// tope de 60 segundos y nunca hace fallar el deploy.
 const modoBuild = process.argv.includes("--build");
 if (modoBuild && !apiKey) {
   console.log("Libros: sin GOOGLE_BOOKS_API_KEY, se usa src/datos/libros-info.json tal como está.");
@@ -48,7 +48,10 @@ for (const libro of [...NOVEDADES_LITERARIAS, ...CATALOGO_DESTACADO.flatMap((s) 
   libros.set(claveLibro(libro), libro);
 }
 
-const pendientes = [...libros].filter(([clave]) => todos || !cache[clave]);
+// Se busca lo nuevo y también lo que quedó incompleto (sin tapa o sin
+// sinopsis): Google u Open Library pueden haber estado caídos la vez anterior.
+const incompleto = (c) => !c || !c.portada || !c.sinopsis;
+const pendientes = [...libros].filter(([clave]) => todos || incompleto(cache[clave]));
 console.log(`${libros.size} libros en el catálogo · ${pendientes.length} para buscar${apiKey ? " · con API key de Google" : ""}`);
 
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -62,7 +65,7 @@ for (const [clave, libro] of pendientes) {
   }
   let r;
   try {
-    r = await buscarLibro(libro, { apiKey, soloGoogle: modoBuild });
+    r = await buscarLibro(libro, { apiKey });
   } catch (e) {
     console.log(`✖ ${libro.titulo}: ${e.message}`);
     continue;
@@ -79,7 +82,15 @@ for (const [clave, libro] of pendientes) {
     continue;
   }
 
-  cache[clave] = { titulo: libro.titulo, autor: libro.autor, ...datos, actualizado: new Date().toISOString().slice(0, 10) };
+  // Lo nuevo completa lo que había; un campo que ahora vino vacío no borra
+  // uno que ya estaba.
+  const previo = cache[clave] ?? {};
+  const combinado = { ...previo };
+  for (const [campo, valor] of Object.entries(datos)) {
+    if (valor != null && !(Array.isArray(valor) && !valor.length)) combinado[campo] = valor;
+  }
+  cache[clave] = { ...combinado, titulo: libro.titulo, autor: libro.autor, actualizado: new Date().toISOString().slice(0, 10) };
+  r.portada ??= previo.portada;
   if (!r.portada) sinTapa++;
   const marca = r.portada ? "✔" : "·";
   console.log(`${marca} ${libro.titulo} — ${libro.autor}  [tapa: ${r.portada ? "sí" : "no"} · sinopsis: ${r.sinopsis ? "sí" : "no"}]`);

@@ -226,10 +226,18 @@ const tapaDeDiseno = (titulo, autor, { tituloAttr = "", autorAttr = "" } = {}) =
 // Tarjeta: el botón está en el título y su ::after cubre toda la tarjeta,
 // así se puede tocar en cualquier parte y el lector de pantalla anuncia
 // un solo control con el nombre del libro.
+// Tapa por ISBN directo de Google Books: sin API key y sin gastar cuota.
+// Cuando Google no la tiene devuelve un cartel de 128×170, que interfaz.js
+// reconoce y descarta.
+const tapaGooglePorISBN = (isbn) =>
+  isbn ? `https://books.google.com/books/content?vid=ISBN${encodeURIComponent(isbn)}&printsec=frontcover&img=1&zoom=1` : null;
+
 function tarjetaLibro(libro) {
   const d = datosLibro(libro);
-  const portadaImg = d.portada
-    ? `<img data-portada src="${esc(d.portada)}" alt="" width="300" height="450" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+  const respaldo = tapaGooglePorISBN(d.isbn);
+  const principal = d.portada ?? respaldo;
+  const portadaImg = principal
+    ? `<img data-portada src="${esc(principal)}"${respaldo && respaldo !== principal ? ` data-respaldo="${esc(respaldo)}"` : ""} alt="" width="300" height="450" loading="lazy" decoding="async" referrerpolicy="no-referrer"
                      class="absolute inset-0 z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">`
     : "";
 
