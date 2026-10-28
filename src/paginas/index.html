@@ -82,6 +82,119 @@
       </div>
     </section>
 
+    <!-- Préstamo a domicilio: va pegado a "Novedades literarias" porque es la
+         pregunta que sigue a ver un libro que gusta ("¿me lo puedo llevar?").
+         Sin acordeón a propósito: son reglas cortas y conviene que se lean sin
+         tocar nada. Lo esencial (2 libros, 15 días, renovación) va en cifras
+         grandes; el resto, en tarjetas con ícono. -->
+    <section id="prestamos" aria-labelledby="prestamos-titulo" class="mx-auto max-w-7xl px-4 pb-16 sm:pb-20">
+      <div class="rounded-3xl border border-biblio-pistachio bg-gradient-to-b from-biblio-pistachio/45 via-biblio-pistachio/20 to-biblio-paper px-5 py-10 sm:px-10 sm:py-14 dark:border-biblio-moss dark:from-biblio-card-dark dark:via-biblio-card-dark dark:to-biblio-charcoal">
+
+        <div class="max-w-3xl">
+          <p class="section-kicker">Para socios y socias</p>
+          <h2 id="prestamos-titulo" class="section-title">Llevate un libro a casa</h2>
+          <p class="section-lead">
+            Casi todo nuestro catálogo se puede retirar en préstamo a domicilio.
+            Estas son las condiciones, pensadas para que los libros circulen y lleguen a más personas.
+          </p>
+        </div>
+
+        <!-- Lo esencial de un vistazo: siempre en fila, en celular más compacto. -->
+        <dl class="mt-8 grid grid-cols-3 gap-2 sm:mt-10 sm:gap-4">
+          <div class="rounded-2xl bg-biblio-paper/80 px-2 py-4 text-center sm:p-5 shadow-sm ring-1 ring-biblio-pistachio dark:bg-biblio-charcoal/70 dark:ring-biblio-moss">
+            <dt class="text-xs font-semibold tracking-wide sm:text-sm text-biblio-moss uppercase dark:text-biblio-pistachio">Hasta</dt>
+            <dd>
+              <span class="block font-display text-4xl font-bold sm:text-5xl text-biblio-moss dark:text-biblio-paper">2</span>
+              <span class="mt-1 block text-sm text-biblio-charcoal sm:text-base dark:text-biblio-pistachio">libros a la vez</span>
+            </dd>
+          </div>
+          <div class="rounded-2xl bg-biblio-paper/80 px-2 py-4 text-center sm:p-5 shadow-sm ring-1 ring-biblio-pistachio dark:bg-biblio-charcoal/70 dark:ring-biblio-moss">
+            <dt class="text-xs font-semibold tracking-wide sm:text-sm text-biblio-moss uppercase dark:text-biblio-pistachio">Plazo</dt>
+            <dd>
+              <span class="block font-display text-4xl font-bold sm:text-5xl text-biblio-moss dark:text-biblio-paper">15</span>
+              <span class="mt-1 block text-sm text-biblio-charcoal sm:text-base dark:text-biblio-pistachio">días corridos</span>
+            </dd>
+          </div>
+          <div class="rounded-2xl bg-biblio-paper/80 px-2 py-4 text-center sm:p-5 shadow-sm ring-1 ring-biblio-pistachio dark:bg-biblio-charcoal/70 dark:ring-biblio-moss">
+            <dt class="text-xs font-semibold tracking-wide sm:text-sm text-biblio-moss uppercase dark:text-biblio-pistachio">Renovación</dt>
+            <dd>
+              <span class="block font-display text-4xl font-bold sm:text-5xl text-biblio-moss dark:text-biblio-paper">+15</span>
+              <span class="mt-1 block text-sm text-biblio-charcoal sm:text-base dark:text-biblio-pistachio">días más</span>
+            </dd>
+          </div>
+        </dl>
+
+        <!-- Detalle. Íconos decorativos (aria-hidden): el título de cada tarjeta ya dice todo. -->
+        <ul class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3" role="list">
+          <li class="card flex gap-4">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-biblio-pistachio/60 text-biblio-moss dark:bg-biblio-moss dark:text-biblio-pistachio" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6.5 16c.6-1.4 1.5-2 2.5-2s1.9.6 2.5 2M14 10h4M14 13h3"/></svg>
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Requisitos</h3>
+              <p class="muted mt-1">Ser socio o socia con la cuota al día y presentar el DNI al momento de retirar.</p>
+            </div>
+          </li>
+
+          <li class="card flex gap-4">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-biblio-pistachio/60 text-biblio-moss dark:bg-biblio-moss dark:text-biblio-pistachio" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M12 8v4l2.5 2"/></svg>
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Renovaciones</h3>
+              <p class="muted mt-1">
+                Podés extender el préstamo 15 días más, en la biblioteca o
+                <a href="https://wa.me/{{WHATSAPP}}?text=Hola%2C%20quiero%20renovar%20el%20pr%C3%A9stamo%20de%20un%20libro." target="_blank" rel="noopener" class="font-semibold underline underline-offset-4">por mensaje</a>,
+                siempre que el libro no esté reservado por otra persona.
+              </p>
+            </div>
+          </li>
+
+          <li class="card flex gap-4">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-biblio-pistachio/60 text-biblio-moss dark:bg-biblio-moss dark:text-biblio-pistachio" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2Z"/><path d="M4 19.5A2 2 0 0 0 6 21h13"/><path d="M9 7h6M9 11h4"/></svg>
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Material de sala</h3>
+              <p class="muted mt-1">
+                Casi todo se presta a domicilio. Algunas excepciones puntuales, como obras de
+                consulta o material especial, se leen solo en la biblioteca. Ante la duda, consultanos en el mostrador.
+              </p>
+            </div>
+          </li>
+
+          <li class="card flex gap-4">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-biblio-pistachio/60 text-biblio-moss dark:bg-biblio-moss dark:text-biblio-pistachio" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-9.2-9A5 5 0 0 1 12 6.5 5 5 0 0 1 21.2 12C19 16.6 12 21 12 21Z"/></svg>
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Cuidado del ejemplar</h3>
+              <p class="muted mt-1">Cada libro es de toda la comunidad. En caso de pérdida o daño irreparable, quien lo retiró se compromete a reponerlo.</p>
+            </div>
+          </li>
+
+          <li class="card flex gap-4 md:col-span-2 xl:col-span-2">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-biblio-pistachio/60 text-biblio-moss dark:bg-biblio-moss dark:text-biblio-pistachio" aria-hidden="true">
+              <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg>
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-biblio-moss dark:text-biblio-paper">Devoluciones a tiempo</h3>
+              <p class="muted mt-1">
+                Devolver en fecha permite que otra persona pueda disfrutar ese mismo libro.
+                Si se te complica, avisanos y lo resolvemos juntos. Las demoras no justificadas
+                podrían dar lugar a suspensiones temporales del servicio de préstamo.
+              </p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="mt-10 flex flex-wrap gap-3">
+          <a href="https://wa.me/{{WHATSAPP}}?text=Hola%2C%20quiero%20renovar%20el%20pr%C3%A9stamo%20de%20un%20libro." target="_blank" rel="noopener" class="btn btn-primary">Renovar un préstamo</a>
+          <a href="catalogo.html" class="btn btn-secondary">Buscar un libro para llevar</a>
+        </div>
+      </div>
+    </section>
+
     <section id="talleres" class="banda-clara py-16 sm:py-20">
       <div class="mx-auto max-w-7xl px-4">
         <p class="section-kicker">Programación</p>
