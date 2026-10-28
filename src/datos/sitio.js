@@ -49,7 +49,8 @@ export const BIBLIOTECA = {
     // cuando DigiBepé no responde. Vacío = sin respaldo (el buscador muestra
     // el aviso de siempre). Se obtiene en la hoja con:
     //   Archivo > Compartir > Publicar en la web > Catálogo > Valores separados por comas (.csv)
-    catalogoRespaldo: "",
+    catalogoRespaldo:
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vRNj5WDrE0FBEQOxg3tHYzxk4RlZEhPeweyZkCHvcb9J6ZvPzXYCYJoK5jKYi5_Bumb_hm0rK3XfBKx/pub?output=csv",
   },
 
   // El sitio afirma 2002; CONABIP y la prensa local apuntan a 2003.
