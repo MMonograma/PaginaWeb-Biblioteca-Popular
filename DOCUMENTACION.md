@@ -231,7 +231,9 @@ navegador → /api/catalogo?q=...&idx=ti  →  (servidor) DigiBepé en formato R
 - Si DigiBepé no responde (503, demora de más de 8 s), la página muestra un
   aviso con WhatsApp y correo en lugar de romperse.
 - Las tapas de los resultados salen de Google Books **por ISBN**, sin API key ni
-  cuota; si Google no la tiene, de Open Library; si no, la tapa de diseño.
+  cuota; si Google no la tiene, de Open Library. Si el resultado no tiene ISBN
+  o ninguna sirvió, se pide a `/api/libro` por título y autor (Google, Open
+  Library y Apple Books). Si tampoco hay, queda la tapa de diseño.
 - La sinopsis se pide a `api/libro.js` recién cuando alguien abre la ficha (una
   consulta por libro, con un día de caché).
 - La búsqueda queda en la dirección (`catalogo.html?q=almada&idx=au`), así que
@@ -246,11 +248,11 @@ La key **no se escribe en ningún archivo**. Se carga una sola vez en Vercel:
 2. Nombre `GOOGLE_BOOKS_API_KEY`, valor la key, entornos Production y Preview.
 3. Redeploy (Deployments → ⋯ → Redeploy).
 
-Con eso la usan las dos partes: `api/libro.js` (sinopsis de resultados del
-buscador) y `npm run build`, que antes de armar las páginas busca tapas y
-sinopsis de los libros destacados que todavía no estén en
-`src/datos/libros-info.json` (solo Google, con tope de 60 segundos; si falla,
-el deploy sigue igual).
+Con eso la usan las dos partes: `api/libro.js` (tapas y sinopsis que faltan) y
+`npm run build`, que antes de armar las páginas busca tapas y sinopsis de los
+libros destacados que todavía no estén en `src/datos/libros-info.json` (tope
+de 60 segundos; si falla, el deploy sigue igual). **Sin key también corre**:
+usa Open Library y Apple Books, que no la piden.
 
 En la key de Google Cloud conviene dejar **Restricciones de API → Books API**.
 No hace falta restringirla por sitio web: nunca llega al navegador.
@@ -270,7 +272,9 @@ npm run build
 ```
 
 - Busca por **título + autor** (no por ISBN) en Google Books y, si falta algo,
-  en Open Library. Un resultado solo se acepta si coincide el título completo y
+  en Open Library. Si después de las dos el libro sigue sin tapa, prueba en
+  **Apple Books** (iTunes Search API: gratuita, sin key ni registro; tiendas de
+  México y España, que tienen el catálogo en castellano). Un resultado solo se acepta si coincide el título completo y
   el apellido del autor; si no, el libro queda con la tapa de diseño.
 - Los ISBN que estaban cargados se quitaron: varios eran de otros libros
   («Ladrilleros» mostraba una novela de Petros Márkaris y «El resplandor», la
@@ -285,8 +289,58 @@ npm run build
   `false`), `sinopsis`, `buscarComo` (otro título para buscar, p. ej. el
   original en inglés), `editorial`, `anio`, `paginas`, `isbn`. Siempre ganan
   sobre lo encontrado.
-- Si una tapa no carga o el servidor devuelve una imagen vacía de 1 px, se ve
-  la tapa de diseño.
+- **Respaldo en el navegador.** Cada tarjeta lleva varias tapas en orden: la
+  guardada, la de Google por ISBN y la de Open Library por ISBN. Si una no
+  carga o es una imagen vacía (1 px de Open Library, cartel de 128×170 de
+  Google), se prueba la siguiente. Si se acaban, o el libro no tenía ninguna,
+  se pide a `/api/libro` por título y autor (una vez por libro; Vercel guarda la
+  respuesta un día). Recién ahí queda la tapa de diseño.
+- Lo ideal es que `libros-info.json` esté completo en el repositorio: así las
+  tapas salen directo del HTML y no hace falta consultar nada al abrir la
+  página. Correr `npm run libros` y subir el JSON con el resto de los cambios.
+
+### Catálogo de respaldo (hoja de Google)
+
+DigiBepé se cae seguido (503). Para que igual se pueda buscar, hay una copia del
+catálogo en la hoja **Catálogo de respaldo** (Drive → Recursos Web Biblioteca →
+Catalogo), con un renglón por título: ID, título, autor, otros autores,
+editorial, lugar, año, ISBN, materias, colección, signatura, tipo, cantidad de
+ejemplares, disponibles, prestados, solo sala y la fecha de actualización.
+
+- **La biblioteca** la usa directo en Google Sheets cuando el OPAC no anda
+  (Ctrl+F, o Datos → Crear filtro para filtrar por autor o materia).
+- **El sitio** la usa solo: si `/api/catalogo` no logra respuesta de DigiBepé,
+  busca en la hoja (título, autor, materia, ISBN o todo, como Koha) y la página
+  avisa que los resultados salen de la copia y que la disponibilidad se consulta
+  por WhatsApp o en el mostrador. No se muestra "Disponible / Prestado": la
+  copia es del día en que se exportó. Apenas DigiBepé vuelve, se usa otra vez
+  DigiBepé (la respuesta de respaldo se guarda en caché solo 2 minutos).
+- Todo es gratis: la hoja se lee como CSV publicado, igual que la de talleres,
+  y la búsqueda se hace en la propia función de Vercel.
+
+**Sincronizar (cada vez que se cargan libros nuevos, por ejemplo una vez por mes):**
+
+1. En DigiBepé (intranet de Koha): Herramientas → Exportar datos →
+   Exportar registros bibliográficos, con los ejemplares incluidos y formato
+   **MARC binario (.mrc)**.
+2. En la carpeta del proyecto:
+   `npm run catalogo:respaldo -- ruta\al\koha.mrc`
+   Deja `catalogo-respaldo.csv` en la raíz (no se sube al repositorio: está en
+   `.gitignore`, igual que los `.mrc`).
+3. En la hoja: **Archivo → Importar → Subir** el CSV, y elegir
+   - Ubicación: **Reemplazar hoja actual**
+   - Tipo de separador: **Coma**
+   - **Destildar "Convertir texto en números, fechas y fórmulas"**. Si queda
+     tildado, Sheets convierte los ISBN en números (pierden la X final y pueden
+     salir en notación científica) y el buscador por ISBN deja de encontrarlos.
+4. La primera vez, publicarla: **Archivo → Compartir → Publicar en la web** →
+   la pestaña del catálogo → **Valores separados por comas (.csv)** → Publicar.
+   Copiar la dirección en `catalogoRespaldo` de `src/datos/sitio.js`, hacer
+   build y subir. Las siguientes veces no hace falta: el enlace publicado sigue
+   igual y Google lo actualiza solo (puede tardar unos minutos).
+
+Si la hoja no está publicada (Google devuelve una página de inicio de sesión)
+o está vacía, el buscador muestra el aviso de error de siempre.
 
 ### Limitación conocida: el catálogo no tiene HTTPS
 

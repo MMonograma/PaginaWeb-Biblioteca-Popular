@@ -174,30 +174,38 @@ export function iniciarVarios() {
     img.addEventListener("error", () => img.remove());
   }
 
-  // Tapas de los libros destacados. Si la tapa no carga, o el servidor
-  // devuelve una imagen vacía (1 px de Open Library, cartel "image not
-  // available" de 128×170 de Google), se prueba la de respaldo por ISBN y,
-  // si tampoco hay, se oculta para que se vea la tapa de diseño de abajo.
+  // Tapas de los libros destacados. build.js deja la primera URL en src y el
+  // resto en data-respaldo (separadas por espacios). Si una no carga, o el
+  // servidor devuelve una imagen vacía (1 px de Open Library, cartel "image
+  // not available" de 128×170 de Google), se prueba la siguiente. Si se
+  // acaban, se avisa con el evento "tapa-agotada": libros.js lo toma y busca
+  // por título y autor. Mientras tanto se ve la tapa de diseño de abajo.
   const vacia = (img) =>
     img.naturalWidth < 10 ||
     (img.src.includes("books.google") && img.naturalWidth === 128 && img.naturalHeight === 170);
 
-  for (const img of document.querySelectorAll("img[data-portada]")) {
+  for (const img of document.querySelectorAll("img[data-portada][src]")) {
     const fallar = () => {
-      const respaldo = img.dataset.respaldo;
-      if (respaldo) {
-        delete img.dataset.respaldo;
-        img.src = respaldo;
+      const [siguiente, ...resto] = (img.dataset.respaldo ?? "").split(" ").filter(Boolean);
+      if (siguiente) {
+        img.dataset.respaldo = resto.join(" ");
+        img.src = siguiente;
         return;
       }
-      img.style.display = "none";
+      img.removeEventListener("error", fallar);
+      img.removeEventListener("load", cargo);
+      img.classList.add("invisible");
+      img.removeAttribute("src");
+      img.dataset.sinTapa = "";
+      img.dispatchEvent(new CustomEvent("tapa-agotada", { bubbles: true }));
     };
+    const cargo = () => (vacia(img) ? fallar() : img.classList.remove("invisible"));
     img.addEventListener("error", fallar);
-    img.addEventListener("load", () => {
-      if (vacia(img)) fallar();
-    });
-    // Por si ya terminó de cargar antes de que corriera este script. (No se
-    // mira naturalWidth 0: una imagen lazy que todavía no se pidió también da 0.)
-    if (img.complete && img.naturalWidth > 0 && vacia(img)) fallar();
+    img.addEventListener("load", cargo);
+    // Por si la imagen ya cargó o ya falló antes de que corriera este script
+    // (pasa con una URL rota: el error llega antes que el JS y se perdía).
+    // complete es false en una imagen lazy que todavía no se pidió, así que
+    // ahí no se confunde "sin pedir" con "rota".
+    if (img.complete) img.naturalWidth > 0 ? cargo() : fallar();
   }
 }

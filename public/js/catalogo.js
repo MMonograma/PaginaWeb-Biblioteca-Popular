@@ -11,7 +11,7 @@
 // La búsqueda queda en la dirección (?q=...) para poder compartirla.
 // ---------------------------------------------------------------------------
 
-import { registrarLibros, cargarTapa, urlsTapaPorISBN } from "./libros.js";
+import { registrarLibros, cargarTapa, urlsTapaPorISBN, pedirDetalle } from "./libros.js";
 
 export function iniciarBuscadorCatalogo() {
   const form = document.getElementById("buscador-catalogo");
@@ -27,6 +27,7 @@ export function iniciarBuscadorCatalogo() {
   const seccion = document.getElementById("resultados-catalogo");
   const lista = document.getElementById("resultados-lista");
   const estado = document.getElementById("resultados-estado");
+  const avisoRespaldo = document.getElementById("resultados-respaldo");
   const cargando = document.getElementById("resultados-cargando");
   const error = document.getElementById("resultados-error");
   const botonMas = document.getElementById("resultados-mas");
@@ -54,7 +55,15 @@ export function iniciarBuscadorCatalogo() {
       badge.classList.remove("hidden");
     }
 
-    cargarTapa(nodo.querySelector("[data-tapa]"), urlsTapaPorISBN(libro.isbn));
+    // Por ISBN primero (gratis y sin cuota); si no hay o no sirvió, por título
+    // y autor vía /api/libro, que de paso deja lista la sinopsis para la ficha.
+    const img = nodo.querySelector("[data-tapa]");
+    cargarTapa(img, urlsTapaPorISBN(libro.isbn), {
+      alAgotar: async () => {
+        const { portadaNueva } = await pedirDetalle(libro);
+        if (portadaNueva) cargarTapa(img, [portadaNueva]);
+      },
+    });
     return nodo;
   }
 
@@ -72,6 +81,7 @@ export function iniciarBuscadorCatalogo() {
     botonMas.classList.add("hidden");
     botonBuscar.disabled = true;
     if (nueva) {
+      avisoRespaldo?.classList.add("hidden");
       lista.replaceChildren();
       cargando.classList.remove("hidden");
       estado.textContent = "Buscando en el catálogo…";
@@ -92,6 +102,18 @@ export function iniciarBuscadorCatalogo() {
 
       // Cada resultado pide su sinopsis recién cuando se abre la ficha.
       const libros = datos.items.map((l) => ({ ...l, pedirDetalle: true }));
+
+      // Resultados del catálogo de respaldo: se avisa que la disponibilidad
+      // hay que consultarla, porque la copia es del día en que se exportó.
+      if (avisoRespaldo && nueva) {
+        const fecha = datos.respaldo?.actualizado
+          ? new Date(`${datos.respaldo.actualizado}T12:00:00`).toLocaleDateString("es-AR", { day: "numeric", month: "long", year: "numeric" })
+          : null;
+        avisoRespaldo.textContent = datos.respaldo
+          ? `El catálogo en línea de DigiBepé no está respondiendo, así que buscamos en nuestra copia del catálogo${fecha ? ` (actualizada el ${fecha})` : ""}. Para saber si un libro está disponible, consultanos por WhatsApp o en el mostrador.`
+          : "";
+        avisoRespaldo.classList.toggle("hidden", !datos.respaldo);
+      }
       registrarLibros(libros);
       lista.append(...libros.map(tarjeta));
 

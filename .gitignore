@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 __pycache__/
+# Exportaciones del catálogo (se suben a la hoja de Google, no al repositorio)
+*.mrc
+catalogo-respaldo.csv

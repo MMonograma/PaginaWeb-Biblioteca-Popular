@@ -24,9 +24,14 @@ export function registrarLibros(lista) {
 }
 
 // --- Tapas --------------------------------------------------------------------
-// Google Books da la tapa por ISBN sin API key ni cuota. Cuando no la tiene
-// devuelve un cartel "image not available" de 128×170: se trata como faltante.
-// Después se prueba Open Library; si tampoco hay, queda la tapa de diseño.
+// Orden de prueba, de la más barata a la más cara:
+//   1. La tapa guardada en el build (libros-info.json) o la del buscador.
+//   2. Por ISBN, directo y sin cuota: Google Books y Open Library. Cuando
+//      Google no la tiene devuelve un cartel de 128×170: se trata como faltante.
+//   3. Si nada funcionó (o no hay ISBN): /api/libro busca por título y autor
+//      en Google, Open Library y Apple Books. Una sola vez por libro, y Vercel
+//      guarda la respuesta un día.
+//   4. Si tampoco hay, queda la tapa de diseño.
 
 const PLACEHOLDER_GOOGLE = [128, 170];
 
@@ -45,14 +50,16 @@ const esImagenVacia = (img) =>
 // Prueba las URLs en orden y muestra la primera que sea una tapa de verdad.
 // Se oculta con visibility (clase "invisible") y no con display:none: una
 // imagen loading="lazy" con display:none nunca se llega a descargar.
-export function cargarTapa(img, urls) {
-  const pendientes = urls.filter(Boolean);
+// alAgotar se llama si ninguna sirvió.
+export function cargarTapa(img, urls, { alAgotar } = {}) {
+  const pendientes = [...new Set(urls.filter(Boolean))];
   img.classList.add("invisible");
   const siguiente = () => {
     const url = pendientes.shift();
     if (!url) {
-      img.classList.add("invisible");
+      img.onerror = img.onload = null;
       img.removeAttribute("src");
+      alAgotar?.();
       return;
     }
     img.src = url;
@@ -60,6 +67,67 @@ export function cargarTapa(img, urls) {
   img.onerror = siguiente;
   img.onload = () => (esImagenVacia(img) ? siguiente() : img.classList.remove("invisible"));
   siguiente();
+}
+
+// Datos que faltan (tapa, sinopsis, editorial…), pedidos a /api/libro.
+// Se guarda la promesa: si la tarjeta y la ficha lo piden a la vez, sale una
+// sola consulta.
+const detalles = new Map();
+
+export function pedirDetalle(libro) {
+  if (detalles.has(libro.id)) return detalles.get(libro.id);
+  const params = new URLSearchParams();
+  if (libro.isbn) params.set("isbn", libro.isbn);
+  params.set("titulo", libro.titulo);
+  if (libro.autor) params.set("autor", libro.autor);
+  const promesa = fetch(`/api/libro?${params}`)
+    .then((r) => (r.ok ? r.json() : {}))
+    .catch(() => ({})) // Sin conexión con la API: queda lo que había.
+    .then((d) => {
+      const portadaPrevia = libro.portada;
+      for (const campo of ["portada", "sinopsis", "editorial", "anio", "paginas", "isbn"]) {
+        if (libro[campo] == null && d[campo] != null) libro[campo] = d[campo];
+      }
+      if (d.sinopsis && d.fuentes?.length && !libro.fuente) libro.fuente = d.fuentes.join(" / ");
+      libro.pedirDetalle = false;
+      return { portadaNueva: libro.portada && libro.portada !== portadaPrevia ? libro.portada : null };
+    });
+  detalles.set(libro.id, promesa);
+  return promesa;
+}
+
+// Último intento para una imagen que se quedó sin tapa.
+async function tapaPorTitulo(libro, img) {
+  if (!libro || !/^https?:/.test(location.protocol)) return; // file:// no tiene /api
+  const { portadaNueva } = await pedirDetalle(libro);
+  if (portadaNueva) cargarTapa(img, [portadaNueva]);
+}
+
+// Tarjetas que arma build.js (Inicio y destacados del Catálogo). interfaz.js
+// ya recorre su lista de respaldos apenas carga la página; acá se toma la
+// posta cuando se agotan. Las que ni siquiera tienen URL (libro sin tapa
+// guardada ni ISBN) se buscan cuando están por entrar en pantalla.
+function iniciarTapasDeTarjetas() {
+  const libroDe = (img) => libros.get(img.closest("article")?.querySelector("[data-libro]")?.dataset.libro);
+
+  document.addEventListener("tapa-agotada", (e) => tapaPorTitulo(libroDe(e.target), e.target));
+  for (const img of document.querySelectorAll("img[data-portada][data-sin-tapa]")) tapaPorTitulo(libroDe(img), img);
+
+  const sinURL = [...document.querySelectorAll("img[data-portada]:not([src])")];
+  if (!sinURL.length) return;
+  const mirar = (img) => tapaPorTitulo(libroDe(img), img);
+  if (!("IntersectionObserver" in window)) return sinURL.forEach(mirar);
+  const observador = new IntersectionObserver(
+    (entradas) => {
+      for (const { isIntersecting, target } of entradas) {
+        if (!isIntersecting) continue;
+        observador.unobserve(target);
+        mirar(target);
+      }
+    },
+    { rootMargin: "300px" }
+  );
+  sinURL.forEach((img) => observador.observe(img));
 }
 
 // --- Ficha --------------------------------------------------------------------
@@ -76,6 +144,7 @@ export function iniciarFichasLibros() {
       // Sin datos de destacados: el buscador puede seguir registrando libros.
     }
   }
+  iniciarTapasDeTarjetas();
 
   const $ = (sel) => dialogo.querySelector(sel);
   const portada = $("[data-ficha-portada]");
@@ -137,7 +206,11 @@ export function iniciarFichasLibros() {
     categoria.classList.toggle("hidden", !etiqueta);
 
     portada.alt = `Portada de «${libro.titulo}»`;
-    cargarTapa(portada, [libro.portada, ...urlsTapaPorISBN(libro.isbn)]);
+    cargarTapa(portada, [libro.portada, ...urlsTapaPorISBN(libro.isbn)], {
+      alAgotar: () => {
+        if (abierto === libro.id) tapaPorTitulo(libro, portada);
+      },
+    });
 
     pintarDatos(libro);
     pintarSinopsis(libro, libro.pedirDetalle);
@@ -150,27 +223,11 @@ export function iniciarFichasLibros() {
 
   // Sinopsis de un resultado del buscador: una consulta por libro, una sola vez.
   async function traerDetalle(libro) {
-    libro.pedirDetalle = false;
-    const params = new URLSearchParams();
-    if (libro.isbn) params.set("isbn", libro.isbn);
-    params.set("titulo", libro.titulo);
-    if (libro.autor) params.set("autor", libro.autor);
-    try {
-      const r = await fetch(`/api/libro?${params}`);
-      if (r.ok) {
-        const d = await r.json();
-        for (const campo of ["portada", "sinopsis", "editorial", "anio", "paginas", "isbn"]) {
-          if (libro[campo] == null && d[campo] != null) libro[campo] = d[campo];
-        }
-        if (d.sinopsis && d.fuentes?.length) libro.fuente = d.fuentes.join(" / ");
-      }
-    } catch {
-      // Sin conexión con la API: queda el texto de "sin sinopsis".
-    }
+    const { portadaNueva } = await pedirDetalle(libro);
     if (abierto === libro.id) {
       pintarDatos(libro);
       pintarSinopsis(libro);
-      if (libro.portada && portada.classList.contains("invisible")) cargarTapa(portada, [libro.portada]);
+      if (portadaNueva && portada.classList.contains("invisible")) cargarTapa(portada, [portadaNueva]);
     }
   }
 

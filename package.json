@@ -8,6 +8,7 @@
     "watch": "npm run dev",
     "serve": "node servidor-dev.js",
     "libros": "node scripts/buscar-libros.js",
+    "catalogo:respaldo": "node scripts/catalogo-respaldo.js",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/css/style.css --minify",
     "build:html": "node build.js",
     "build": "npm run build:css && node scripts/buscar-libros.js --build && npm run build:html"

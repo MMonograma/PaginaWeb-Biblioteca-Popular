@@ -14,7 +14,12 @@
 //   1. Google Books — mejor cobertura de ediciones en castellano y sinopsis
 //      en español. Sin API key usa una cuota compartida que suele estar
 //      agotada; con GOOGLE_BOOKS_API_KEY funciona bien (es gratuita).
-//   2. Open Library — siempre disponible; completa lo que falte.
+//   2. Open Library — sin key; completa lo que falte.
+//   3. Apple Books (iTunes Search API) — sin key ni registro. Se consulta solo
+//      si después de las dos anteriores el libro sigue sin tapa: tiene buena
+//      cobertura de ediciones recientes en castellano (Random House, Anagrama,
+//      Planeta…), justo donde Open Library flojea. Límite aproximado de 20
+//      consultas por minuto, por eso va última y de a una.
 // ---------------------------------------------------------------------------
 
 export const normalizar = (s = "") =>
@@ -184,46 +189,94 @@ export async function buscarEnOpenLibrary(libro) {
   };
 }
 
+// --- Apple Books (iTunes Search API) ----------------------------------------
+// Pública y gratuita. Se busca en las tiendas de México y España, que tienen el
+// catálogo en castellano (la de Argentina casi no vende libros). La tapa viene
+// en 100×100, pero la misma URL acepta otro tamaño: 600×900 alcanza de sobra.
+
+const TIENDAS_APPLE = ["MX", "ES"];
+
+export async function buscarEnAppleBooks(libro) {
+  const termino = libro.buscarComo ?? libro.titulo;
+  for (const country of TIENDAS_APPLE) {
+    const params = new URLSearchParams({
+      term: `${termino} ${libro.autor}`,
+      media: "ebook",
+      entity: "ebook",
+      country,
+      limit: "15",
+    });
+    const datos = await pedirJSON(`https://itunes.apple.com/search?${params}`);
+    const r = (datos.results ?? []).find(
+      (x) => x.artworkUrl100 && coincideTitulo(termino, x.trackName) && coincideAutor(libro.autor, [x.artistName])
+    );
+    if (!r) continue;
+    const portada = urlSeguraTapa(r.artworkUrl100.replace(/\/\d+x\d+(bb)?\.(jpg|png|webp)$/i, "/600x900bb.$2"));
+    return {
+      portada,
+      sinopsis: r.description ? limpiarTexto(r.description) : null,
+      editorial: null,
+      anio: anioDe(r.releaseDate),
+      paginas: null,
+      isbn: null,
+      fuente: "Apple Books",
+    };
+  }
+  return null;
+}
+
+// Solo https: el sitio entero se sirve así y la CSP no acepta otra cosa.
+const urlSeguraTapa = (u) => (typeof u === "string" && /^https:\/\//.test(u) ? u : null);
+
 // --- Búsqueda por ISBN -------------------------------------------------------
 // Para libros que vienen del catálogo de la biblioteca: el ISBN es el de su
 // propio registro, así que la tapa corresponde a la edición que tienen.
 
 export async function buscarPorISBN(isbn, { apiKey, avisos = [] } = {}) {
-  const params = paramsGoogle({ q: `isbn:${isbn}`, maxResults: "3" }, apiKey);
-  let v = null;
+  let resultado = null;
+  const completar = (r) => {
+    if (!r) return;
+    resultado ??= { portada: null, sinopsis: null, editorial: null, anio: null, paginas: null, isbn, fuentes: null };
+    for (const [campo, valor] of Object.entries(r)) if (resultado[campo] == null && valor != null) resultado[campo] = valor;
+  };
+
   try {
+    const params = paramsGoogle({ q: `isbn:${isbn}`, maxResults: "3" }, apiKey);
     const datos = await pedirJSON(`https://www.googleapis.com/books/v1/volumes?${params}`);
-    v = datos.items?.[0]?.volumeInfo ?? null;
+    const v = datos.items?.[0]?.volumeInfo;
+    if (v) {
+      completar({
+        portada: urlSeguraTapa(v.imageLinks?.thumbnail?.replace(/^http:/, "https:").replace(/&edge=curl/, "")),
+        sinopsis: v.description ? limpiarTexto(v.description) : null,
+        editorial: v.publisher ?? null,
+        anio: anioDe(v.publishedDate),
+        paginas: v.pageCount || null,
+        fuentes: v.description ? ["Google Books"] : null,
+      });
+    }
   } catch (e) {
     avisos.push(`Google Books: ${e.message}`);
   }
-  if (v) {
-    return {
-      portada: v.imageLinks?.thumbnail?.replace(/^http:/, "https:").replace(/&edge=curl/, "") ?? null,
-      sinopsis: v.description ? limpiarTexto(v.description) : null,
-      editorial: v.publisher ?? null,
-      anio: anioDe(v.publishedDate),
-      paginas: v.pageCount || null,
-      isbn,
-      fuentes: v.description ? ["Google Books"] : null,
-    };
+
+  // Antes, si Google encontraba el libro pero sin tapa, se cortaba acá y el
+  // libro quedaba sin imagen. Ahora Open Library completa lo que falte.
+  if (!resultado?.portada) {
+    try {
+      const d = await pedirJSON(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
+      const libro = d[`ISBN:${isbn}`];
+      if (libro) {
+        completar({
+          portada: urlSeguraTapa(libro.cover?.large ?? libro.cover?.medium),
+          editorial: libro.publishers?.[0]?.name ?? null,
+          anio: anioDe(libro.publish_date),
+          paginas: libro.number_of_pages ?? null,
+        });
+      }
+    } catch (e) {
+      avisos.push(`Open Library: ${e.message}`);
+    }
   }
-  try {
-    const d = await pedirJSON(`https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&format=json&jscmd=data`);
-    const libro = d[`ISBN:${isbn}`];
-    if (!libro) return null;
-    return {
-      portada: libro.cover?.large ?? libro.cover?.medium ?? null,
-      sinopsis: null,
-      editorial: libro.publishers?.[0]?.name ?? null,
-      anio: anioDe(libro.publish_date),
-      paginas: libro.number_of_pages ?? null,
-      isbn,
-      fuentes: null,
-    };
-  } catch {
-    return null;
-  }
+  return resultado;
 }
 
 // --- Combinación ------------------------------------------------------------
@@ -232,11 +285,18 @@ export async function buscarPorISBN(isbn, { apiKey, avisos = [] } = {}) {
 export async function buscarLibro(libro, opciones = {}) {
   const resultados = [];
   const avisos = [];
+  // Sin API key, Google responde 429 casi siempre: se lo saltea para no
+  // gastar tiempo (y no llenar el registro de avisos que no sirven).
+  const usarGoogle = Boolean(opciones.apiKey) || !opciones.sinKeySinGoogle;
   const consultas = [
-    ["Google Books", buscarEnGoogleBooks],
-    ["Open Library", buscarEnOpenLibrary],
-  ].filter(([nombre]) => !opciones.soloGoogle || nombre === "Google Books");
-  for (const [nombre, fn] of consultas) {
+    usarGoogle && ["Google Books", buscarEnGoogleBooks],
+    !opciones.soloGoogle && ["Open Library", buscarEnOpenLibrary],
+    // Apple solo entra si todavía no hay tapa (ver el encabezado).
+    !opciones.soloGoogle && ["Apple Books", buscarEnAppleBooks, { siFaltaTapa: true }],
+  ].filter(Boolean);
+
+  for (const [nombre, fn, { siFaltaTapa = false } = {}] of consultas) {
+    if (siFaltaTapa && resultados.some((r) => r.portada)) continue;
     try {
       const r = await fn(libro, opciones);
       if (r) resultados.push(r);
@@ -255,7 +315,10 @@ export async function buscarLibro(libro, opciones = {}) {
       }
     }
   }
-  return { ...final, fuentes: [...fuentes], avisos };
+  // Un aviso solo importa si dejó un hueco: si Google falló pero la tapa y la
+  // sinopsis llegaron igual de otra fuente, el resultado está completo.
+  const completo = final.portada && final.sinopsis;
+  return { ...final, fuentes: [...fuentes], avisos: completo ? [] : avisos };
 }
 
 export const claveLibro = (libro) => `${normalizar(libro.titulo)}|${normalizar(libro.autor)}`;

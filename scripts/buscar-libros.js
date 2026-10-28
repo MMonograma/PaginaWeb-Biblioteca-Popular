@@ -6,8 +6,9 @@
 //     npm run libros                      (solo busca los libros nuevos)
 //     npm run libros -- --todos           (vuelve a buscar todos)
 //
-// En Vercel corre solo dentro de `npm run build` (con --build) si el proyecto
-// tiene la variable de entorno GOOGLE_BOOKS_API_KEY. Ver DOCUMENTACION.md.
+// En Vercel corre solo dentro de `npm run build` (con --build), con o sin
+// GOOGLE_BOOKS_API_KEY: sin key se usan Open Library y Apple Books, que no la
+// piden. Ver DOCUMENTACION.md.
 //
 // Guarda lo que encuentra en src/datos/libros-info.json. build.js lee ese
 // archivo; el sitio publicado NO consulta ninguna API al abrirse, así que no
@@ -31,13 +32,10 @@ const ARCHIVO = "src/datos/libros-info.json";
 const todos = process.argv.includes("--todos");
 const apiKey = process.env.GOOGLE_BOOKS_API_KEY || "";
 
-// Modo build (npm run build en Vercel): solo corre si hay API key, tiene un
-// tope de 60 segundos y nunca hace fallar el deploy.
+// Modo build (npm run build en Vercel): tope de 60 segundos y nunca hace
+// fallar el deploy. Antes, sin API key no corría nunca, y como
+// libros-info.json está vacío en el repositorio, el sitio salía sin tapas.
 const modoBuild = process.argv.includes("--build");
-if (modoBuild && !apiKey) {
-  console.log("Libros: sin GOOGLE_BOOKS_API_KEY, se usa src/datos/libros-info.json tal como está.");
-  process.exit(0);
-}
 const limite = modoBuild ? Date.now() + 60_000 : Infinity;
 
 const cache = existsSync(ARCHIVO) ? JSON.parse(readFileSync(ARCHIVO, "utf8")) : {};
@@ -65,7 +63,7 @@ for (const [clave, libro] of pendientes) {
   }
   let r;
   try {
-    r = await buscarLibro(libro, { apiKey });
+    r = await buscarLibro(libro, { apiKey, sinKeySinGoogle: modoBuild });
   } catch (e) {
     console.log(`✖ ${libro.titulo}: ${e.message}`);
     continue;
@@ -94,7 +92,7 @@ for (const [clave, libro] of pendientes) {
   if (!r.portada) sinTapa++;
   const marca = r.portada ? "✔" : "·";
   console.log(`${marca} ${libro.titulo} — ${libro.autor}  [tapa: ${r.portada ? "sí" : "no"} · sinopsis: ${r.sinopsis ? "sí" : "no"}]`);
-  await espera(modoBuild ? 150 : 600); // De a uno y con pausa: Open Library bloquea a quien consulta en ráfaga.
+  await espera(modoBuild ? 300 : 600); // De a uno y con pausa: Open Library y Apple bloquean a quien consulta en ráfaga.
 }
 
 // Se ordena por clave para que los cambios en git sean fáciles de leer.

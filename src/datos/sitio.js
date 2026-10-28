@@ -44,6 +44,12 @@ export const BIBLIOTECA = {
     catalogoDisponible: true,
     catalogo: "http://4124.bepe.ar/cgi-bin/koha/opac-main.pl",
     catalogoBusqueda: "http://4124.bepe.ar/cgi-bin/koha/opac-search.pl",
+    // Catálogo de respaldo: la hoja «Catálogo de respaldo» (Drive → Recursos
+    // Web Biblioteca → Catalogo) publicada como CSV. El buscador la usa sola
+    // cuando DigiBepé no responde. Vacío = sin respaldo (el buscador muestra
+    // el aviso de siempre). Se obtiene en la hoja con:
+    //   Archivo > Compartir > Publicar en la web > Catálogo > Valores separados por comas (.csv)
+    catalogoRespaldo: "",
   },
 
   // El sitio afirma 2002; CONABIP y la prensa local apuntan a 2003.

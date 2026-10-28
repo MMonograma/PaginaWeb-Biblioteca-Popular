@@ -226,20 +226,31 @@ const tapaDeDiseno = (titulo, autor, { tituloAttr = "", autorAttr = "" } = {}) =
 // Tarjeta: el botón está en el título y su ::after cubre toda la tarjeta,
 // así se puede tocar en cualquier parte y el lector de pantalla anuncia
 // un solo control con el nombre del libro.
-// Tapa por ISBN directo de Google Books: sin API key y sin gastar cuota.
-// Cuando Google no la tiene devuelve un cartel de 128×170, que interfaz.js
-// reconoce y descarta.
-const tapaGooglePorISBN = (isbn) =>
-  isbn ? `https://books.google.com/books/content?vid=ISBN${encodeURIComponent(isbn)}&printsec=frontcover&img=1&zoom=1` : null;
+// Tapas por ISBN directas (Google Books y Open Library): sin API key y sin
+// gastar cuota. Cuando no la tienen, Google devuelve un cartel de 128×170 y
+// Open Library un error (por ?default=false); interfaz.js descarta los dos y
+// pasa a la siguiente.
+const tapasPorISBN = (isbn) =>
+  isbn
+    ? [
+        `https://books.google.com/books/content?vid=ISBN${encodeURIComponent(isbn)}&printsec=frontcover&img=1&zoom=1`,
+        `https://covers.openlibrary.org/b/isbn/${encodeURIComponent(isbn)}-M.jpg?default=false`,
+      ]
+    : [];
 
 function tarjetaLibro(libro) {
   const d = datosLibro(libro);
-  const respaldo = tapaGooglePorISBN(d.isbn);
-  const principal = d.portada ?? respaldo;
-  const portadaImg = principal
-    ? `<img data-portada src="${esc(principal)}"${respaldo && respaldo !== principal ? ` data-respaldo="${esc(respaldo)}"` : ""} alt="" width="300" height="450" loading="lazy" decoding="async" referrerpolicy="no-referrer"
-                     class="absolute inset-0 z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">`
-    : "";
+  // La primera URL va en src y el resto queda de respaldo. Sin ninguna, la
+  // imagen va sin src: libros.js la busca por título y autor cuando está por
+  // verse. Con portada: false no hay imagen y se ve siempre la de diseño.
+  const tapas = [...new Set([d.portada, ...tapasPorISBN(d.isbn)].filter(Boolean))];
+  const [principal, ...respaldos] = tapas;
+  const claseImg = "absolute inset-0 z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105";
+  const portadaImg =
+    libro.portada === false
+      ? ""
+      : `<img data-portada${principal ? ` src="${esc(principal)}"` : ""}${respaldos.length ? ` data-respaldo="${esc(respaldos.join(" "))}"` : ""} alt="" width="300" height="450" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+                     class="${claseImg}${principal ? "" : " invisible"}">`;
 
   return `          <li class="h-full">
             <article class="card card-hover group relative flex h-full flex-col overflow-hidden p-0 border-biblio-pistachio/50 dark:border-biblio-moss focus-within:ring-2 focus-within:ring-biblio-moss dark:focus-within:ring-biblio-pistachio">

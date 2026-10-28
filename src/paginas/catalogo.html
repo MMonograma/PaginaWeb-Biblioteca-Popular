@@ -58,6 +58,10 @@
         <p id="resultados-estado" class="muted text-sm" role="status" aria-live="polite"></p>
       </div>
 
+      <!-- Aviso cuando los resultados vienen del catálogo de respaldo (la hoja
+           de Google) porque DigiBepé no respondió. Lo completa catalogo.js. -->
+      <p id="resultados-respaldo" class="mt-4 hidden rounded-xl border border-dashed border-biblio-sage bg-biblio-pistachio/30 px-4 py-3 text-sm text-biblio-charcoal dark:border-biblio-moss dark:bg-biblio-card-dark dark:text-biblio-pistachio"></p>
+
       <div id="resultados-cargando" class="relative mt-6 hidden min-h-48">
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div class="skeleton aspect-[2/3]"></div>

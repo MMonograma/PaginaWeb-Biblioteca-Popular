@@ -1,9 +1,11 @@
 // ---------------------------------------------------------------------------
 // GET /api/libro?isbn=...&titulo=...&autor=...
 //
-// Tapa y sinopsis de un libro que salió en una búsqueda del catálogo. Se pide
-// recién cuando alguien abre la ficha, así se gasta una consulta por libro
-// visto y no una por resultado.
+// Tapa y sinopsis de un libro. Se pide en dos casos:
+//   - al abrir la ficha de un resultado del buscador (falta la sinopsis);
+//   - cuando una tarjeta se queda sin tapa: las URLs por ISBN no trajeron
+//     nada, o el libro no tiene ISBN. Acá se prueba por título y autor en
+//     Google, Open Library y Apple Books.
 //
 // La API key de Google Books vive en una variable de entorno de Vercel
 // (GOOGLE_BOOKS_API_KEY): nunca llega al navegador ni al repositorio.
@@ -30,9 +32,9 @@ export default async function handler(req, res) {
   const avisos = [];
   try {
     if (isbn) datos = await buscarPorISBN(isbn, { apiKey, avisos });
-    // Sin ISBN, o sin sinopsis para ese ISBN: se completa buscando por título y autor.
-    if ((!datos || !datos.sinopsis) && titulo && autor) {
-      const porTitulo = await buscarLibro({ titulo, autor }, { apiKey });
+    // Sin ISBN, o sin tapa o sinopsis para ese ISBN: se completa buscando por título y autor.
+    if ((!datos || !datos.sinopsis || !datos.portada) && titulo && autor) {
+      const porTitulo = await buscarLibro({ titulo, autor }, { apiKey, sinKeySinGoogle: true });
       avisos.push(...(porTitulo.avisos ?? []));
       datos = datos ?? {};
       for (const [campo, valor] of Object.entries(porTitulo)) {
@@ -46,7 +48,7 @@ export default async function handler(req, res) {
   const { avisos: _, ...limpio } = datos ?? {};
   // Un día en la caché de Vercel: cada libro se consulta, como mucho, una vez
   // por día. Si alguna fuente falló, no se guarda en caché para reintentar.
-  const completo = datos && !avisos.length;
+  const completo = datos && (!avisos.length || (datos.portada && datos.sinopsis));
   res.setHeader("Cache-Control", completo ? "public, s-maxage=86400, stale-while-revalidate=604800" : "no-store");
   // Los avisos (p. ej. "Google Books: HTTP 403 ...") sirven para diagnosticar
   // desde el navegador; no incluyen la API key.
