@@ -390,10 +390,11 @@ copiadas al sitio automáticamente.
 
 ```
 GitHub Action (cada 3 horas, de 9 a 21 hs de Argentina)
-  └─ scripts/sync-instagram.py  (abre el perfil en un Chromium sin ventana)
+  └─ scripts/sync-instagram.py  (consulta la API oficial de Instagram)
        ├─ public/noticias/{shortcode}.jpg   la foto de cada publicación
        └─ public/data/noticias.json         texto resumido, fecha y enlace
   └─ si hubo cambios: commit + push  ──▶  Vercel publica solo
+  └─ los lunes: renueva el token de Instagram y lo guarda en el secret
 ```
 
 - Las fotos se **copian** al sitio porque los enlaces del CDN de Instagram
@@ -406,29 +407,62 @@ GitHub Action (cada 3 horas, de 9 a 21 hs de Argentina)
 - Para correrlo a mano: pestaña **Actions → Sincronizar Instagram → Run
   workflow**.
 
-### 5.1 Por qué un navegador sin ventana (y no una API)
+### 5.1 La API oficial y sus dos secrets
 
-- La API simple de Instagram (Basic Display) la apagó Meta en diciembre de 2024.
-  La que queda (Graph API) exige cuenta Business, una app registrada en Meta y
-  un token que vence cada 60 días.
-- Las consultas directas a la API interna (lo que hace instaloader) ahora
-  responden `401 require_login` sin sesión. Probado el 2026-09-30.
-- **Pero el perfil público se sigue viendo en un navegador sin iniciar sesión.**
-  Instagram manda las últimas 12 publicaciones dentro de la propia página
-  (en un bloque JSON). El script abre el perfil con Playwright, un Chromium sin
-  ventana, y lee ese bloque. No hay contraseña, sesión ni token que mantener.
-- La página no trae la fecha de cada publicación, pero el ID numérico (`pk`)
-  la tiene adentro: `(pk >> 23) + 1314220021721` da los milisegundos del
-  momento en que se publicó.
+El script usa la **API de Instagram con inicio de sesión de Instagram** (la que
+no necesita una página de Facebook). Pide `graph.instagram.com/me/media` con
+un token de la cuenta de la biblioteca. Sólo usa lo que trae Python: no hay
+que instalar nada.
 
-**Qué puede fallar:** si Instagram cambia cómo arma esa página, o empieza a
-pedir inicio de sesión a los servidores de GitHub. En los dos casos el script
-no toca nada, el sitio sigue mostrando lo último bueno y la Action deja un
-aviso amarillo ("Instagram no mandó publicaciones…"). Si ese aviso se repite
-varios días seguidos, hay que revisar el script.
+Antes se leía el perfil público con un navegador sin ventana (Playwright),
+sin token. Se reemplazó porque Instagram no permite oficialmente esa lectura
+y puede cortarla en cualquier momento.
 
-> Instagram no permite oficialmente la lectura automatizada. Con dos visitas
-> por día al perfil público de la propia biblioteca el riesgo es mínimo.
+La Action necesita dos secrets (**Settings → Secrets and variables → Actions**
+en GitHub):
+
+| Secret | Qué es | Vence |
+|---|---|---|
+| `INSTAGRAM_ACCESS_TOKEN` | Token de Instagram de `@bibliotecaedgarmorisoli` (empieza con `IG`) | A los 60 días, pero **se renueva solo** |
+| `GH_PAT_SECRETS` | Token personal de GitHub que deja guardar el token renovado | Una vez por año: **hay que recrearlo a mano** |
+
+**Cómo se renueva el token de Instagram.** Todos los lunes (y cuando se corre
+a mano tildando *Renovar también el token de Instagram*) la Action ejecuta
+`python scripts/sync-instagram.py --renovar`: le pide a Instagram un token
+nuevo por 60 días más y lo guarda en `INSTAGRAM_ACCESS_TOKEN`. El permiso
+normal de una Action no alcanza para escribir secrets; por eso existe
+`GH_PAT_SECRETS`. Instagram no deja renovar un token con menos de 24 horas.
+
+**Cómo conseguir `INSTAGRAM_ACCESS_TOKEN`** (sólo la primera vez, o si venció):
+
+1. La cuenta de Instagram tiene que ser profesional (Creador o Empresa).
+2. En [developers.facebook.com](https://developers.facebook.com/apps/), en la
+   app de la biblioteca: **Roles de la aplicación → Roles → Agregar personas →
+   Evaluador de Instagram** → `bibliotecaedgarmorisoli`.
+3. Con esa cuenta, aceptar la invitación en
+   `instagram.com/accounts/manage_access/` → **Invitaciones de tester**.
+4. En la app: **Instagram → Configuración de la API con inicio de sesión de
+   Instagram → Generar tokens de acceso → Agregar cuenta**, y después
+   **Generar token**. El permiso que hace falta es `instagram_business_basic`.
+5. Copiar el token y pegarlo en el secret `INSTAGRAM_ACCESS_TOKEN`.
+
+**Cómo conseguir `GH_PAT_SECRETS`** (una vez por año):
+
+1. En GitHub: **Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token**.
+2. *Repository access*: **Only select repositories** → este repositorio.
+3. *Repository permissions*: **Secrets: Read and write**. No hace falta nada más.
+4. Vencimiento: el máximo (1 año). Anotar la fecha para recrearlo antes.
+5. Copiar el token y pegarlo en el secret `GH_PAT_SECRETS`.
+
+**Qué puede fallar:**
+
+| Qué se ve en la pestaña Actions | Qué pasó | Qué hacer |
+|---|---|---|
+| Aviso amarillo "Instagram no respondió" | Problema pasajero de Instagram | Nada: el sitio muestra lo último bueno y se reintenta solo |
+| Rojo "Instagram rechazó el token" | El token venció o se revocó | Generar uno nuevo (pasos de arriba) |
+| Rojo "Falta el secret…" | No está cargado alguno de los dos secrets | Cargarlo |
+| Rojo "No se pudo guardar el token renovado" | Venció `GH_PAT_SECRETS` | Recrearlo. Hay tiempo: el token de Instagram sigue sirviendo hasta 60 días desde la última renovación |
 
 ### 5.2 Formato de `noticias.json`
 
@@ -441,7 +475,7 @@ varios días seguidos, hay que revisar el script.
       "id": "shortcode",
       "url": "https://www.instagram.com/p/shortcode/",
       "imagen": "/noticias/shortcode.jpg",
-      "alt": "texto alternativo que genera Instagram",
+      "alt": "texto alternativo, si quien publicó cargó uno",
       "caption": "primeros 220 caracteres del texto…",
       "fecha": "2026-09-28"
     }
@@ -596,8 +630,9 @@ horizontales en 375 px.
 - `connect-src` permite, además del propio sitio, sólo a Google (para leer la
   planilla). `script-src` sigue siendo sólo `'self'`: por eso Pannellum está
   copiado en `public/vendor/` y no enlazado a un CDN.
-- No hay ninguna clave ni token: ni en el código del navegador ni en GitHub.
-  La sincronización de Instagram lee el perfil público sin iniciar sesión.
+- No hay ninguna clave ni token en el código. Los dos que usa la
+  sincronización de Instagram están guardados como secrets de GitHub
+  (sección 5.1): sólo los ve la Action, y el script nunca los imprime.
 
 ---
 

@@ -51,7 +51,7 @@ function tarjetaNoticia(noticia, plantilla) {
   const imagen = nodo.querySelector("[data-imagen]");
   if (imagen && esFotoLocal(noticia.imagen)) {
     imagen.src = noticia.imagen;
-    // "alt" viene del texto alternativo que genera Instagram, si lo hay.
+    // "alt" es el texto alternativo que cargó quien publicó, si lo hay.
     imagen.alt = String(noticia.alt ?? "").trim();
   } else {
     marco?.remove();
